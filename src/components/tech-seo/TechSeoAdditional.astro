@@ -4,25 +4,25 @@ import SectionHeader from '../ui/SectionHeader.astro';
 const additionalServices = [
   {
     number: '01',
-    title: 'Zarzadzanie przekierowaniami i bledami 4xx/5xx',
+    title: 'Zarządzanie przekierowaniami i błędami 4xx/5xx',
     description:
       'Monitorujemy i poprawiamy bledy strony oraz przekierowania, aby uzytkownicy i roboty Google nie napotykali martwych linkow, co chroni widocznosc i zapewnia plynnosc ruchu.',
   },
   {
     number: '02',
-    title: 'Optymalizacja plikow i zasobow strony',
+    title: 'Optymalizacja plików i zasobów strony',
     description:
       'Kompresujemy obrazy, konfigurujemy cache, wdrazamy lazy loading i optymalizujemy pliki CSS/JS, aby strona ladowala sie szybciej, a Core Web Vitals osiagaly lepsze wyniki.',
   },
   {
     number: '03',
-    title: 'Obsluga robots.txt, sitemap.xml i hreflang',
+    title: 'Obsługa robots.txt, sitemap.xml i hreflang',
     description:
-      'Dbamy o poprawna konfiguracje plikow sterujacych indeksacja i map strony oraz oznaczenia wielojezyczne (hreflang), co pozwala Google prawidlowo indeksowac wszystkie wersje sklepu i stron kategorii.',
+      'Dbamy o poprawna konfiguracje plików sterujacych indeksacja i map strony oraz oznaczenia wielojezyczne (hreflang), co pozwala Google prawidlowo indeksowac wszystkie wersje sklepu i stron kategorii.',
   },
   {
     number: '04',
-    title: 'Audyt bezpieczenstwa',
+    title: 'Audyt bezpieczeństwa',
     description:
       'Sprawdzamy poprawnosc certyfikatow HTTPS, zabezpieczenia przed spamem i atakami oraz konfiguracje serwera, aby strona byla bezpieczna i wiarygodna dla uzytkownikow oraz wyszukiwarek.',
   },
@@ -34,16 +34,16 @@ const additionalServices = [
     <!-- Header -->
     <div class="text-center mb-20">
       <SectionHeader
-        label="DODATKOWE DZIALANIA"
-        title="Dodatkowe dzialania techniczne<br />i integracja z innymi obszarami SEO"
+        label="DODATKOWE DZIAŁANIA"
+        title="Dodatkowe działania techniczne<br />i integracja z innymi obszarami SEO"
         centered
         light
       />
       <p
         class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-400 max-w-[700px] mx-auto mt-6"
       >
-        Kompleksowa optymalizacja techniczna wykracza poza podstawy - obejmuje bezpieczenstwo,
-        zarzadzanie zasobami i pelna konfiguracje indeksacji.
+        Kompleksowa optymalizacja techniczna wykracza poza podstawy - obejmuje bezpieczeństwo,
+        zarządzanie zasobami i pełna konfiguracja indeksacji.
       </p>
     </div>
 
@@ -59,9 +59,7 @@ const additionalServices = [
               <h3 class="font-display text-[1.2rem] lg:text-[1.35rem] font-bold mb-3 leading-[1.3] text-white">
                 {service.title}
               </h3>
-              <p class="text-gray-400 leading-[1.7] text-[0.92rem]">
-                {service.description}
-              </p>
+              <p class="text-gray-400 leading-[1.7] text-[0.92rem]">{service.description}</p>
             </div>
           </div>
         ))
