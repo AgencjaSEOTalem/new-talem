@@ -17,7 +17,7 @@ import ServiceCard from '../ui/ServiceCard.astro';
   <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     <ServiceCard
       number="01"
-      title="Techniczne SEO dla serwisów i sklepów internetowych"
+      title="Techniczne SEO"
       description="Zapewniamy zaawansowane techniczne SEO dla  sklepów internetowych i platform e-commerce wspierające indeksację i wzrost widoczności."
       features={[
         'Optymalizacja architektury SEO witryny',
@@ -55,7 +55,7 @@ import ServiceCard from '../ui/ServiceCard.astro';
 
     <ServiceCard
       number="02"
-      title="Content SEO dla e-commerce"
+      title="Content SEO"
       description="Tworzymy wartościowe treści SEO, oparte na analizie intencji wyszukiwania i potrzeb klientów, które zwiększają widoczność i sprzedaż."
       features={[
         'Badanie i dobór fraz kluczowych',
@@ -88,7 +88,7 @@ import ServiceCard from '../ui/ServiceCard.astro';
 
     <ServiceCard
       number="03"
-      title="Migracje sklepów internetowych"
+      title="Migracje sklepów"
       description="Przeprowadzamy migracje sklepów internetowych z zachowaniem widoczności SEO, struktury ruchu i ciągłości sprzedaży."
       features={[
         'Analiza danych i planowanie strategii migracji',
@@ -120,7 +120,7 @@ import ServiceCard from '../ui/ServiceCard.astro';
 
     <ServiceCard
       number="04"
-      title="Monitoring jakości i wydajności"
+      title="Monitoring wydajności"
       description="Monitorujemy wydajność sklepów w oparciu o dane rzeczywistych użytkowników i identyfikujemy problemy wpływające na SEO i UX."
       features={[
         'Monitoring Core Web Vitals (CWV)',
@@ -151,7 +151,37 @@ import ServiceCard from '../ui/ServiceCard.astro';
 
     <ServiceCard
       number="05"
-      title="Analityka SEO i automatyzacja oparta na AI"
+      title="Link building"
+      description="Budujemy autorytet sklepów dzięki wartościowym linkom i sygnałom zewnętrznym, wspierając stabilny wzrost widoczności w wyszukiwarkach."
+      features={[
+        'Audyt i analiza profilu linków własnych oraz konkurencji',
+        'Opracowywanie strategii link buildingu',
+        'Pozyskiwanie linków kontekstowych i treściowych',
+        'Budowanie linków brandowych i autorytetu domeny',
+        'Oczyszczanie i optymalizacja profilu linków',
+      ]}
+      link="#"
+    >
+      <svg
+        slot="icon"
+        aria-hidden="true"
+        width="40"
+        height="40"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+    </ServiceCard>
+
+    <ServiceCard
+      number="06"
+      title="Analityka i automatyzacja"
       description="Opieramy SEO na danych, pomagając przewidywać i skalować wzrost widoczności oraz przychodów z ruchu organicznego."
       features={[
         'Analityka SEO dla e-commerce',
@@ -177,36 +207,6 @@ import ServiceCard from '../ui/ServiceCard.astro';
         <line x1="12" y1="20" x2="12" y2="10"></line>
         <line x1="18" y1="20" x2="18" y2="4"></line>
         <line x1="6" y1="20" x2="6" y2="16"></line>
-      </svg>
-    </ServiceCard>
-
-    <ServiceCard
-      number="06"
-      title="Link building i autorytet domeny"
-      description="Budujemy autorytet sklepów dzięki wartościowym linkom i sygnałom zewnętrznym, wspierając stabilny wzrost widoczności w wyszukiwarkach."
-      features={[
-        'Audyt i analiza profilu linków własnych oraz konkurencji',
-        'Opracowywanie strategii link buildingu',
-        'Pozyskiwanie linków kontekstowych i treściowych',
-        'Budowanie linków brandowych i autorytetu domeny',
-        'Oczyszczanie i optymalizacja profilu linków',
-      ]}
-      link="#"
-    >
-      <svg
-        slot="icon"
-        aria-hidden="true"
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
       </svg>
     </ServiceCard>
   </div>
