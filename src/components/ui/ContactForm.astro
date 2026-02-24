@@ -1,11 +1,11 @@
 ---
-import CheckItem from "./CheckItem.astro";
+import CheckItem from './CheckItem.astro';
 
 interface Props {
   id?: string;
   title: string;
   description: string;
-  background?: "white" | "gray";
+  background?: 'white' | 'gray';
   checkItems?: string[];
 }
 
@@ -13,18 +13,18 @@ const {
   id,
   title,
   description,
-  background = "white",
-  checkItems = ["Odpowiedź w 24h", "Bezpłatny audyt", "Bez zobowiązań"],
+  background = 'white',
+  checkItems = ['Odpowiedź w 24h', 'Bezpłatny audyt', 'Bez zobowiązań'],
 } = Astro.props;
 
-const bgClass = background === "gray" ? "bg-gray-100" : "bg-white";
+const bgClass = background === 'gray' ? 'bg-gray-100' : 'bg-white';
 const checkBgClass =
-  background === "gray"
-    ? "bg-white/50 border border-gray-200"
-    : "bg-gray-50 border border-gray-100";
+  background === 'gray'
+    ? 'bg-white/50 border border-gray-200'
+    : 'bg-gray-50 border border-gray-100';
 ---
 
-<section id={id} class:list={[bgClass, "px-4 sm:px-6 lg:px-8 py-24 lg:py-32"]}>
+<section id={id} class:list={[bgClass, 'px-4 sm:px-6 lg:px-8 py-24 lg:py-32']}>
   <div class="max-w-[800px] mx-auto">
     <div class="text-center mb-16">
       <h2
@@ -32,23 +32,13 @@ const checkBgClass =
       >
         {title}
       </h2>
-      <p
-        class="text-[1rem] lg:text-[1.125rem] text-gray-500 leading-[1.8] max-w-[700px] mx-auto"
-      >
+      <p class="text-[1rem] lg:text-[1.125rem] text-gray-500 leading-[1.8] max-w-[700px] mx-auto">
         {description}
       </p>
     </div>
 
-    <form
-      class="flex flex-col gap-5"
-      action="https://api.web3forms.com/submit"
-      method="POST"
-    >
-      <input
-        type="hidden"
-        name="access_key"
-        value={import.meta.env.PUBLIC_WEB3FORMS_KEY}
-      />
+    <form class="flex flex-col gap-5" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
 
       <div class="w-full">
         <input
@@ -87,14 +77,12 @@ const checkBgClass =
           class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent appearance-none pr-12 cursor-pointer"
         >
           <option value="">Miesięczny budżet na działania SEO</option>
-          <option value="5-10k">5-10k PLN</option>
-          <option value="10-20k">10-20k PLN</option>
-          <option value="20-50k">20-50k PLN</option>
-          <option value="50k+">50k+ PLN</option>
+          <option value="5-10k">do 2,5 tys. PLN</option>
+          <option value="10-20k">2,5-3,5 tys. PLN</option>
+          <option value="20-50k">3,5-5 tys. PLN</option>
+          <option value="50k+">powyżej 5 tys. PLN</option>
         </select>
-        <div
-          class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500"
-        >
+        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
           <svg
             aria-hidden="true"
             width="12"
@@ -129,7 +117,7 @@ const checkBgClass =
 
     <div
       class:list={[
-        "flex flex-wrap justify-center gap-6 lg:gap-12 mt-12 p-6 rounded-2xl",
+        'flex flex-wrap justify-center gap-6 lg:gap-12 mt-12 p-6 rounded-2xl',
         checkBgClass,
       ]}
     >
