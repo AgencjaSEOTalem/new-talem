@@ -31,10 +31,19 @@ import ServiceCard from '../ui/ServiceCard.astro';
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path
-          d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4"
-        ></path>
+        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+        <rect x="9" y="9" width="6" height="6"></rect>
+        <line x1="9" y1="1" x2="9" y2="4"></line>
+        <line x1="15" y1="1" x2="15" y2="4"></line>
+        <line x1="9" y1="20" x2="9" y2="23"></line>
+        <line x1="15" y1="20" x2="15" y2="23"></line>
+        <line x1="20" y1="9" x2="23" y2="9"></line>
+        <line x1="20" y1="15" x2="23" y2="15"></line>
+        <line x1="1" y1="9" x2="4" y2="9"></line>
+        <line x1="1" y1="15" x2="4" y2="15"></line>
       </svg>
     </ServiceCard>
 
@@ -53,15 +62,21 @@ import ServiceCard from '../ui/ServiceCard.astro';
     >
       <svg
         slot="icon"
+        aria-hidden="true"
         width="40"
         height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path
-          d="M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <line x1="10" y1="9" x2="8" y2="9"></line>
       </svg>
     </ServiceCard>
 
@@ -80,15 +95,20 @@ import ServiceCard from '../ui/ServiceCard.astro';
     >
       <svg
         slot="icon"
+        aria-hidden="true"
         width="40"
         height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path
-          d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        <path d="m16 3 4 4-4 4"></path>
+        <path d="M20 7H4"></path>
+        <path d="m8 21-4-4 4-4"></path>
+        <path d="M4 17h16"></path>
       </svg>
     </ServiceCard>
 
@@ -107,14 +127,19 @@ import ServiceCard from '../ui/ServiceCard.astro';
     >
       <svg
         slot="icon"
+        aria-hidden="true"
         width="40"
         height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path d="M18 20V10M12 20V4M6 20v-6"></path>
+        <path d="M12 20a8 8 0 0 0 8-8V4h-8"></path>
+        <path d="M12 20a8 8 0 0 1-8-8V4h8"></path>
+        <path d="M10 10l2 2 4-4"></path>
       </svg>
     </ServiceCard>
 
@@ -133,15 +158,18 @@ import ServiceCard from '../ui/ServiceCard.astro';
     >
       <svg
         slot="icon"
+        aria-hidden="true"
         width="40"
         height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path d="M12 20V10M18 20V4M6 20v-4"></path>
-        <circle cx="12" cy="6" r="2"></circle>
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
       </svg>
     </ServiceCard>
 
@@ -160,17 +188,19 @@ import ServiceCard from '../ui/ServiceCard.astro';
     >
       <svg
         slot="icon"
+        aria-hidden="true"
         width="40"
         height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle
-          cx="12"
-          cy="10"
-          r="3"></circle>
+        <line x1="12" y1="20" x2="12" y2="10"></line>
+        <line x1="18" y1="20" x2="18" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="16"></line>
       </svg>
     </ServiceCard>
   </div>
