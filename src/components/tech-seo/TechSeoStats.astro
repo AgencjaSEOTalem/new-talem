@@ -1,0 +1,44 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const stats = [
+  { value: '99+', label: 'Core Web Vitals score' },
+  { value: '0', label: 'Bledow indeksacji' },
+  { value: '2x', label: 'Szybszy czas ladowania' },
+  { value: '100%', label: 'Pokrycie structured data' },
+];
+---
+
+<section class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+  <div class="max-w-[1400px] mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <SectionHeader
+        label="WYNIKI"
+        title="Techniczne SEO w liczbach"
+        centered
+      />
+      <p
+        class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-600 max-w-[600px] mx-auto mt-6"
+      >
+        Nasze wdrozenia techniczne przekladaja sie na mierzalne rezultaty.
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        stats.map((stat) => (
+          <div class="bg-white rounded-2xl p-8 text-center border border-gray-200 hover:border-accent transition-colors duration-300">
+            <div class="font-display text-[2.5rem] lg:text-[3.5rem] font-black text-accent leading-none mb-3">
+              {stat.value}
+            </div>
+            <div class="font-mono text-[0.7rem] uppercase tracking-widest text-gray-500 font-semibold">
+              {stat.label}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

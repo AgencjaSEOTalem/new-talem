@@ -1,0 +1,71 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const additionalServices = [
+  {
+    number: '01',
+    title: 'Zarzadzanie przekierowaniami i bledami 4xx/5xx',
+    description:
+      'Monitorujemy i poprawiamy bledy strony oraz przekierowania, aby uzytkownicy i roboty Google nie napotykali martwych linkow, co chroni widocznosc i zapewnia plynnosc ruchu.',
+  },
+  {
+    number: '02',
+    title: 'Optymalizacja plikow i zasobow strony',
+    description:
+      'Kompresujemy obrazy, konfigurujemy cache, wdrazamy lazy loading i optymalizujemy pliki CSS/JS, aby strona ladowala sie szybciej, a Core Web Vitals osiagaly lepsze wyniki.',
+  },
+  {
+    number: '03',
+    title: 'Obsluga robots.txt, sitemap.xml i hreflang',
+    description:
+      'Dbamy o poprawna konfiguracje plikow sterujacych indeksacja i map strony oraz oznaczenia wielojezyczne (hreflang), co pozwala Google prawidlowo indeksowac wszystkie wersje sklepu i stron kategorii.',
+  },
+  {
+    number: '04',
+    title: 'Audyt bezpieczenstwa',
+    description:
+      'Sprawdzamy poprawnosc certyfikatow HTTPS, zabezpieczenia przed spamem i atakami oraz konfiguracje serwera, aby strona byla bezpieczna i wiarygodna dla uzytkownikow oraz wyszukiwarek.',
+  },
+];
+---
+
+<section class="bg-black text-white px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+  <div class="max-w-[1400px] mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-20">
+      <SectionHeader
+        label="DODATKOWE DZIALANIA"
+        title="Dodatkowe dzialania techniczne<br />i integracja z innymi obszarami SEO"
+        centered
+        light
+      />
+      <p
+        class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-400 max-w-[700px] mx-auto mt-6"
+      >
+        Kompleksowa optymalizacja techniczna wykracza poza podstawy - obejmuje bezpieczenstwo,
+        zarzadzanie zasobami i pelna konfiguracje indeksacji.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+      {
+        additionalServices.map((service) => (
+          <div class="flex gap-6 items-start" data-reveal>
+            <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <span class="font-mono text-[1rem] font-bold text-accent">{service.number}</span>
+            </div>
+            <div>
+              <h3 class="font-display text-[1.2rem] lg:text-[1.35rem] font-bold mb-3 leading-[1.3] text-white">
+                {service.title}
+              </h3>
+              <p class="text-gray-400 leading-[1.7] text-[0.92rem]">
+                {service.description}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
