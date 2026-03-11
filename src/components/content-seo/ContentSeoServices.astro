@@ -1,0 +1,97 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const services = [
+  {
+    number: '01',
+    title: 'Badanie i dobór fraz kluczowych',
+    description:
+      'Analizujemy, jakie słowa i wyrażenia są najczęściej wyszukiwane przez Twoich klientów, a jednocześnie mają potencjał konwersji. Tworzymy listę fraz, które warto uwzględnić w treściach produktowych, kategorii i artykułach blogowych.',
+  },
+  {
+    number: '02',
+    title: 'Analiza intencji wyszukiwania i mapowanie treści',
+    description:
+      'Segmentujemy użytkowników według intencji (informacyjna, transakcyjna, nawigacyjna) i dopasowujemy do nich odpowiednie treści, tak aby Google trafnie prezentowało Twoje strony w wynikach wyszukiwania.',
+  },
+  {
+    number: '03',
+    title: 'Analiza luk contentowych i przewag konkurencyjnych',
+    description:
+      'Identyfikujemy obszary tematyczne, frazy kluczowe i typy treści, które generują ruch u konkurencji, a są niewykorzystane w Twoim sklepie. Dzięki temu strategia treści opiera się na realnych szansach wzrostu widoczności i sprzedaży.',
+  },
+  {
+    number: '04',
+    title: 'Tworzenie i optymalizacja treści produktowych i kategorii',
+    description:
+      'Przygotowujemy opisy produktów i kategorii, które są atrakcyjne dla użytkowników i zoptymalizowane pod SEO - unikalne, angażujące, z naturalnym użyciem fraz kluczowych.',
+  },
+  {
+    number: '05',
+    title: 'Optymalizacja semantyczna i encji w treści',
+    description:
+      'Wzbogacamy treści o kontekst, synonimy, powiązane tematy i encje (rozpoznawalne byty, takie jak marki, produkty, miejsca czy technologie), aby wyszukiwarki lepiej rozumiały zawartość strony i kojarzyły ją z odpowiednimi zapytaniami. Dbamy o pełne pokrycie tematyczne oraz spójność semantyczną treści w obrębie kategorii, produktów i artykułów.',
+  },
+  {
+    number: '06',
+    title: 'Projektowanie strategii treści i wzmocnienie autorytetu marki',
+    description:
+      'Opracowujemy plan rozwoju treści, który wspiera SEO, buduje topical authority i wzmacnia wizerunek marki jako eksperta w branży. Definiujemy priorytety contentowe, identyfikujemy luki tematyczne oraz integrujemy działania contentowe z link buildingiem i optymalizacją techniczną.',
+  },
+  {
+    number: '07',
+    title: 'Automatyzacja procesów contentowych i skalowanie treści',
+    description:
+      'Wdrażamy rozwiązania pozwalające efektywnie rozwijać treści na dużą skalę. Automatyzujemy procesy researchu, analizy tematów i wsparcia tworzenia treści, co pozwala szybciej reagować na zmiany w wyszukiwaniach i rozwijać content bez utraty jakości. Takie podejście jest szczególnie skuteczne w dużych sklepach internetowych i rozbudowanych serwisach e-commerce.',
+  },
+];
+---
+
+<section id="uslugi-content" class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+  <div class="max-w-[1400px] mx-auto">
+    <!-- Header -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
+      <SectionHeader label="CO ROBIMY" title="Co robimy w ramach<br />Content SEO" />
+      <div class="flex items-end">
+        <p class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-600 max-w-[520px]">
+          Dzięki naszym działaniom Twój sklep zyskuje wartościowe treści, które przyciągają ruch,
+          budują autorytet marki i wspierają konwersję.
+        </p>
+      </div>
+    </div>
+
+    <!-- Service cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        services.map((service) => (
+          <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 lg:p-10 relative transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-2xl group">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-accent/5 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                <svg
+                  class="w-5 h-5 text-accent group-hover:text-white transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <span class="font-mono text-[0.85rem] font-bold text-gray-400">{service.number}</span>
+            </div>
+
+            <h3 class="font-display text-[1.2rem] lg:text-[1.35rem] font-bold mb-4 leading-[1.3]">
+              {service.title}
+            </h3>
+
+            <p class="text-gray-600 leading-[1.7] text-[0.92rem]">{service.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

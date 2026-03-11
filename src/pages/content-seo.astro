@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import ContentSeoHero from '../components/content-seo/ContentSeoHero.astro';
+import ContentSeoServices from '../components/content-seo/ContentSeoServices.astro';
+import ContentSeoWhyUs from '../components/content-seo/ContentSeoWhyUs.astro';
+import ContentSeoContact from '../components/content-seo/ContentSeoContact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Content SEO dla e-commerce | TALEM"
+  description="Tworzymy wartościowe treści dopasowane do potrzeb użytkowników i intencji wyszukiwania. Strategia contentowa, która zwiększa widoczność, ruch organiczny i sprzedaż."
+>
+  <Navigation />
+  <ContentSeoHero />
+  <ContentSeoServices />
+  <ContentSeoWhyUs />
+  <ContentSeoContact />
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,165 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section class="bg-white px-4 sm:px-6 lg:px-8 py-24 lg:py-32 border-t border-gray-100">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Left column - Text -->
+      <div>
+        <div class="mb-10">
+          <SectionHeader label="DLACZEGO MY" title="Dlaczego warto<br />z nami współpracować" />
+        </div>
+
+        <p
+          class="text-[1rem] lg:text-[1.1rem] leading-[1.8] text-gray-600 mb-10 max-w-[520px] italic"
+        >
+          Każdy z powyższych obszarów Content SEO działa na przekroju całego sklepu internetowego -
+          od analizy intencji wyszukiwania, przez tworzenie treści produktowych i kategorii, po
+          budowanie autorytetu marki. Łączymy dopasowanie treści do potrzeb klientów ze strategią
+          publikacji, dzięki czemu content realnie wspiera widoczność, ruch organiczny i sprzedaż.
+        </p>
+
+        <ul class="flex flex-col gap-5">
+          <li class="flex items-start gap-3">
+            <div
+              class="flex-shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center mt-1"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-accent"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <span class="text-[0.95rem] lg:text-[1.05rem] text-gray-700 leading-relaxed">
+              Nasze działania opieramy na <b
+                >wieloletnim doświadczeniu w tworzeniu treści dla sklepów internetowych i platform
+                e-commerce</b
+              >, sprawdzonych praktykach i realnych wdrożeniach.
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3">
+            <div
+              class="flex-shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center mt-1"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-accent"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <span class="text-[0.95rem] lg:text-[1.05rem] text-gray-700 leading-relaxed">
+              Skuteczność tego podejścia potwierdzają nasze <b>case studies</b>, które pokazują, jak
+              optymalizacja treści wpływa na wzrost widoczności oraz ruchu organicznego sklepów
+              naszych klientów.
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3">
+            <div
+              class="flex-shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center mt-1"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-accent"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <span class="text-[0.95rem] lg:text-[1.05rem] text-gray-700 leading-relaxed">
+              Dzięki współpracy z nami Twój sklep nie tylko reaguje na bieżące potrzeby SEO, ale
+              jest również przygotowany na <b
+                >stabilny i długoterminowy rozwój treści oraz sprzedaży z ruchu organicznego</b
+              >.
+            </span>
+          </li>
+        </ul>
+
+        <!-- Case Studies CTA -->
+        <div class="mt-12">
+          <a
+            href="/case-studies/"
+            class="inline-flex items-center gap-3 px-7 py-4 rounded-lg font-semibold transition text-[0.95rem] bg-accent text-white border-2 border-accent hover:bg-accent-dim hover:border-accent-dim hover:-translate-y-0.5 hover:shadow-xl"
+          >
+            Zobacz nasze case studies
+            <svg
+              aria-hidden="true"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right column - Decorative graphic -->
+      <div class="relative h-[400px] lg:h-[500px] hidden lg:block">
+        <!-- Large pale circle -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-accent/5 opacity-60"
+        >
+        </div>
+
+        <!-- Medium circle with border -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 translate-x-[40px] translate-y-[-30px] w-[280px] h-[280px] rounded-full border-2 border-accent/20 opacity-40"
+        >
+        </div>
+
+        <!-- Main solid circle -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 translate-x-[-20px] translate-y-[20px] w-[220px] h-[220px] rounded-full bg-accent shadow-2xl flex items-center justify-center"
+        >
+          <svg
+            class="w-16 h-16 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+          >
+            <path
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Small top-right circle -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 translate-x-[120px] translate-y-[-120px] w-[140px] h-[140px] rounded-full border-2 border-accent/15"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
