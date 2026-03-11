@@ -1,0 +1,36 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section class="relative py-20 md:py-28 overflow-hidden">
+  <!-- Background gradient -->
+  <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"></div>
+  
+  <!-- Subtle pattern overlay -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+  </div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        <span class="text-amber-400 text-sm font-medium">Bezpieczna zmiana platformy</span>
+      </div>
+
+      <SectionHeader
+        title="Migracje sklepów internetowych"
+        description="Migracja sklepu internetowego to jeden z najbardziej ryzykownych procesów w całym SEO. Niewłaściwie przeprowadzony proces może spowodować utratę widoczności, ruchu organicznego i sprzedaży."
+        align="center"
+        theme="dark"
+      />
+
+      <p class="text-lg text-slate-400 mt-6 max-w-3xl mx-auto">
+        Dbamy o to, aby zmiana platformy, struktury lub technologii przebiegła bezpiecznie, bez negatywnego wpływu na ruch i wyniki biznesowe. Każdą migrację prowadzimy w oparciu o dane, szczegółowe planowanie i kontrolę techniczną, minimalizując ryzyko spadków widoczności i sprzedaży.
+      </p>
+    </div>
+  </div>
+</section>
