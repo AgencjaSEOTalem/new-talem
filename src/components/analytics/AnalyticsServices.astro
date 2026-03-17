@@ -1,0 +1,89 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const services = [
+  {
+    number: '01',
+    title: 'Wdrożenie i konfiguracja GA4',
+    description:
+      'Wdrażamy Google Analytics 4 z pełną konfiguracją zdarzeń e-commerce, śledzeniem konwersji i integracją z innymi narzędziami. Zapewniamy prawidłowe zbieranie danych zgodne z RODO.',
+  },
+  {
+    number: '02',
+    title: 'Modelowanie danych i hurtownie',
+    description:
+      'Tworzymy architektury danych w BigQuery i innych rozwiązaniach chmurowych. Modelujemy dane z różnych źródeł, tworząc jednolity obraz wydajności e-commerce.',
+  },
+  {
+    number: '03',
+    title: 'Dashboardy i wizualizacja danych',
+    description:
+      'Budujemy interaktywne dashboardy w Looker Studio, Power BI i innych narzędziach. Dostarczamy czytelne raporty dopasowane do potrzeb zespołów marketingowych i zarządu.',
+  },
+  {
+    number: '04',
+    title: 'Automatyzacja raportowania',
+    description:
+      'Wdrażamy systemy automatycznego raportowania, które dostarczają kluczowe metryki we właściwym czasie. Eliminujemy ręczne przygotowywanie raportów i oszczędzamy czas zespołu.',
+  },
+  {
+    number: '05',
+    title: 'Automatyzacje procesów SEO',
+    description:
+      'Automatyzujemy powtarzalne zadania SEO: monitoring pozycji, audyty techniczne, alerty o problemach, generowanie raportów. Wykorzystujemy API i skrypty do zwiększenia efektywności.',
+  },
+  {
+    number: '06',
+    title: 'Rozwiązania AI i machine learning',
+    description:
+      'Wdrażamy rozwiązania oparte na sztucznej inteligencji: predykcję trendów, automatyczną kategoryzację, analitykę predykcyjną i asystentów AI wspierających podejmowanie decyzji.',
+  },
+];
+---
+
+<section id="uslugi-analytics" class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+  <div class="max-w-[1400px] mx-auto">
+    <!-- Header -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
+      <SectionHeader label="ZAKRES DZIAŁAŃ" title="Co robimy w ramach<br />Analityki i automatyzacji" />
+      <div class="flex items-end">
+        <p class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-600 max-w-[520px]">
+          Dostarczamy rozwiązania, które zamieniają surowe dane w wartościowe insighty i
+          automatyzują powtarzalne procesy, zwiększając efektywność działań SEO i e-commerce.
+        </p>
+      </div>
+    </div>
+
+    <!-- Service cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        services.map((service) => (
+          <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 lg:p-10 relative transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-2xl group">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-accent/5 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                <svg
+                  class="w-5 h-5 text-accent group-hover:text-white transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                >
+                  <line x1="12" y1="20" x2="12" y2="10" stroke-linecap="round" stroke-linejoin="round" />
+                  <line x1="18" y1="20" x2="18" y2="4" stroke-linecap="round" stroke-linejoin="round" />
+                  <line x1="6" y1="20" x2="6" y2="16" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <span class="font-mono text-[0.85rem] font-bold text-gray-400">{service.number}</span>
+            </div>
+
+            <h3 class="font-display text-[1.2rem] lg:text-[1.35rem] font-bold mb-4 leading-[1.3]">
+              {service.title}
+            </h3>
+
+            <p class="text-gray-600 leading-[1.7] text-[0.92rem]">{service.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

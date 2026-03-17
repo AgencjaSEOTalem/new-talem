@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import LinkBuildingHero from '../components/link-building/LinkBuildingHero.astro';
+import LinkBuildingServices from '../components/link-building/LinkBuildingServices.astro';
+import LinkBuildingWhyUs from '../components/link-building/LinkBuildingWhyUs.astro';
+import LinkBuildingContact from '../components/link-building/LinkBuildingContact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Link Building dla e-commerce | TALEM"
+  description="Budujemy profil linków, który wzmacnia autorytet domeny i przekłada się na wyższe pozycje. Bezpieczne metody link buildingu zgodne z wytycznymi Google."
+>
+  <Navigation />
+  <LinkBuildingHero />
+  <LinkBuildingServices />
+  <LinkBuildingWhyUs />
+  <LinkBuildingContact />
+  <Footer />
+</BaseLayout>

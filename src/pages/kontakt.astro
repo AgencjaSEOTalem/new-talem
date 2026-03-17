@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import ContactForm from '../components/ui/ContactForm.astro';
+---
+
+<BaseLayout
+  title="Kontakt do Agencji SEO | TALEM"
+  description="Skontaktuj się z Agencją SEO TALEM. Bezpłatna wycena i konsultacja. Bydgoszcz, ul. Toruńska 33. Tel: 801 080 238, +48 52 366 70 70"
+>
+  <Navigation />
+
+  <!-- Hero Section -->
+  <section
+    class="relative min-h-[50vh] flex items-center px-4 sm:px-6 lg:px-8 pt-32 pb-16 overflow-hidden bg-white"
+  >
+    <div class="max-w-[1400px] mx-auto w-full relative z-[2]">
+      <div class="text-center max-w-[800px] mx-auto">
+        <span
+          class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent mb-6 block"
+        >
+          KONTAKT
+        </span>
+        <h1
+          class="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-black leading-[1.1] tracking-[-0.03em] mb-8"
+        >
+          Porozmawiajmy o <span class="text-accent italic">Twoim</span> projekcie
+        </h1>
+        <p class="text-[1rem] lg:text-[1.25rem] leading-[1.8] text-gray-600 max-w-[600px] mx-auto">
+          Skontaktuj się z nami, aby omówić możliwości współpracy. Bezpłatna konsultacja i wycena bez zobowiązań.
+        </p>
+      </div>
+    </div>
+
+    <!-- Background grid -->
+    <div class="absolute inset-0 z-[1] opacity-40">
+      <div
+        class="w-full h-full bg-[linear-gradient(to_right,rgba(229,229,229,1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,229,229,1)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"
+      >
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Info & Map Section -->
+  <section class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+    <div class="max-w-[1400px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <!-- Contact Info -->
+        <div data-reveal>
+          <div
+            class="font-mono text-[0.75rem] uppercase tracking-wider text-accent mb-6 font-semibold"
+          >
+            Agencja SEO/SEM
+          </div>
+          <h2
+            class="font-display text-[clamp(2rem,5vw,3rem)] font-black leading-[1.1] tracking-[-0.02em] mb-8 text-black"
+          >
+            Talem Technologies <span class="text-accent">Sp. z o. o.</span>
+          </h2>
+
+          <!-- Address Card -->
+          <div class="bg-white rounded-xl p-8 border-2 border-gray-200 mb-6 transition-all hover:border-accent hover:-translate-y-1 hover:shadow-xl">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display text-[1.25rem] font-bold text-black mb-2">Adres</h3>
+                <p class="text-gray-600 leading-relaxed">
+                  ul. Toruńska 33<br />
+                  85-023 Bydgoszcz
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-6 border-2 border-gray-200 transition-all hover:border-accent hover:-translate-y-1 hover:shadow-xl">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">Infolinia</div>
+                  <a href="tel:801080238" class="font-display text-[1.1rem] font-bold text-black hover:text-accent transition-colors">801 080 238</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 border-2 border-gray-200 transition-all hover:border-accent hover:-translate-y-1 hover:shadow-xl">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">Telefon</div>
+                  <a href="tel:+48523667070" class="font-display text-[1.1rem] font-bold text-black hover:text-accent transition-colors">+48 52 366 70 70</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-6 border-2 border-gray-200 transition-all hover:border-accent hover:-translate-y-1 hover:shadow-xl">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">Komórka</div>
+                  <a href="tel:+48573190810" class="font-display text-[1.1rem] font-bold text-black hover:text-accent transition-colors">+48 573 190 810</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 border-2 border-gray-200 transition-all hover:border-accent hover:-translate-y-1 hover:shadow-xl">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">E-mail</div>
+                  <a href="mailto:info@talem.eu" class="font-display text-[1.1rem] font-bold text-black hover:text-accent transition-colors">info@talem.eu</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company Details -->
+          <div class="bg-white rounded-xl p-8 border-2 border-gray-200">
+            <h3 class="font-display text-[1.1rem] font-bold text-black mb-4">Dane firmy</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[0.9rem]">
+              <div>
+                <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">NIP</div>
+                <div class="text-gray-800 font-medium">967-12-41-356</div>
+              </div>
+              <div>
+                <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">REGON</div>
+                <div class="text-gray-800 font-medium">340184360</div>
+              </div>
+              <div>
+                <div class="font-mono text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">KRS</div>
+                <div class="text-gray-800 font-medium">0000262422</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="relative" data-reveal>
+          <div class="bg-white rounded-2xl overflow-hidden border-2 border-gray-200 h-full min-h-[500px]">
+            <div class="font-mono text-[0.75rem] uppercase tracking-wider text-accent p-6 pb-0 font-semibold">
+              Nasza lokalizacja
+            </div>
+            <h3 class="font-display text-[1.5rem] font-bold text-black px-6 pt-2 pb-4">
+              Jak do nas <span class="text-accent">dojechać?</span>
+            </h3>
+            <div class="h-[400px] lg:h-[calc(100%-100px)]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2400.507889714665!2d18.00844221581824!3d53.12394047992639!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4703153d8b0b0a21%3A0x6c6b7c6c7c7c7c7c!2sToru%C5%84ska%2033%2C%2085-023%20Bydgoszcz!5e0!3m2!1spl!2spl!4v1710000000000!5m2!1spl!2spl"
+                width="100%"
+                height="100%"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Lokalizacja Agencji SEO TALEM w Bydgoszczy"
+                class="grayscale hover:grayscale-0 transition-all duration-500"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works Section -->
+  <section class="bg-white px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+    <div class="max-w-[1400px] mx-auto">
+      <div class="text-center mb-16" data-reveal>
+        <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent mb-4 block">
+          Jak to działa?
+        </span>
+        <h2 class="font-display text-[2rem] lg:text-[3rem] font-black leading-[1.15] tracking-[-0.02em] text-black">
+          Zamów <span class="text-accent">bezpłatną</span> wycenę
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="relative bg-gray-50 rounded-xl p-8 border border-gray-200 transition-all hover:-translate-y-2 hover:shadow-xl" data-reveal>
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-accent flex items-center justify-center text-white font-mono font-bold text-lg">
+            1
+          </div>
+          <div class="pt-4">
+            <h3 class="font-display text-[1.25rem] font-bold text-black mb-3">Wyślij zapytanie</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Podaj nam adres swojej strony WWW oraz dane kontaktowe za pomocą formularza poniżej.
+            </p>
+          </div>
+        </div>
+
+        <div class="relative bg-gray-50 rounded-xl p-8 border border-gray-200 transition-all hover:-translate-y-2 hover:shadow-xl" data-reveal style="animation-delay: 0.1s">
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-accent flex items-center justify-center text-white font-mono font-bold text-lg">
+            2
+          </div>
+          <div class="pt-4">
+            <h3 class="font-display text-[1.25rem] font-bold text-black mb-3">Analiza SEO</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Przeprowadzimy wstępną analizę SEO Twojej strony i przygotujemy indywidualną ofertę.
+            </p>
+          </div>
+        </div>
+
+        <div class="relative bg-gray-50 rounded-xl p-8 border border-gray-200 transition-all hover:-translate-y-2 hover:shadow-xl" data-reveal style="animation-delay: 0.2s">
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-accent flex items-center justify-center text-white font-mono font-bold text-lg">
+            3
+          </div>
+          <div class="pt-4">
+            <h3 class="font-display text-[1.25rem] font-bold text-black mb-3">Otrzymaj ofertę</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Na podany e-mail otrzymasz szczegółową ofertę w ciągu 1-2 dni roboczych.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <ContactForm background="gray" />
+
+  <Footer />
+</BaseLayout>
