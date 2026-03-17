@@ -1,0 +1,65 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const values = [
+  {
+    icon: '<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />',
+    title: 'Jakość ponad ilość',
+    desc: 'Pracujemy z ograniczoną liczbą klientów, by każdemu zapewnić pełne zaangażowanie zespołu i realny wpływ na wyniki.',
+  },
+  {
+    icon: '<path d="M13 10V3L4 14h7v7l9-11h-7z" />',
+    title: 'Dane zamiast domysłów',
+    desc: 'Każda decyzja oparta jest na twardych danych. Mierzymy, analizujemy i optymalizujemy — żadnych działań „na wyczucie".',
+  },
+  {
+    icon: '<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />',
+    title: 'Partnerstwo',
+    desc: 'Traktujemy każdy projekt jak wspólny cel. Działamy blisko z klientem i rozumiemy specyfikę jego branży.',
+  },
+  {
+    icon: '<path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />',
+    title: 'Innowacyjność',
+    desc: 'Wykorzystujemy AI i automatyzacje, by być o krok przed konkurencją i skuteczniej realizować cele klientów.',
+  },
+];
+---
+
+<section class="bg-white px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="text-center mb-16" data-reveal>
+      <SectionHeader
+        label="Nasze wartości"
+        title="To, w co <span class='text-accent'>wierzymy</span>"
+        centered
+      />
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {
+        values.map((value, index) => (
+          <div
+            class="bg-gray-50 rounded-xl p-8 transition-all hover:-translate-y-2 hover:shadow-xl border border-gray-200"
+            data-reveal
+            style={`animation-delay: ${index * 0.1}s`}
+          >
+            <div class="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
+              <svg
+                class="w-7 h-7 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={value.icon}
+              />
+            </div>
+            <h3 class="font-display text-[1.25rem] font-bold text-black mb-3">{value.title}</h3>
+            <p class="text-gray-600 leading-relaxed">{value.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
