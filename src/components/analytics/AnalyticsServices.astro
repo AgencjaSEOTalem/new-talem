@@ -4,39 +4,57 @@ import SectionHeader from '../ui/SectionHeader.astro';
 const services = [
   {
     number: '01',
-    title: 'Wdrożenie i konfiguracja GA4',
+    title: 'Analityka SEO dla e-commerce i sklepów internetowych',
     description:
-      'Wdrażamy Google Analytics 4 z pełną konfiguracją zdarzeń e-commerce, śledzeniem konwersji i integracją z innymi narzędziami. Zapewniamy prawidłowe zbieranie danych zgodne z RODO.',
+      'Analizujemy dane w kontekście biznesowym. Badamy, jaki wpływ na sprzedaż mają widoczność, ruch, zachowania użytkowników i ścieżki konwersji. Identyfikujemy obszary serwisu, które generują realną wartość, oraz te z potencjałem wzrostu, które wymagają optymalizacji.',
   },
   {
     number: '02',
-    title: 'Modelowanie danych i hurtownie',
+    title: 'Konfiguracja, weryfikacja i audyty GA4 oraz GSC',
     description:
-      'Tworzymy architektury danych w BigQuery i innych rozwiązaniach chmurowych. Modelujemy dane z różnych źródeł, tworząc jednolity obraz wydajności e-commerce.',
+      'Zapewniamy poprawną konfigurację narzędzi analitycznych i weryfikujemy poprawność danych, tak aby decyzje marketingowe były oparte na rzetelnych informacjach. Sprawdzamy zdarzenia, konwersje, atrybucję i integrację danych.',
   },
   {
     number: '03',
-    title: 'Dashboardy i wizualizacja danych',
+    title: 'Segmentacja i modelowanie danych',
     description:
-      'Budujemy interaktywne dashboardy w Looker Studio, Power BI i innych narzędziach. Dostarczamy czytelne raporty dopasowane do potrzeb zespołów marketingowych i zarządu.',
+      'Dzielimy dane według produktów, kategorii, typów stron, intencji wyszukiwania i etapów lejka zakupowego. Pozwala to precyzyjnie określić, które obszary przynoszą największy zwrot z działań SEO, a które wymagają poprawy.',
   },
   {
     number: '04',
-    title: 'Automatyzacja raportowania',
+    title: 'Analiza luk w treściach i konkurencji',
     description:
-      'Wdrażamy systemy automatycznego raportowania, które dostarczają kluczowe metryki we właściwym czasie. Eliminujemy ręczne przygotowywanie raportów i oszczędzamy czas zespołu.',
+      'Identyfikujemy brakujące treści, frazy i tematy, które konkurencja wykorzystuje do generowania ruchu. Dzięki temu obrana strategia działań opiera się na realnych szansach wzrostu widoczności i sprzedaży.',
   },
   {
     number: '05',
-    title: 'Automatyzacje procesów SEO',
+    title: 'Analiza potencjału wzrostu i identyfikacja „quick wins"',
     description:
-      'Automatyzujemy powtarzalne zadania SEO: monitoring pozycji, audyty techniczne, alerty o problemach, generowanie raportów. Wykorzystujemy API i skrypty do zwiększenia efektywności.',
+      'Znajdujemy obszary, w których możliwy jest najszybszy wzrost widoczności fraz kluczowych i ruchu. Wskazujemy wymagające optymalizacji podstrony, treści o wysokim, lecz niewykorzystanym potencjale, a także problemy techniczne ograniczające efekty w wyszukiwarkach.',
   },
   {
     number: '06',
-    title: 'Rozwiązania AI i machine learning',
+    title: 'Prognozowanie potencjału wzrostu widoczności i sprzedaży',
     description:
-      'Wdrażamy rozwiązania oparte na sztucznej inteligencji: predykcję trendów, automatyczną kategoryzację, analitykę predykcyjną i asystentów AI wspierających podejmowanie decyzji.',
+      'Na podstawie danych historycznych, trendów i analiz konkurencji przewidujemy możliwe scenariusze wzrostu ruchu organicznego i przychodów. Umożliwia to planowanie działań w sposób kontrolowany i opłacalny biznesowo.',
+  },
+  {
+    number: '07',
+    title: 'Automatyzacja analiz i raportów (AI / workflow / integracje)',
+    description:
+      'Wdrażamy automatyzacje, które skracają czasochłonne procesy analityczne: monitorowanie zmian w widoczności i ruchu, generowanie raportów dla zespołów marketingu i zarządu, wykrywanie anomalii w wynikach SEO.',
+  },
+  {
+    number: '08',
+    title: 'Dashboardy i raporty decyzyjne',
+    description:
+      'Tworzymy czytelne panele analityczne prezentujące najważniejsze wskaźniki efektywności: widoczność, ruch organiczny, konwersje, przychody i trendy. Raporty są zrozumiałe dla właścicieli sklepów, a jednocześnie precyzyjne dla zespołów SEO i marketingu.',
+  },
+  {
+    number: '09',
+    title: 'Systemy wczesnego wykrywania problemów',
+    description:
+      'Wdrażamy mechanizmy monitorujące nagłe spadki widoczności, błędy indeksacji i anomalie w danych. W ten sposób zapewniamy szybką reakcję na problemy techniczne i utrzymanie stabilnych wzrostów widoczności i sprzedaży.',
   },
 ];
 ---
@@ -45,11 +63,11 @@ const services = [
   <div class="max-w-[1400px] mx-auto">
     <!-- Header -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
-      <SectionHeader label="ZAKRES DZIAŁAŃ" title="Co robimy w ramach<br />Analityki i automatyzacji" />
+      <SectionHeader label="ZAKRES DZIAŁAŃ" title="Co robimy w ramach<br />analityki SEO i automatyzacji" />
       <div class="flex items-end">
         <p class="text-[0.95rem] lg:text-[1.05rem] leading-[1.8] text-gray-600 max-w-[520px]">
-          Dostarczamy rozwiązania, które zamieniają surowe dane w wartościowe insighty i
-          automatyzują powtarzalne procesy, zwiększając efektywność działań SEO i e-commerce.
+          Rozwój widoczności staje się procesem mierzalnym, kontrolowanym i skalowalnym — opartym
+          na danych, a nie domysłach.
         </p>
       </div>
     </div>
