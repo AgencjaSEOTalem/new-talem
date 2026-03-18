@@ -29,6 +29,9 @@ importers:
       astro:
         specifier: ^6.0.5
         version: 6.0.5(@types/node@24.12.0)(jiti@1.21.7)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2)
+      devalue:
+        specifier: ^5.6.4
+        version: 5.6.4
       tailwindcss:
         specifier: ^3.4.19
         version: 3.4.19
