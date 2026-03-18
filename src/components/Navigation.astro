@@ -56,7 +56,7 @@ const services = [
       <a href="/o-nas" class="nav-link-hover">O nas</a>
 
       <div class="relative group" data-dropdown>
-        <button class="nav-link-hover flex items-center gap-1.5" aria-expanded="false">
+        <button class="cursor-auto flex items-center gap-1.5" aria-expanded="false">
           Nasze SEO
           <svg
             class="w-3.5 h-3.5 transition-transform group-hover:rotate-180"
@@ -75,19 +75,6 @@ const services = [
           class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-2 transition-all duration-200 z-50"
         >
           <div class="bg-white rounded-xl border border-gray-200 shadow-2xl p-2 w-[560px]">
-            <a
-              href="/seo-dla-e-commerce"
-              class="block px-4 py-3 mb-1 hover:bg-gray-50 rounded-lg group/head"
-            >
-              <span
-                class="block font-mono text-[0.6rem] uppercase tracking-widest text-accent font-bold"
-                >Zaawansowane usługi</span
-              >
-              <span class="block text-lg text-black group-hover/head:text-accent"
-                >SEO dla E-commerce</span
-              >
-            </a>
-            <div class="h-px bg-gray-100 mx-3 mb-1"></div>
             <div class="grid grid-cols-2 gap-1">
               {
                 services.map((service) => (
