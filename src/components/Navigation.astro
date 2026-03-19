@@ -52,7 +52,7 @@ const services = [
       />
     </a>
 
-    <div class="hidden min-[885px]:flex gap-8 items-center">
+    <div class="hidden min-[1150px]:flex gap-8 items-center">
       <a href="/o-nas" class="nav-link-hover">O nas</a>
 
       <div class="relative group" data-dropdown>
@@ -74,7 +74,7 @@ const services = [
         <div
           class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-2 transition-all duration-200 z-50"
         >
-          <div class="bg-white rounded-xl border border-gray-200 shadow-2xl p-2 w-[560px]">
+          <div class="bg-white rounded-xl border border-gray-200 shadow-2xl p-2 w-[700px]">
             <div class="block px-4 py-3 mb-1 rounded-lg group/head">
               <span
                 class="block font-mono text-[0.6rem] uppercase tracking-widest text-accent font-bold"
@@ -84,12 +84,12 @@ const services = [
             </div>
             <div class="h-px bg-gray-100 mx-3 mb-1"></div>
 
-            <div class="grid grid-cols-2 gap-1">
+            <div class="grid grid-cols-2 gap-2">
               {
                 services.map((service) => (
                   <a
                     href={service.href}
-                    class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group/item"
+                    class="flex items-start gap-3 px-4 py-4 rounded-lg hover:bg-gray-50 transition-colors group/item"
                   >
                     <div class="w-10 h-10 shrink-0 rounded bg-accent/5 flex items-center justify-center text-accent group-hover/item:bg-accent group-hover/item:text-white transition-colors">
                       <svg
@@ -105,12 +105,10 @@ const services = [
                       />
                     </div>
                     <div>
-                      <span class="block text-sm font-bold text-black group-hover/item:text-accent">
+                      <span class="block text-base font-bold text-black group-hover/item:text-accent">
                         {service.title}
                       </span>
-                      <span class="block text-[0.75rem] text-gray-500 leading-snug">
-                        {service.desc}
-                      </span>
+                      <span class="block text-sm text-gray-500 leading-snug">{service.desc}</span>
                     </div>
                   </a>
                 ))
@@ -138,7 +136,7 @@ const services = [
 
     <button
       data-mobile-menu-toggle
-      class="max-[885px]:block hidden p-2 text-black"
+      class="max-[1150px]:block hidden p-2 text-black"
       aria-label="Menu"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
