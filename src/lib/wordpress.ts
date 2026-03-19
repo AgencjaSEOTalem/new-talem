@@ -37,11 +37,6 @@ export interface WordPressPost {
       alt_text?: string;
     }>;
   };
-  // Custom fields - dostosuj do swojej struktury ACF/meta
-  acf?: {
-    reading_time?: number;
-    rating?: number;
-  };
   // Alternatywnie: Yoast SEO reading time
   yoast_head_json?: {
     twitter_misc?: {
@@ -59,8 +54,6 @@ export interface BlogPost {
   date: string;
   formattedDate: string;
   author: string;
-  readingTime: number;
-  rating: number;
   featuredImage?: {
     url: string;
     alt: string;
@@ -80,11 +73,11 @@ function formatPolishDate(dateString: string): string {
     'stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca',
     'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'
   ];
-  
+
   const day = date.getDate();
   const month = months[date.getMonth()];
   const year = date.getFullYear();
-  
+
   return `${day} ${month} ${year}`;
 }
 
@@ -95,49 +88,6 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').trim();
 }
 
-/**
- * Oblicza czas czytania na podstawie treści (jeśli nie ma z API)
- */
-function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const words = stripHtml(content).split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
-}
-
-/**
- * Wyciąga czas czytania z różnych źródeł
- */
-function extractReadingTime(post: WordPressPost): number {
-  // 1. Z custom fields (ACF)
-  if (post.acf?.reading_time) {
-    return post.acf.reading_time;
-  }
-  
-  // 2. Z Yoast SEO
-  if (post.yoast_head_json?.twitter_misc?.['Szacowany czas czytania']) {
-    const timeStr = post.yoast_head_json.twitter_misc['Szacowany czas czytania'];
-    const match = timeStr.match(/(\d+)/);
-    if (match) {
-      return parseInt(match[1], 10);
-    }
-  }
-  
-  // 3. Oblicz na podstawie excerpt (domyślnie)
-  return calculateReadingTime(post.excerpt.rendered);
-}
-
-/**
- * Wyciąga ocenę z różnych źródeł
- */
-function extractRating(post: WordPressPost): number {
-  // Z custom fields (ACF)
-  if (post.acf?.rating) {
-    return post.acf.rating;
-  }
-  
-  // Domyślna ocena (możesz dostosować logikę)
-  return 4.5;
-}
 
 // ============================================
 // GŁÓWNA FUNKCJA API
@@ -181,8 +131,6 @@ export async function getLatestPosts(count: number = 3): Promise<BlogPost[]> {
         date: post.date,
         formattedDate: formatPolishDate(post.date),
         author,
-        readingTime: extractReadingTime(post),
-        rating: extractRating(post),
         featuredImage: featuredMedia ? {
           url: featuredMedia.source_url,
           alt: featuredMedia.alt_text || stripHtml(post.title.rendered),
@@ -191,7 +139,7 @@ export async function getLatestPosts(count: number = 3): Promise<BlogPost[]> {
     });
   } catch (error) {
     console.error('Error fetching WordPress posts:', error);
-    
+
     // Zwróć puste dane w przypadku błędu
     // Możesz też zwrócić placeholder posts dla development
     return [];
@@ -235,8 +183,6 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       date: post.date,
       formattedDate: formatPolishDate(post.date),
       author,
-      readingTime: extractReadingTime(post),
-      rating: extractRating(post),
       featuredImage: featuredMedia ? {
         url: featuredMedia.source_url,
         alt: featuredMedia.alt_text || stripHtml(post.title.rendered),
