@@ -1,19 +1,5 @@
-/**
- * WordPress API Integration
- * 
- * Konfiguracja:
- * 1. Zmień WORDPRESS_API_URL na URL swojego WordPressa (z /wp-json/wp/v2)
- * 2. Opcjonalnie dostosuj interfejsy do struktury swoich postów
- */
-
-// ============================================
-// KONFIGURACJA - ZMIEŃ NA SWOJE DANE
-// ============================================
 const WORDPRESS_API_URL = 'https://www.talem.eu/wp-json/wp/v2';
 
-// ============================================
-// TYPY I INTERFEJSY
-// ============================================
 export interface WordPressPost {
   id: number;
   date: string;
