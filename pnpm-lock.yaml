@@ -23,9 +23,6 @@ importers:
       '@fontsource-variable/playfair-display':
         specifier: ^5.2.8
         version: 5.2.8
-      '@jop-software/astro-cookieconsent':
-        specifier: ^3.0.1
-        version: 3.0.1(vanilla-cookieconsent@3.1.0)
       '@vercel/speed-insights':
         specifier: ^2.0.0
         version: 2.0.0
@@ -537,11 +534,6 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
-
-  '@jop-software/astro-cookieconsent@3.0.1':
-    resolution: {integrity: sha512-UXo6aMR9/kEEmUIZoRTRJXDf/ADju9qQ0qNRWM1twdf0vRCh2s/ucHqaYOcs57Q2PcKmcq+Sc+0Tq0gSUgVDzA==}
-    peerDependencies:
-      vanilla-cookieconsent: ^3.0.0
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2891,10 +2883,6 @@ snapshots:
 
   '@img/sharp-win32-x64@0.34.5':
     optional: true
-
-  '@jop-software/astro-cookieconsent@3.0.1(vanilla-cookieconsent@3.1.0)':
-    dependencies:
-      vanilla-cookieconsent: 3.1.0
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
