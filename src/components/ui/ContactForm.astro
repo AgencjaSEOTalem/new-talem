@@ -35,8 +35,14 @@ const checkBgClass =
       </p>
     </div>
 
-    <form class="flex flex-col gap-5" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
+    <div id={`${id}-success`} class="hidden text-center py-16">
+      <div class="text-5xl mb-6">✓</div>
+      <h3 class="font-display text-2xl font-black mb-3">Wiadomość wysłana!</h3>
+      <p class="text-gray-500">Dziękujemy za kontakt. Odezwiemy się wkrótce.</p>
+    </div>
+
+    <form id={`${id}-form`} class="flex flex-col gap-5" novalidate>
+      <input type="hidden" name="access_key" value="b4226e41-a7ba-4df1-a1fb-9150675b8ddc" />
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="w-full">
@@ -46,8 +52,9 @@ const checkBgClass =
             autocomplete="name"
             placeholder="Twoje imię"
             required
-            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent"
+            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent aria-[invalid=true]:border-red-400"
           />
+          <p class="hidden mt-1.5 text-sm text-red-500 pl-1">Wpisz swoje imię</p>
         </div>
         <div class="w-full">
           <input
@@ -56,8 +63,9 @@ const checkBgClass =
             autocomplete="url"
             placeholder="Adres URL"
             required
-            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent"
+            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent aria-[invalid=true]:border-red-400"
           />
+          <p class="hidden mt-1.5 text-sm text-red-500 pl-1">Wpisz adres URL (np. https://twoja-strona.pl)</p>
         </div>
       </div>
 
@@ -69,8 +77,9 @@ const checkBgClass =
             autocomplete="email"
             placeholder="E-mail"
             required
-            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent"
+            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent aria-[invalid=true]:border-red-400"
           />
+          <p class="hidden mt-1.5 text-sm text-red-500 pl-1">Wpisz poprawny adres e-mail</p>
         </div>
         <div class="w-full">
           <input
@@ -79,15 +88,16 @@ const checkBgClass =
             autocomplete="tel"
             placeholder="Telefon"
             required
-            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent"
+            class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent aria-[invalid=true]:border-red-400"
           />
+          <p class="hidden mt-1.5 text-sm text-red-500 pl-1">Wpisz numer telefonu</p>
         </div>
       </div>
       <div class="w-full relative">
         <select
           name="budget"
           required
-          class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent appearance-none pr-12 cursor-pointer"
+          class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent appearance-none pr-12 cursor-pointer aria-[invalid=true]:border-red-400"
         >
           <option value="">Miesięczny budżet na działania SEO</option>
           <option value="5-10k">do 2,5 tys. PLN</option>
@@ -95,6 +105,7 @@ const checkBgClass =
           <option value="20-50k">3,5-5 tys. PLN</option>
           <option value="50k+">powyżej 5 tys. PLN</option>
         </select>
+        <p class="hidden mt-1.5 text-sm text-red-500 pl-1">Wybierz budżet</p>
         <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
           <svg
             aria-hidden="true"
@@ -117,9 +128,14 @@ const checkBgClass =
           class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent resize-none"
         ></textarea>
       </div>
+
+      <p id={`${id}-error`} class="hidden text-center text-sm text-red-500 bg-red-50 border border-red-200 rounded-xl px-6 py-4">
+        Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie lub napisz na <a href="mailto:kontakt@talem.pl" class="underline">kontakt@talem.pl</a>.
+      </p>
+
       <button
         type="submit"
-        class="mt-4 flex items-center justify-center gap-3 px-8 py-5 rounded-xl font-bold transition-all duration-300 text-lg bg-black text-white hover:bg-accent hover:-translate-y-1 hover:shadow-2xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        class="mt-4 flex items-center justify-center gap-3 px-8 py-5 rounded-xl font-bold transition-all duration-300 text-lg bg-black text-white hover:bg-accent hover:-translate-y-1 hover:shadow-2xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
       >
         Wyślij zapytanie
         <svg
@@ -146,3 +162,63 @@ const checkBgClass =
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[id$="-form"]').forEach((form) => {
+    const sectionId = form.id.replace(/-form$/, '');
+    const successEl = document.getElementById(`${sectionId}-success`);
+    const errorEl = document.getElementById(`${sectionId}-error`);
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const fields = form.querySelectorAll<HTMLElement>('input[required], select[required]');
+
+    function validateField(field: HTMLInputElement | HTMLSelectElement): boolean {
+      const wrapper = field.parentElement!;
+      const msg = wrapper.querySelector('p');
+      const valid = field.validity.valid;
+      field.setAttribute('aria-invalid', valid ? 'false' : 'true');
+      msg?.classList.toggle('hidden', valid);
+      return valid;
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener('blur', () => validateField(field as HTMLInputElement));
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') {
+          validateField(field as HTMLInputElement);
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      let isValid = true;
+      fields.forEach((field) => {
+        if (!validateField(field as HTMLInputElement)) isValid = false;
+      });
+      if (!isValid) return;
+
+      submitBtn!.disabled = true;
+      errorEl?.classList.add('hidden');
+
+      try {
+        const data = Object.fromEntries(new FormData(form));
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          form.classList.add('hidden');
+          successEl?.classList.remove('hidden');
+        } else {
+          errorEl?.classList.remove('hidden');
+          submitBtn!.disabled = false;
+        }
+      } catch {
+        errorEl?.classList.remove('hidden');
+        submitBtn!.disabled = false;
+      }
+    });
+  });
+</script>
