@@ -8,6 +8,9 @@ import cookieConsentConfig from './src/config/cookieconsent.js';
 export default defineConfig({
   site: 'https://www.talem.eu',
   output: 'static',
+  image: {
+    domains: ['www.talem.eu'],
+  },
   integrations: [
     tailwind(),
     sitemap({

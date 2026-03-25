@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import BlogPostCard from '../../components/ui/BlogPostCard.astro';
+import { getAllPosts } from '../../lib/wordpress';
+import { breadcrumb } from '../../lib/schema';
+
+const posts = await getAllPosts();
+const schema = breadcrumb('Blog', '/blog');
+---
+
+<BaseLayout
+  title="Blog SEO | Analizy, trendy i ciekawostki | Talem"
+  description="Najnowsze artykuły o SEO, content marketingu, analityce i trendach w wyszukiwarce. Wiedza od praktyków z agencji Talem."
+  schema={schema}
+>
+  <Navigation />
+
+  <main>
+    <!-- Hero -->
+    <section class="bg-black px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      <div class="max-w-[1400px] mx-auto">
+        <p class="text-accent font-mono text-sm uppercase tracking-widest mb-4">Wiedza i trendy</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white leading-tight max-w-3xl">
+          Nasz blog
+        </h1>
+        <p class="text-gray-400 text-lg mt-6 max-w-xl">
+          Analizy, poradniki i aktualności ze świata SEO — pisane przez praktyków, nie algorytmy.
+        </p>
+      </div>
+    </section>
+
+    <!-- Lista wpisów -->
+    <section class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="max-w-[1400px] mx-auto">
+        {posts.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post) => (
+              <BlogPostCard post={post} />
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-20 text-gray-500">
+            <p class="text-lg">Wkrótce pojawią się tutaj pierwsze artykuły.</p>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

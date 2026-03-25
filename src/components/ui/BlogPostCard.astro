@@ -3,45 +3,71 @@ import type { BlogPost } from '../../lib/wordpress';
 
 interface Props {
   post: BlogPost;
+  href?: string;
 }
 
-const { post } = Astro.props;
+const { post, href = `/blog/${post.slug}` } = Astro.props;
 ---
 
-<article
-  class="bg-white rounded-lg border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
->
-  <!-- Data -->
-  <div class="flex items-center gap-2 text-gray-500 text-sm mb-4">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="text-gray-400"
-    >
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-    </svg>
-    <time datetime={post.date}>{post.formattedDate}</time>
-  </div>
-
-  <!-- Tytuł -->
-  <span class="d-block flex-grow">
-    <a
-      href={post.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-accent font-semibold text-lg leading-tight hover:underline underline-offset-2 transition-all"
-    >
-      {post.title}
+<article class="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full overflow-hidden">
+  <!-- Featured Image -->
+  {post.featuredImage && (
+    <a href={href} class="block overflow-hidden aspect-[16/9] bg-gray-100">
+      <img
+        src={post.featuredImage.url}
+        alt={post.featuredImage.alt}
+        width={post.featuredImage.width}
+        height={post.featuredImage.height}
+        class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+        loading="lazy"
+        decoding="async"
+      />
     </a>
-  </span>
+  )}
+
+  <div class="p-6 flex flex-col flex-grow">
+    <!-- Kategoria + Data -->
+    <div class="flex items-center gap-3 text-sm mb-3">
+      {post.category && (
+        <span class="text-accent font-medium uppercase tracking-wide text-xs">{post.category}</span>
+      )}
+      {post.category && <span class="text-gray-300">·</span>}
+      <div class="flex items-center gap-1.5 text-gray-500">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <time datetime={post.date}>{post.formattedDate}</time>
+      </div>
+    </div>
+
+    <!-- Tytuł -->
+    <h3 class="flex-grow">
+      <a
+        href={href}
+        class="text-gray-900 font-semibold text-lg leading-snug hover:text-accent transition-colors"
+      >
+        {post.title}
+      </a>
+    </h3>
+
+    <!-- Excerpt -->
+    {post.excerpt && (
+      <p class="text-gray-500 text-sm mt-2 line-clamp-2">{post.excerpt}</p>
+    )}
+
+    <!-- CTA -->
+    <a
+      href={href}
+      class="inline-flex items-center gap-1.5 text-accent text-sm font-medium mt-4 hover:underline underline-offset-4 transition-all group"
+    >
+      Czytaj więcej
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
 </article>
