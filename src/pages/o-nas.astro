@@ -10,11 +10,15 @@ import AboutUsWhoWeWorkWith from '../components/about-us/AboutUsWhoWeWorkWith.as
 import AboutUsValues from '../components/about-us/AboutUsValues.astro';
 import AboutUsCTA from '../components/about-us/AboutUsCTA.astro';
 import AboutUsContact from '../components/about-us/AboutUsContact.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("O nas", "/o-nas");
 ---
 
 <BaseLayout
   title="O nas | Agencja SEO Talem"
   description="Talem to butikowa agencja SEO dla e-commerce działająca od 2006 roku. Pracujemy z wybraną grupą klientów, ponieważ wierzymy, że skuteczne SEO wymaga czasu i dokładnej analizy."
+  schema={schema}
 >
   <Navigation />
   <AboutUsHero />

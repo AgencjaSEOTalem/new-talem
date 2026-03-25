@@ -9,11 +9,13 @@ import '../styles/cookieconsent-overrides.css';
 interface Props {
   title?: string;
   description?: string;
+  schema?: Record<string, unknown>[];
 }
 
 const {
   title = 'TALEM - Agencja SEO | Wzrost Oparty na Danych',
   description = 'Profesjonalna agencja SEO. Zwiększamy widoczność i ruch organiczny. Mierzalne wyniki, transparentne raportowanie.',
+  schema,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -54,74 +56,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.ico" />
 
-    <!-- Consolidated Schema.org Markup -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "@id": "https://www.talem.eu/#organization",
-        "name": "TALEM - Agencja SEO",
-        "alternateName": "Agencja SEO Talem Bydgoszcz",
-        "description": "Najdłużej działająca firma na bydgoskim rynku usług SEO. Od 2006 roku wykorzystujemy zaawansowane techniki SEO, aby pomagać naszym klientom odnosić sukcesy w wyszukiwarkach.",
-        "url": "https://www.talem.eu",
-        "logo": "https://www.talem.eu/wp-content/uploads/2020/11/Agencja-SEO-Talem-Bydgoszcz-130-e1672571178116-220x0-c-default.png",
-        "image": "https://www.talem.eu/wp-content/uploads/2020/11/Agencja-SEO-Talem-Bydgoszcz-130-e1672571178116-220x0-c-default.png",
-        "foundingDate": "2006",
-        "email": "hello@talem.pl",
-        "telephone": ["+48523667070", "801080238"],
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "ul. Toruńska 33",
-          "addressLocality": "Bydgoszcz",
-          "addressRegion": "Kujawsko-Pomorskie",
-          "addressCountry": "PL"
-        },
-        "areaServed": {
-          "@type": "Country",
-          "name": "Polska"
-        },
-        "priceRange": "$$",
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Usługi SEO",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "SEO Techniczne",
-                "description": "Audyt i optymalizacja fundamentów: szybkość, crawlability, Core Web Vitals, schema markup, mobile-first optimization."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Content Marketing",
-                "description": "Strategia treści oparta na analizie konkurencji i search intent. Keyword research, content planning, SEO copywriting."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Link Building",
-                "description": "Budowanie autorytetu domeny poprzez wysokiej jakości linki. Digital PR, content partnerships, backlink monitoring."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Local SEO",
-                "description": "Optymalizacja dla wyszukiwań lokalnych i Google Maps. GMB optimization, local citations, review management."
-              }
-            }
-          ]
-        },
-        "sameAs": ["https://www.talem.eu"]
-      }
-    </script>
+    <!-- Schema.org Markup -->
+    {schema && schema.length > 0 && (
+      <Fragment set:html={`<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": schema })}</script>`} />
+    )}
   </head>
   <body>
     <slot />

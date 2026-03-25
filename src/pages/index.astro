@@ -10,11 +10,115 @@ import BlogPosts from '../components/home/BlogPosts.astro';
 import Tools from '../components/home/Tools.astro';
 import Footer from '../components/Footer.astro';
 import Process from '../components/home/Process.astro';
+
+const schema = [
+  {
+    "@type": "Organization",
+    "@id": "https://www.talem.eu/#organization",
+    "name": "Talem Technologies Sp. z o. o.",
+    "alternateName": "Agencja SEO Talem",
+    "description": "Butikowa agencja SEO dla e-commerce działająca od 2006 roku. Zwiększamy widoczność i ruch organiczny sklepów internetowych dzięki danym, nie zgadywaniu.",
+    "url": "https://www.talem.eu",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.talem.eu/images/logo-talem.svg",
+      "width": 300,
+      "height": 60
+    },
+    "image": "https://www.talem.eu/images/logo-talem.svg",
+    "foundingDate": "2006",
+    "email": "info@talem.eu",
+    "telephone": ["+48801080238", "+48523667070", "+48573190810"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Toruńska 33",
+      "addressLocality": "Bydgoszcz",
+      "postalCode": "85-023",
+      "addressRegion": "Kujawsko-Pomorskie",
+      "addressCountry": "PL"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Polska"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Usługi SEO",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Techniczne SEO",
+            "url": "https://www.talem.eu/techniczne-seo",
+            "description": "Audyt i optymalizacja fundamentów: architektura, indeksacja, Core Web Vitals, schema markup, optymalizacja mobile."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Content SEO",
+            "url": "https://www.talem.eu/content-seo",
+            "description": "Badanie słów kluczowych, analiza search intent, strategia treści, SEO copywriting."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Migracje sklepów",
+            "url": "https://www.talem.eu/migracje-sklepow",
+            "description": "Kompleksowe migracje sklepów internetowych z zachowaniem widoczności SEO i przekierowaniami 301."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Monitoring wydajności",
+            "url": "https://www.talem.eu/monitoring-wydajnosci",
+            "description": "Core Web Vitals, monitoring wydajności serwera i RUM, opieka nad stronami internetowymi."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Link Building",
+            "url": "https://www.talem.eu/link-building",
+            "description": "Budowanie autorytetu domeny przez wysokiej jakości linki. Digital PR, content partnerships, monitoring backlinków."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Analityka i automatyzacja",
+            "url": "https://www.talem.eu/analityka-i-automatyzacja",
+            "description": "Analityka SEO z GA4 i GSC, dedykowane dashboardy AI i automatyzacja procesów SEO."
+          }
+        }
+      ]
+    },
+    "sameAs": ["https://www.talem.eu"]
+  },
+  {
+    "@type": "WebSite",
+    "@id": "https://www.talem.eu/#website",
+    "url": "https://www.talem.eu",
+    "name": "TALEM - Agencja SEO",
+    "description": "SEO dla e-commerce. Audyty techniczne, migracje, content marketing, link building i analityka wspierana AI. Zwiększ z nami widoczność swojego sklepu!",
+    "publisher": { "@id": "https://www.talem.eu/#organization" },
+    "inLanguage": "pl-PL"
+  }
+];
 ---
 
 <BaseLayout
   title="Pozycjonowanie | Agencja SEO Talem"
   description="SEO dla e-commerce. Audyty techniczne, migracje, content marketing, link building i analityka wspierana AI. Zwiększ z nami widoczność swojego sklepu!"
+  schema={schema}
 >
   <Navigation />
   <Hero />

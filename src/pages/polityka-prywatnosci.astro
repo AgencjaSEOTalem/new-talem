@@ -2,11 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Polityka prywatności", "/polityka-prywatnosci");
 ---
 
 <BaseLayout
   title="Polityka prywatności | Agencja SEO Talem"
   description="Polityka prywatności i plików cookies serwisu talem.eu należącego do Talem Technologies Sp. z o.o."
+  schema={schema}
 >
   <Navigation />
 

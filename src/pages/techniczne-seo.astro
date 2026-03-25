@@ -8,11 +8,15 @@ import TechSeoAdditional from '../components/tech-seo/TechSeoAdditional.astro';
 import TechSeoWhyUs from '../components/tech-seo/TechSeoWhyUs.astro';
 import TechSeoContact from '../components/tech-seo/TechSeoContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Techniczne SEO", "/techniczne-seo");
 ---
 
 <BaseLayout
   title="Techniczne SEO, optymalizacje, audyty, consulting | Agencja SEO Talem"
   description="Techniczne SEO dla sklepów i serwisów internetowych. Optymalizacja kodu, architektury witryny i wydajności serwera. Zamów bezpłatną konsultację!"
+  schema={schema}
 >
   <Navigation />
   <TechSeoHero />

@@ -3,11 +3,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import ContactForm from '../components/ui/ContactForm.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = [
+  ...breadcrumb("Kontakt", "/kontakt"),
+  {
+    "@type": "ContactPage",
+    "@id": "https://www.talem.eu/kontakt#webpage",
+    "url": "https://www.talem.eu/kontakt",
+    "name": "Kontakt | Agencja SEO Talem",
+    "description": "Skontaktuj się z Agencją SEO TALEM. Bezpłatna wycena i konsultacja. Bydgoszcz, ul. Toruńska 33.",
+    "isPartOf": { "@id": "https://www.talem.eu/#website" },
+    "about": { "@id": "https://www.talem.eu/#organization" },
+    "mainEntity": {
+      "@type": "Organization",
+      "@id": "https://www.talem.eu/#organization",
+      "name": "Talem Technologies Sp. z o. o.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ul. Toruńska 33",
+        "addressLocality": "Bydgoszcz",
+        "postalCode": "85-023",
+        "addressCountry": "PL"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+48801080238",
+          "contactType": "customer service",
+          "contactOption": "TollFree",
+          "availableLanguage": { "@type": "Language", "name": "Polish" }
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+48523667070",
+          "contactType": "customer service",
+          "availableLanguage": { "@type": "Language", "name": "Polish" }
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+48573190810",
+          "contactType": "customer service",
+          "availableLanguage": { "@type": "Language", "name": "Polish" }
+        },
+        {
+          "@type": "ContactPoint",
+          "email": "info@talem.eu",
+          "contactType": "customer service",
+          "availableLanguage": { "@type": "Language", "name": "Polish" }
+        }
+      ]
+    }
+  }
+];
 ---
 
 <BaseLayout
   title="Kontakt | Agencja SEO Talem"
   description="Skontaktuj się z Agencją SEO TALEM. Bezpłatna wycena i konsultacja. Bydgoszcz, ul. Toruńska 33. Tel: 801 080 238, +48 52 366 70 70"
+  schema={schema}
 >
   <Navigation />
 

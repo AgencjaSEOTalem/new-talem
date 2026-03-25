@@ -6,11 +6,15 @@ import LinkBuildingServices from '../components/link-building/LinkBuildingServic
 import LinkBuildingWhyUs from '../components/link-building/LinkBuildingWhyUs.astro';
 import LinkBuildingContact from '../components/link-building/LinkBuildingContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Link Building", "/link-building");
 ---
 
 <BaseLayout
   title="Kompleksowy SEO link building dla sklepów internetowych | Agencja SEO Talem"
   description="Wielopoziomowy link building wspierający działania SEO. Zapewniamy różne techniki linkowania i wysokiej jakości linki dla Twojej witryny."
+  schema={schema}
 >
   <Navigation />
   <LinkBuildingHero />

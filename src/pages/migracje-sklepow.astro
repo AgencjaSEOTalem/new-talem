@@ -6,11 +6,15 @@ import MigrationsServices from '../components/migrations/MigrationsServices.astr
 import MigrationsWhyUs from '../components/migrations/MigrationsWhyUs.astro';
 import MigrationsContact from '../components/migrations/MigrationsContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Migracje sklepów", "/migracje-sklepow");
 ---
 
-<BaseLayout 
+<BaseLayout
   title="Kompleksowe migracje sklepów internetowych | Agencja SEO Talem"
   description="Skuteczne migracje stron oraz sklepów internetowych z zachowaniem widoczności w organicznych wynikach wyszukiwania."
+  schema={schema}
 >
   <Navigation />
   <MigrationsHero />

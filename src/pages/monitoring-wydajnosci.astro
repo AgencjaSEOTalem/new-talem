@@ -6,11 +6,15 @@ import MonitoringServices from '../components/monitoring/MonitoringServices.astr
 import MonitoringWhyUs from '../components/monitoring/MonitoringWhyUs.astro';
 import MonitoringContact from '../components/monitoring/MonitoringContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Monitoring wydajności", "/monitoring-wydajnosci");
 ---
 
 <BaseLayout
   title="Opieka nad stronami internetowymi - usługa Bezpieczne WWW | Agencja SEO Talem"
   description="Zadbaj o poprawne działanie strony wraz z usługą bezpieczne WWW - opieka nad stronami internetowymi, monitoring wydajności, oraz działania strony."
+  schema={schema}
 >
   <Navigation />
   <MonitoringHero />

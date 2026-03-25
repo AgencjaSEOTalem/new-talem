@@ -6,11 +6,15 @@ import ContentSeoServices from '../components/content-seo/ContentSeoServices.ast
 import ContentSeoWhyUs from '../components/content-seo/ContentSeoWhyUs.astro';
 import ContentSeoContact from '../components/content-seo/ContentSeoContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Content SEO", "/content-seo");
 ---
 
 <BaseLayout
   title="AI content marketing - SEO content marketing dla e-commerce | Agencja SEO Talem"
   description="Budowa autorytetu marki i widoczności w wynikach wyszukiwania dzięki skutecznym strategiom content marketingowym. Zamów bezpłatną konsultację!"
+  schema={schema}
 >
   <Navigation />
   <ContentSeoHero />

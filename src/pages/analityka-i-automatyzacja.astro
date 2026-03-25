@@ -6,11 +6,15 @@ import AnalyticsServices from '../components/analytics/AnalyticsServices.astro';
 import AnalyticsWhyUs from '../components/analytics/AnalyticsWhyUs.astro';
 import AnalyticsContact from '../components/analytics/AnalyticsContact.astro';
 import Footer from '../components/Footer.astro';
+import { breadcrumb } from '../lib/schema';
+
+const schema = breadcrumb("Analityka i automatyzacja", "/analityka-i-automatyzacja");
 ---
 
 <BaseLayout
   title="Analityka SEO dla sklepów e-commerce | Agencja SEO Talem"
   description="Zwiększ efektywność swojego sklepu dzięki automatyzacji procesów SEO. Wdrażamy customowe narzędzia AI, które pozwalają skalować Twój biznes."
+  schema={schema}
 >
   <Navigation />
   <AnalyticsHero />
