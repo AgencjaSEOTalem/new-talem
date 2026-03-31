@@ -2,19 +2,23 @@
 const specializations = [
   {
     icon: '<path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />',
-    label: 'techniczne SEO',
+    label: 'Techniczne SEO',
+    link: '/techniczne-seo',
   },
   {
     icon: '<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />',
-    label: 'strategii i analityki',
+    label: 'Monitoring wydajności',
+    link: '/monitoring-wydajnosci',
   },
   {
     icon: '<path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />',
-    label: 'content marketingu',
+    label: 'Content marketing',
+    link: '/content-seo',
   },
   {
     icon: '<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />',
-    label: 'optymalizacji e-commerce',
+    label: 'Migracje sklepów internetowych',
+    link: '/migracje-sklepow-internetowych',
   },
 ];
 ---
@@ -26,9 +30,10 @@ const specializations = [
       <div class="grid grid-cols-2 gap-6" data-reveal>
         {
           specializations.map((spec, index) => (
-            <div
+            <a
               class="bg-white rounded-xl p-6 border border-gray-200 hover:-translate-y-1 hover:shadow-lg transition-all"
               style={`animation-delay: ${index * 0.1}s`}
+              href={spec.link}
             >
               <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
                 <svg
@@ -42,10 +47,8 @@ const specializations = [
                   set:html={spec.icon}
                 />
               </div>
-              <p class="font-semibold text-black text-[0.95rem] leading-snug capitalize">
-                {spec.label}
-              </p>
-            </div>
+              <p class="font-semibold text-black text-[0.95rem] leading-snug">{spec.label}</p>
+            </a>
           ))
         }
       </div>
@@ -67,8 +70,8 @@ const specializations = [
           technicznych, strategicznych, contentowych i e-commerce'owych.
         </p>
         <p class="text-[1.125rem] leading-[1.8] text-gray-600">
-          Takie podejście pozwala spojrzeć na SEO szerzej niż tylko przez pryzmat pozycji w Google
-          — koncentrujemy się na wzroście widoczności, ruchu organicznego i sprzedaży.
+          Takie podejście pozwala spojrzeć na SEO szerzej niż tylko przez pryzmat pozycji w Google —
+          koncentrujemy się na wzroście widoczności, ruchu organicznego i sprzedaży.
         </p>
       </div>
     </div>

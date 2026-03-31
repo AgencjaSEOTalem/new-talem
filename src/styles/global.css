@@ -78,3 +78,21 @@
     @apply m-0 p-0 font-body bg-white text-black leading-relaxed overflow-x-hidden;
   }
 }
+
+@layer components {
+  /* WCAG-compliant internal links for content areas */
+  .content-link {
+    @apply text-accent font-medium underline decoration-2 underline-offset-2 decoration-accent;
+    @apply transition-all duration-200;
+    @apply hover:text-accent-dim hover:decoration-accent-dim;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:rounded-sm;
+  }
+
+  /* Variant for links on dark backgrounds */
+  .content-link-light {
+    @apply text-white font-medium underline decoration-2 underline-offset-2 decoration-white;
+    @apply transition-all duration-200;
+    @apply hover:text-accent-pale hover:decoration-accent-pale;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:rounded-sm;
+  }
+}
