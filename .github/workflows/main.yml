@@ -1,8 +1,11 @@
-name: Deploy Astro to Seohost
+name: Deploy Astro via NPM to Seohost
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master ] 
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-deploy:
@@ -11,20 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
+          cache: 'npm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8 # lub Twoja wersja pnpm
+      - name: Install dependencies
+        run: npm install
 
       - name: Build Astro
-        run: |
-          pnpm install
-          pnpm run build
+        run: npm run build
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -32,15 +32,14 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/ 
+          local-dir: ./dist/
           server-dir: /public_html/
+          protocol: ftp
+          port: 21
+          stateful: true
           exclude: |
             **/blog/**
             **/wp-admin/**
             **/wp-content/**
             **/wp-includes/**
             wp-config.php
-            .htaccess
-          protocol: ftp
-          port: 21
-          stateful: true
