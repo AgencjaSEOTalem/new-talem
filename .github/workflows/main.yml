@@ -36,10 +36,10 @@ jobs:
           server-dir: /public_html/
           protocol: ftp
           port: 21
-          stateful: true
           exclude: |
             **/blog/**
             **/wp-admin/**
             **/wp-content/**
             **/wp-includes/**
             wp-config.php
+            index.php
