@@ -36,6 +36,9 @@ jobs:
           server-dir: /public_html/
           protocol: ftp
           port: 21
+          timeout: 600000
+          dangerous-clean-slate: false
+          log-level: verbose
           exclude: |
             **/blog/**
             **/wp-admin/**
