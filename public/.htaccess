@@ -1,0 +1,26 @@
+RewriteEngine On
+
+# --- Przekierowania na konkretne podstrony ---
+Redirect 301 /opieka-nad-stronami-www /monitoring-wydajnosci
+Redirect 301 /monitoring-pozycji /monitoring-wydajnosci
+Redirect 301 /konsultacje-seo /techniczne-seo
+Redirect 301 /audyty-seo /techniczne-seo
+Redirect 301 /seo-copywriting /content-seo
+
+# --- Przekierowania na stronę główną ---
+Redirect 301 /reklama-ppc /
+Redirect 301 /pozycjonowanie-lokalne /
+Redirect 301 /pozycjonowanie-stron-www /
+Redirect 301 /pozycjonowanie-z-rabatem /
+Redirect 301 /projektowanie-stron-i-serwisow-www /
+Redirect 301 /wydanie-kodow-authinfo /
+Redirect 301 /hosting-serwery-wirtualne-ssd-bez-limitu-transferu-danych /
+Redirect 301 /google-moja-firma /
+Redirect 301 /optymalizacja-stron-www /
+Redirect 301 /certyfikaty-ssl /
+Redirect 301 /domeny-internetowe /
+Redirect 301 /pozycjonowanie-zagraniczne /
+Redirect 301 /cesja-domeny /
+Redirect 301 /cesja-domeny/ /
+Redirect 301 /zmiana-danych-abonenta /
+Redirect 301 /pozycjonowanie-sklepow-internetowych /
