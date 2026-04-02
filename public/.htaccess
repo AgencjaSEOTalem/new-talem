@@ -1,27 +1,47 @@
+# 1. Wyłączamy automatyczne dodawanie slasha do fizycznych folderów (kluczowe!)
+DirectorySlash Off
+Options -Indexes
+
 RewriteEngine On
 RewriteBase /
 
-# 1. Usuń slasha na końcu, jeśli ktoś go wpisze (Redirect 301)
-# Ale nie rób tego dla WordPressa (/blog/) ani fizycznych folderów
-RewriteCond %{REQUEST_FILENAME} !-d
+# 2. Wyjątek dla wp-admin - panel WordPressa MUSI mieć slash, inaczej się nie zalogujesz
+RewriteCond %{REQUEST_URI} ^/blog/wp-admin$
+RewriteRule ^blog/wp-admin$ /blog/wp-admin/ [R=301,L]
+
+# 3. Jeśli ktoś wejdzie na /blog/ (ze slashem), przekieruj na /blog (bez slasha)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} ^/blog/$
+RewriteRule ^blog/$ /blog [R=301,L]
+
+# 4. Obsługa wejścia na /blog - pokaż index.php, ale nie zmieniaj adresu w przeglądarce
+RewriteCond %{REQUEST_URI} ^/blog$
+RewriteRule ^blog$ blog/index.php [L]
+
+# 5. Ogólne usuwanie slasha dla całej reszty (Astro i podstrony bloga)
+# Usunąłem warunek !-d, aby reguła działała też na folder /blog
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(^/blog/wp-admin)
 RewriteCond %{REQUEST_URI} ^/(.+)/$
 RewriteRule ^(.+)/$ /$1 [R=301,L]
 
-# 2. Ignoruj WordPressa (nie ruszamy niczego w /blog)
+# 6. Ignoruj WordPressa (dalsze przetwarzanie plików wewnątrz /blog)
 RewriteCond %{REQUEST_URI} ^/blog [NC]
 RewriteRule . - [L]
 
-# 3. Obsługa plików .html bez rozszerzenia (Clean URLs)
-# Jeśli wpiszesz /o-nas, serwer sprawdzi czy istnieje o-nas.html i go wyświetli
+# 7. Obsługa plików .html bez rozszerzenia (Astro Clean URLs)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^([^/]+)$ $1.html [L]
 
-# 4. Jeśli plik nie istnieje (np. podstrony typu /o-nas/zespol), skieruj na Astro
+# 8. Fallback na Astro (index.html)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
+
+# --- Twoje Przekierowania ---
+# (Tutaj wklej resztę swoich Redirect 301, które miałeś pod spodem)
 
 # --- Przekierowania na konkretne podstrony ---
 Redirect 301 /opieka-nad-stronami-www /monitoring-wydajnosci
