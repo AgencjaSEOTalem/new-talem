@@ -6,55 +6,56 @@ import ContactForm from '../components/ui/ContactForm.astro';
 import { breadcrumb } from '../lib/schema';
 
 const schema = [
-  ...breadcrumb("Kontakt", "/kontakt"),
+  ...breadcrumb('Kontakt', '/kontakt'),
   {
-    "@type": "ContactPage",
-    "@id": "https://www.talem.eu/kontakt#webpage",
-    "url": "https://www.talem.eu/kontakt",
-    "name": "Kontakt | Agencja SEO Talem",
-    "description": "Skontaktuj się z Agencją SEO TALEM. Bezpłatna wycena i konsultacja. Bydgoszcz, ul. Toruńska 33.",
-    "isPartOf": { "@id": "https://www.talem.eu/#website" },
-    "about": { "@id": "https://www.talem.eu/#organization" },
-    "mainEntity": {
-      "@type": "Organization",
-      "@id": "https://www.talem.eu/#organization",
-      "name": "Talem Technologies Sp. z o. o.",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "ul. Toruńska 33",
-        "addressLocality": "Bydgoszcz",
-        "postalCode": "85-023",
-        "addressCountry": "PL"
+    '@type': 'ContactPage',
+    '@id': 'https://www.talem.eu/kontakt#webpage',
+    url: 'https://www.talem.eu/kontakt',
+    name: 'Kontakt | Agencja SEO Talem',
+    description:
+      'Skontaktuj się z Agencją SEO TALEM. Bezpłatna wycena i konsultacja. Bydgoszcz, ul. Toruńska 33.',
+    isPartOf: { '@id': 'https://www.talem.eu/#website' },
+    about: { '@id': 'https://www.talem.eu/#organization' },
+    mainEntity: {
+      '@type': 'Organization',
+      '@id': 'https://www.talem.eu/#organization',
+      name: 'Talem Technologies Sp. z o. o.',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'ul. Toruńska 33',
+        addressLocality: 'Bydgoszcz',
+        postalCode: '85-023',
+        addressCountry: 'PL',
       },
-      "contactPoint": [
+      contactPoint: [
         {
-          "@type": "ContactPoint",
-          "telephone": "+48801080238",
-          "contactType": "customer service",
-          "contactOption": "TollFree",
-          "availableLanguage": { "@type": "Language", "name": "Polish" }
+          '@type': 'ContactPoint',
+          telephone: '+48801080238',
+          contactType: 'customer service',
+          contactOption: 'TollFree',
+          availableLanguage: { '@type': 'Language', name: 'Polish' },
         },
         {
-          "@type": "ContactPoint",
-          "telephone": "+48523667070",
-          "contactType": "customer service",
-          "availableLanguage": { "@type": "Language", "name": "Polish" }
+          '@type': 'ContactPoint',
+          telephone: '+48523667070',
+          contactType: 'customer service',
+          availableLanguage: { '@type': 'Language', name: 'Polish' },
         },
         {
-          "@type": "ContactPoint",
-          "telephone": "+48573190810",
-          "contactType": "customer service",
-          "availableLanguage": { "@type": "Language", "name": "Polish" }
+          '@type': 'ContactPoint',
+          telephone: '+48573190810',
+          contactType: 'customer service',
+          availableLanguage: { '@type': 'Language', name: 'Polish' },
         },
         {
-          "@type": "ContactPoint",
-          "email": "info@talem.eu",
-          "contactType": "customer service",
-          "availableLanguage": { "@type": "Language", "name": "Polish" }
-        }
-      ]
-    }
-  }
+          '@type': 'ContactPoint',
+          email: 'info@talem.eu',
+          contactType: 'customer service',
+          availableLanguage: { '@type': 'Language', name: 'Polish' },
+        },
+      ],
+    },
+  },
 ];
 ---
 
@@ -278,10 +279,9 @@ const schema = [
                   <div class="text-[0.7rem] uppercase tracking-wider text-gray-500 mb-1">
                     E-mail
                   </div>
-                  <a
-                    href="mailto:info@talem.eu"
+                  <span
                     class="text-[1.1rem] font-bold text-black hover:text-accent transition-colors"
-                    >info@talem.eu</a
+                    >info@talem.eu</span
                   >
                 </div>
               </div>

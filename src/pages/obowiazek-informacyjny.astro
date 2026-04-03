@@ -4,7 +4,7 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import { breadcrumb } from '../lib/schema';
 
-const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyjny");
+const schema = breadcrumb('Obowiązek informacyjny RODO', '/obowiazek-informacyjny');
 ---
 
 <BaseLayout
@@ -14,48 +14,68 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
 >
   <Navigation />
 
-  <section class="relative min-h-[40vh] flex items-center px-4 sm:px-6 lg:px-8 pt-32 pb-16 overflow-hidden bg-white">
+  <section
+    class="relative min-h-[40vh] flex items-center px-4 sm:px-6 lg:px-8 pt-32 pb-16 overflow-hidden bg-white"
+  >
     <div class="max-w-[1400px] mx-auto w-full relative z-[2]">
-      <span class="inline-flex items-center gap-2 font-mono text-[0.85rem] font-semibold tracking-[0.1em] uppercase mb-6 text-gray-500">
+      <span
+        class="inline-flex items-center gap-2 font-mono text-[0.85rem] font-semibold tracking-[0.1em] uppercase mb-6 text-gray-500"
+      >
         <span class="text-accent">TALEM</span> / Dokumenty prawne
       </span>
-      <h1 class="font-display text-[clamp(2rem,6vw,3.5rem)] font-black leading-[1.1] tracking-[-0.03em] mb-6">
-        Obowiązek <span class="text-accent relative inline-block after:content-[''] after:absolute after:bottom-[0.2em] after:left-[-0.1em] after:right-[-0.1em] after:h-[0.15em] after:bg-accent after:opacity-20 after:-z-[1] tracking-normal">informacyjny</span>
+      <h1
+        class="font-display text-[clamp(2rem,6vw,3.5rem)] font-black leading-[1.1] tracking-[-0.03em] mb-6"
+      >
+        Obowiązek <span
+          class="text-accent relative inline-block after:content-[''] after:absolute after:bottom-[0.2em] after:left-[-0.1em] after:right-[-0.1em] after:h-[0.15em] after:bg-accent after:opacity-20 after:-z-[1] tracking-normal"
+          >informacyjny</span
+        >
       </h1>
       <p class="text-[1.125rem] leading-[1.8] text-gray-500 max-w-2xl">
-        Wynikający z Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (RODO).
+        Wynikający z Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia
+        2016 r. w sprawie ochrony osób fizycznych i w sprawie swobodnego przepływu takich danych
+        oraz uchylenia dyrektywy 95/46/WE (RODO).
       </p>
     </div>
 
     <!-- Background grid -->
     <div class="absolute inset-0 z-[1] opacity-40">
-      <div class="w-full h-full bg-[linear-gradient(to_right,rgba(229,229,229,1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,229,229,1)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"></div>
+      <div
+        class="w-full h-full bg-[linear-gradient(to_right,rgba(229,229,229,1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,229,229,1)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"
+      >
+      </div>
     </div>
   </section>
 
   <section class="px-4 sm:px-6 lg:px-8 py-16 bg-white">
     <div class="max-w-[860px] mx-auto">
-
       <div class="space-y-12">
-
         <div>
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">I</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >I</span
+            >
             Administrator Danych Osobowych
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600">
-            Administratorem Danych Osobowych – czyli podmiotem wykorzystującym Państwa dane osobowe jest <strong>Talem Technologies Sp. z o.o.</strong> z siedzibą w Bydgoszczy ul. Cieszkowskiego 22/1, 85-052 Bydgoszcz, decydującym o celach i środkach przetwarzania danych osobowych.
+            Administratorem Danych Osobowych – czyli podmiotem wykorzystującym Państwa dane osobowe
+            jest <strong>Talem Technologies Sp. z o.o.</strong> z siedzibą w Bydgoszczy ul. Cieszkowskiego
+            22/1, 85-052 Bydgoszcz, decydującym o celach i środkach przetwarzania danych osobowych.
           </p>
         </div>
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">II</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >II</span
+            >
             Kontakt w celu uzyskania dodatkowych informacji
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600 mb-4">
             Pocztą elektroniczną na adres e-mail:
-            <a href="mailto:info@talem.eu" class="text-accent font-semibold hover:underline">info@talem.eu</a>
+            <span class="text-accent font-semibold">info@talem.eu</span>
           </p>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600 mb-1">lub korespondencyjnie:</p>
           <address class="not-italic text-[1.0625rem] leading-[1.85] text-gray-600">
@@ -67,7 +87,10 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">III</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >III</span
+            >
             Źródło pozyskania Państwa danych osobowych
           </h2>
           <ul class="space-y-2 text-[1.0625rem] leading-[1.85] text-gray-600">
@@ -88,7 +111,10 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">IV</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >IV</span
+            >
             Cel i podstawa prawna przetwarzania Państwa danych osobowych
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600 mb-4">
@@ -101,7 +127,8 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
             </li>
             <li class="flex items-start gap-3">
               <span class="mt-[0.6em] w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-              zakładania i zarządzania kontami e-mail oraz zapewnienia obsługi i rozwiązywania problemów technicznych,
+              zakładania i zarządzania kontami e-mail oraz zapewnienia obsługi i rozwiązywania problemów
+              technicznych,
             </li>
             <li class="flex items-start gap-3">
               <span class="mt-[0.6em] w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
@@ -124,7 +151,10 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">V</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >V</span
+            >
             Dane osobowe, jakie gromadzimy
           </h2>
           <ul class="space-y-2 text-[1.0625rem] leading-[1.85] text-gray-600">
@@ -145,62 +175,95 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">VI</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >VI</span
+            >
             Uprawnienia wobec Talem Technologies Sp. z o.o.
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600">
-            Gwarantujemy prawo dostępu, sprostowania oraz usunięcia Państwa danych osobowych, ograniczenia ich przetwarzania a także prawo do wyrażenia sprzeciwu wobec przetwarzania Państwa danych osobowych.
+            Gwarantujemy prawo dostępu, sprostowania oraz usunięcia Państwa danych osobowych,
+            ograniczenia ich przetwarzania a także prawo do wyrażenia sprzeciwu wobec przetwarzania
+            Państwa danych osobowych.
           </p>
         </div>
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">VII</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >VII</span
+            >
             Korzystanie z uprawnień
           </h2>
           <ul class="space-y-4 text-[1.0625rem] leading-[1.85] text-gray-600">
             <li class="flex items-start gap-3">
               <span class="mt-[0.6em] w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-              W przypadku <strong>sprostowania danych</strong>, gdy dane są nieprawidłowe lub niekompletne.
+              W przypadku <strong>sprostowania danych</strong>, gdy dane są nieprawidłowe lub
+              niekompletne.
             </li>
             <li class="flex items-start gap-3">
               <span class="mt-[0.6em] w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-              <span><strong>Usunięcia danych</strong>, gdy dane nie są już niezbędne do celów, dla których zostały zebrane, zostanie cofnięta zgoda na przetwarzanie danych, Państwa dane będą przetwarzane niezgodnie z prawem, dane zostaną usunięte w celu wywiązania się z obowiązku wynikającego z przepisów prawa lub dane były zebrane drogą elektroniczną do usług oferowanych dziecku.</span>
+              <span
+                ><strong>Usunięcia danych</strong>, gdy dane nie są już niezbędne do celów, dla
+                których zostały zebrane, zostanie cofnięta zgoda na przetwarzanie danych, Państwa
+                dane będą przetwarzane niezgodnie z prawem, dane zostaną usunięte w celu wywiązania
+                się z obowiązku wynikającego z przepisów prawa lub dane były zebrane drogą
+                elektroniczną do usług oferowanych dziecku.</span
+              >
             </li>
             <li class="flex items-start gap-3">
               <span class="mt-[0.6em] w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-              <span>W przypadku <strong>ograniczenia przetwarzania danych</strong>, gdy Państwa dane są nieprawidłowe na okres pozwalający Talem Technologies Sp. z o.o. sprawdzić ich prawidłowość, Państwa dane będą przetwarzane niezgodnie z prawem, Państwa dane nie będą nam już potrzebne ale będą potrzebne Państwu do dochodzenia roszczeń.</span>
+              <span
+                >W przypadku <strong>ograniczenia przetwarzania danych</strong>, gdy Państwa dane są
+                nieprawidłowe na okres pozwalający Talem Technologies Sp. z o.o. sprawdzić ich
+                prawidłowość, Państwa dane będą przetwarzane niezgodnie z prawem, Państwa dane nie
+                będą nam już potrzebne ale będą potrzebne Państwu do dochodzenia roszczeń.</span
+              >
             </li>
           </ul>
         </div>
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">VIII</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >VIII</span
+            >
             Prawo do wniesienia skargi
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600">
-            Skargę w związku z przetwarzaniem Państwa danych osobowych należy wnosić do <strong>Prezesa Urzędu Ochrony Danych Osobowych</strong>.
+            Skargę w związku z przetwarzaniem Państwa danych osobowych należy wnosić do <strong
+              >Prezesa Urzędu Ochrony Danych Osobowych</strong
+            >.
           </p>
         </div>
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">IX</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >IX</span
+            >
             Udostępnienie Państwa danych osobowych
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600">
-            Dane osobowe udostępniane są tylko podmiotom wspierającym nas w świadczeniu usług hostingowych i domenowych.
+            Dane osobowe udostępniane są tylko podmiotom wspierającym nas w świadczeniu usług
+            hostingowych i domenowych.
           </p>
         </div>
 
         <div class="border-t border-gray-100 pt-12">
           <h2 class="font-display text-[1.5rem] font-bold mb-4 flex items-center gap-3">
-            <span class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1">X</span>
+            <span
+              class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent border border-accent/30 rounded px-2 py-1"
+              >X</span
+            >
             Termin przechowywania danych
           </h2>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600 mb-4">
-            Państwa dane osobowe przechowujemy przez cały okres zawartej z Państwem umowy, a po jej zakończeniu w celach:
+            Państwa dane osobowe przechowujemy przez cały okres zawartej z Państwem umowy, a po jej
+            zakończeniu w celach:
           </p>
           <ul class="space-y-2 text-[1.0625rem] leading-[1.85] text-gray-600 mb-4">
             <li class="flex items-start gap-3">
@@ -225,21 +288,22 @@ const schema = breadcrumb("Obowiązek informacyjny RODO", "/obowiazek-informacyj
             </li>
           </ul>
           <p class="text-[1.0625rem] leading-[1.85] text-gray-600">
-            Dodatkowo dane przechowujemy w celach rozliczalności tj. udowodnienia przestrzegania przepisów o ochronie danych osobowych.
+            Dodatkowo dane przechowujemy w celach rozliczalności tj. udowodnienia przestrzegania
+            przepisów o ochronie danych osobowych.
           </p>
         </div>
-
       </div>
 
       <div class="mt-16 p-8 bg-gray-50 rounded-xl border border-gray-200" data-reveal>
-        <p class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent mb-3">Administrator danych</p>
+        <p
+          class="font-mono text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-accent mb-3"
+        >
+          Administrator danych
+        </p>
         <p class="text-gray-700 font-semibold">Talem Technologies Sp. z o.o.</p>
         <p class="text-gray-500 text-[0.9375rem]">ul. Cieszkowskiego 22/1, 85-052 Bydgoszcz</p>
-        <p class="text-gray-500 text-[0.9375rem] mt-1">
-          Kontakt: <a href="mailto:info@talem.eu" class="text-accent hover:underline">info@talem.eu</a>
-        </p>
+        <p class="text-gray-500 text-[0.9375rem] mt-1">Kontakt: info@talem.eu</p>
       </div>
-
     </div>
   </section>
 
