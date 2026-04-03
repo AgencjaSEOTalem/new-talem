@@ -24,12 +24,12 @@ const stats = [
       {
         stats.map((stat) => (
           <div class="bg-white rounded-2xl p-8 text-center border border-gray-200 hover:border-accent transition-colors duration-300">
-            <div class="font-display text-[2.5rem] lg:text-[3.5rem] font-black text-accent leading-none mb-3">
+            <span class="block font-display text-[2.5rem] lg:text-[3.5rem] font-black text-accent leading-none mb-3">
               {stat.value}
-            </div>
-            <div class="font-mono text-[0.7rem] uppercase tracking-widest text-gray-500 font-semibold">
+            </span>
+            <span class="block font-mono text-[0.7rem] uppercase tracking-widest text-gray-500 font-semibold">
               {stat.label}
-            </div>
+            </span>
           </div>
         ))
       }

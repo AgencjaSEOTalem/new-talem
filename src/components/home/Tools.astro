@@ -2,43 +2,40 @@
 import SectionHeader from '../ui/SectionHeader.astro';
 
 const tools = [
-  { name: 'Ahrefs',         file: 'ahrefs.png'    },
-  { name: 'Senuto',         file: 'senuto.png'    },
-  { name: 'Screaming Frog', file: 'frog.png'      },
-  { name: 'n8n',            file: 'n8n.png'       },
-  { name: 'GA4',            file: 'ga4.png'       },
-  { name: 'GSC',            file: 'gsc.png'       },
-  { name: 'AI Studio',      file: 'aistudio.png'  },
-  { name: 'Majestic',       file: 'majestic.png'  },
+  { name: 'Ahrefs', file: 'ahrefs.png' },
+  { name: 'Senuto', file: 'senuto.png' },
+  { name: 'Screaming Frog', file: 'frog.png' },
+  { name: 'n8n', file: 'n8n.png' },
+  { name: 'GA4', file: 'ga4.png' },
+  { name: 'GSC', file: 'gsc.png' },
+  { name: 'AI Studio', file: 'aistudio.png' },
+  { name: 'Majestic', file: 'majestic.png' },
 ];
 ---
 
 <section class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
   <div class="max-w-[1200px] mx-auto">
-
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-16">
-      <SectionHeader
-        label="NASZE NARZĘDZIA"
-        title="Pracujemy na<br />sprawdzonych narzędziach"
-      />
+      <SectionHeader label="NASZE NARZĘDZIA" title="Pracujemy na <br />sprawdzonych narzędziach" />
       <p class="text-gray-500 leading-[1.7] max-w-[420px] text-[0.95rem]">
-        Do codziennej pracy używamy narzędzi, które dają rzetelne dane — nie zgadujemy,
-        mierzymy. Każde z nich ma swoje miejsce w naszym procesie.
+        Do codziennej pracy używamy narzędzi, które dają rzetelne dane — nie zgadujemy, mierzymy.
+        Każde z nich ma swoje miejsce w naszym procesie.
       </p>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      {tools.map((tool) => (
-        <div class="bg-accent rounded-xl flex items-center justify-center py-6 px-6">
-          <img
-            src={`/images/tools/${tool.file}`}
-            alt={tool.name}
-            class="max-h-8 max-w-[120px] w-auto object-contain brightness-0 invert"
-            loading="lazy"
-          />
-        </div>
-      ))}
+      {
+        tools.map((tool) => (
+          <div class="bg-accent rounded-xl flex items-center justify-center py-6 px-6">
+            <img
+              src={`/images/tools/${tool.file}`}
+              alt={tool.name}
+              class="max-h-8 max-w-[120px] w-auto object-contain brightness-0 invert"
+              loading="lazy"
+            />
+          </div>
+        ))
+      }
     </div>
-
   </div>
 </section>
