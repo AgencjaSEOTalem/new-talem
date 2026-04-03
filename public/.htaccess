@@ -35,10 +35,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^([^/]+)$ $1.html [L]
 
-# 8. Fallback na Astro (index.html)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [L]
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
 
 # --- Twoje Przekierowania ---
 # (Tutaj wklej resztę swoich Redirect 301, które miałeś pod spodem)
