@@ -1,0 +1,329 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import PostRating from '../../components/PostRating.astro';
+import { Image } from 'astro:assets';
+import { getAllPosts, getPostBySlug, type BlogPost } from '../../lib/wordpress';
+
+export const getStaticPaths = (async () => {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Pobierz 3 losowe powiązane wpisy
+const allPosts = await getAllPosts();
+const relatedPosts = allPosts
+  .filter(p => p.slug !== post.slug)
+  .slice(0, 3);
+
+const publishedDate = new Date(post.date).toISOString();
+const primaryCategory = post.categories?.[0];
+---
+
+<BaseLayout
+  title={`${post.title} | Blog Talem`}
+  description={post.excerpt}
+  ogImage={post.featuredImage?.url}
+>
+  <style>
+    /* Editorial Blog Styling */
+    .article-content {
+      font-family: 'Manrope', sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #191c1e;
+    }
+
+    .article-content h2 {
+      font-family: 'Newsreader', serif;
+      font-size: 36px;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #191c1e;
+    }
+
+    .article-content h3 {
+      font-family: 'Newsreader', serif;
+      font-size: 24px;
+      line-height: 1.3;
+      font-weight: 500;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #191c1e;
+    }
+
+    .article-content p {
+      margin-bottom: 1.5rem;
+    }
+
+    .article-content blockquote {
+      border-left: 3px solid #650017;
+      padding-left: 24px;
+      font-style: italic;
+      font-family: 'Newsreader', serif;
+      font-size: 1.25rem;
+      margin: 2rem 0;
+      color: #26303c;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin-left: 32px;
+      margin-bottom: 1.5rem;
+      list-style-position: outside;
+    }
+
+    .article-content ul {
+      list-style-type: disc;
+    }
+
+    .article-content ul li {
+      margin-bottom: 8px;
+    }
+
+    .article-content ul li::marker {
+      color: #650017;
+    }
+
+    .article-content a {
+      color: #650017;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .article-content a:hover {
+      opacity: 0.7;
+    }
+
+    .article-content strong {
+      font-weight: 600;
+    }
+
+    .article-content code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+
+    .article-content pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .article-content img {
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+
+    /* Drop Cap - first letter */
+    .article-content > p:first-of-type::first-letter {
+      font-size: 3rem;
+      font-family: 'Newsreader', serif;
+      color: #650017;
+      margin-right: 0.75rem;
+      float: left;
+      line-height: 1;
+    }
+  </style>
+
+  <Navigation />
+
+  <main class="bg-[#f8f9fb] min-h-screen">
+    <div class="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
+
+      <!-- Article Header -->
+      <article class="max-w-[1120px] mx-auto">
+        <header class="mb-16 max-w-[800px]">
+          <!-- Category Badge + Reading Time -->
+          <div class="flex items-center gap-4 mb-4">
+            {primaryCategory && (
+              <span class="bg-[#e1e2e4] text-[#594041] font-bold text-xs uppercase tracking-widest px-3 py-1">
+                {primaryCategory.name}
+              </span>
+            )}
+            <span class="text-sm font-medium text-[#5f5e5e]">{post.readingTime}</span>
+          </div>
+
+          <!-- Main Title (H1) -->
+          <h1 class="font-['Newsreader'] text-5xl lg:text-6xl font-semibold text-[#191c1e] mb-8 leading-[1.1] tracking-tight">
+            {post.title}
+          </h1>
+
+          <!-- Author Info -->
+          <div class="flex items-center gap-4 border-t border-[#191c1e]/10 pt-4">
+            <div class="w-12 h-12 bg-[#ffdada] rounded overflow-hidden flex-shrink-0">
+              <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-lg">
+                {post.author.charAt(0).toUpperCase()}
+              </div>
+            </div>
+            <div>
+              <p class="font-bold text-xs uppercase tracking-widest text-[#191c1e]">
+                <a href={`/blog/autor/${post.authorSlug}`} class="hover:text-[#650017] transition-colors">
+                  {post.author}
+                </a>
+              </p>
+              <p class="text-sm font-medium text-[#5f5e5e]">
+                <time datetime={publishedDate}>{post.formattedDate}</time>
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Layout: Featured Image + Sidebar -->
+        <div class="flex flex-col lg:flex-row gap-8 mb-16">
+
+          <!-- Left Column: Featured Image -->
+          <div class="lg:flex-[1.8]">
+            {post.featuredImage?.url && (
+              <Image
+                src={post.featuredImage.url}
+                alt={post.featuredImage.alt}
+                width={post.featuredImage.width || 1200}
+                height={post.featuredImage.height || 675}
+                class="w-full h-[300px] md:h-[500px] object-cover rounded"
+                loading="eager"
+              />
+            )}
+          </div>
+
+          <!-- Right Column: Sidebar -->
+          <div class="lg:flex-1 flex flex-col gap-8">
+
+            <!-- Table of Contents -->
+            <div class="bg-[#edeef0] p-6 border-l-2 border-[#650017]">
+              <h3 class="font-bold text-xs uppercase tracking-widest text-[#191c1e] mb-4">SPIS TREŚCI</h3>
+              <nav class="flex flex-col gap-3 text-sm font-medium text-[#5f5e5e]">
+                <a href="#content" class="hover:text-[#650017] transition-colors">
+                  1. Wstęp
+                </a>
+                <a href="#content" class="hover:text-[#650017] transition-colors">
+                  2. Główne zagadnienia
+                </a>
+                <a href="#content" class="hover:text-[#650017] transition-colors">
+                  3. Podsumowanie
+                </a>
+              </nav>
+            </div>
+
+            <!-- Contact Widget -->
+            <div class="bg-[#650017] text-white p-6 rounded">
+              <h3 class="font-['Newsreader'] text-2xl font-medium mb-2">Masz pytania?</h3>
+              <p class="text-base opacity-90 mb-6 leading-relaxed">
+                Nasi eksperci pomogą Ci wdrożyć skuteczną strategię SEO.
+              </p>
+              <a
+                href="/kontakt"
+                class="inline-block w-full text-center bg-white text-[#650017] font-bold text-xs uppercase tracking-widest py-3 rounded hover:bg-opacity-90 transition-all"
+              >
+                KONTAKT
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <div id="content" class="article-content max-w-[800px]" set:html={post.content} />
+
+        <!-- Post Rating Section -->
+        <section class="mt-16 max-w-[800px]">
+          <PostRating
+            postId={post.databaseId}
+            averageRating={post.rating?.average}
+            ratingCount={post.rating?.count}
+          />
+        </section>
+
+        <!-- Author Bio Card -->
+        <section class="mt-24 p-8 bg-[#edeef0] border border-[#191c1e]/5 rounded flex flex-col md:flex-row gap-8 items-center md:items-start">
+          <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
+              {post.author.charAt(0).toUpperCase()}
+            </div>
+          </div>
+          <div class="text-center md:text-left">
+            <h4 class="font-['Newsreader'] text-2xl font-medium mb-2">
+              O autorze: <a href={`/blog/autor/${post.authorSlug}`} class="hover:text-[#650017] transition-colors">{post.author}</a>
+            </h4>
+            <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">
+              Ekspert SEO z wieloletnim doświadczeniem w content marketingu i strategiach cyfrowych.
+              W Talem odpowiada za jakość treści i standardy redakcyjne.
+            </p>
+            <div class="flex justify-center md:justify-start gap-4">
+              <a href="#" class="text-[#650017] hover:opacity-70 transition-opacity font-bold text-xs uppercase tracking-widest">
+                LinkedIn
+              </a>
+              <a href="#" class="text-[#650017] hover:opacity-70 transition-opacity font-bold text-xs uppercase tracking-widest">
+                Twitter
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </article>
+
+      <!-- Related Articles -->
+      <section class="mt-24 border-t border-[#191c1e]/10 pt-16">
+        <div class="flex justify-between items-end mb-12">
+          <h2 class="font-['Newsreader'] text-4xl font-medium">Powiązane Artykuły</h2>
+          <a
+            href="/blog"
+            class="font-bold text-xs uppercase tracking-widest text-[#650017] border-b border-[#650017] hover:pb-1 transition-all"
+          >
+            WSZYSTKIE WPISY
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {relatedPosts.map((relatedPost) => (
+            <a href={`/blog/${relatedPost.slug}`} class="group">
+              {relatedPost.featuredImage?.url && (
+                <div class="aspect-video bg-[#e7e8ea] overflow-hidden mb-4 rounded">
+                  <Image
+                    src={relatedPost.featuredImage.url}
+                    alt={relatedPost.featuredImage.alt}
+                    width={400}
+                    height={225}
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              {relatedPost.categories?.[0] && (
+                <p class="font-bold text-xs uppercase tracking-widest text-[#650017] mb-2">
+                  {relatedPost.categories[0].name}
+                </p>
+              )}
+              <h3 class="font-['Newsreader'] text-2xl font-medium group-hover:text-[#650017] transition-colors">
+                {relatedPost.title}
+              </h3>
+            </a>
+          ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

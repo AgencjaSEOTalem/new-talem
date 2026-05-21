@@ -1,0 +1,283 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Navigation from '../../../../components/Navigation.astro';
+import Footer from '../../../../components/Footer.astro';
+import PostCard from '../../../../components/PostCard.astro';
+import NewsletterBox from '../../../../components/NewsletterBox.astro';
+import { getAllCategories, getPostsByCategory, type BlogPost } from '../../../../lib/wordpress';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Pobierz wszystkie kategorie
+  const categories = await getAllCategories();
+
+  // Dla każdej kategorii stwórz paginowane strony
+  const paths = await Promise.all(
+    categories.map(async (category) => {
+      // Pobierz wpisy dla tej kategorii
+      const categoryPosts = await getPostsByCategory(category.slug);
+
+      // Zwróć paginowane ścieżki dla tej kategorii
+      return paginate(categoryPosts, {
+        pageSize: 12,
+        params: { slug: category.slug },
+        props: { category },
+      });
+    })
+  );
+
+  // Spłaszcz tablicę (każda kategoria zwraca tablicę stron)
+  return paths.flat();
+}) satisfies GetStaticPaths;
+
+// Pobierz dane z Astro props
+const { page, category } = Astro.props as {
+  page: Page<BlogPost>;
+  category: { id: number; name: string; slug: string; count: number };
+};
+
+// Pobierz wszystkie kategorie dla menu
+const allCategories = await getAllCategories();
+
+// Wszystkie wpisy do siatki (bez wyróżnionego)
+const gridPosts = page.data;
+
+// Aktualny pathname dla aktywnych stanów kategorii
+const currentPath = Astro.url.pathname;
+
+// Przygotuj numery stron do wyświetlenia w paginacji
+const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => {
+  const showPage =
+    pageNum === 1 ||
+    pageNum === page.lastPage ||
+    Math.abs(pageNum - page.currentPage) <= 1;
+
+  const showEllipsisBefore =
+    pageNum === page.currentPage - 2 && page.currentPage > 3;
+  const showEllipsisAfter =
+    pageNum === page.currentPage + 2 && page.currentPage < page.lastPage - 2;
+
+  const pageUrl = pageNum === 1
+    ? `/blog/kategoria/${category.slug}`
+    : `/blog/kategoria/${category.slug}/${pageNum}`;
+  const isCurrentPage = pageNum === page.currentPage;
+
+  return {
+    pageNum,
+    showPage,
+    showEllipsisBefore,
+    showEllipsisAfter,
+    pageUrl,
+    isCurrentPage,
+  };
+});
+---
+
+<BaseLayout
+  title={page.currentPage === 1
+    ? `${category.name} - Blog SEO | Talem`
+    : `${category.name} - Strona ${page.currentPage} | Talem`}
+  description={`Artykuły z kategorii ${category.name}. Ekspercka wiedza o SEO, e-commerce i marketingu internetowym.`}
+>
+  <Navigation />
+
+  <main class="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Nagłówek kategorii -->
+      <section class="mb-10">
+        <div class="text-center max-w-3xl mx-auto">
+          <span class="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-mono uppercase tracking-wider rounded-full mb-4">
+            KATEGORIA
+          </span>
+          <h1 class="text-4xl lg:text-5xl font-bold text-black mb-4">
+            {category.name}
+          </h1>
+          <p class="text-gray-600 text-lg">
+            {category.count} {category.count === 1 ? 'artykuł' : category.count < 5 ? 'artykuły' : 'artykułów'}
+          </p>
+        </div>
+      </section>
+
+      <!-- SEKCJA: Pasek nawigacji kategorii + Sortowanie -->
+      <section class="mb-10">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-6 border-b border-gray-200">
+          <!-- Kategorie -->
+          <nav class="flex flex-wrap gap-2" aria-label="Filtruj po kategorii">
+            <a
+              href="/blog"
+              class="px-4 py-2 bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent font-medium text-sm rounded-full transition-colors"
+            >
+              WSZYSTKIE
+            </a>
+            {allCategories.map((cat) => {
+              const categoryPath = `/blog/kategoria/${cat.slug}`;
+              const isActive = currentPath.startsWith(categoryPath);
+
+              return (
+                <a
+                  href={categoryPath}
+                  class={`px-4 py-2 font-medium text-sm rounded-full transition-colors ${
+                    isActive
+                      ? 'bg-accent text-white'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent'
+                  }`}
+                >
+                  {cat.name.toUpperCase()}
+                </a>
+              );
+            })}
+          </nav>
+
+          <!-- Dropdown sortowania (statyczny) -->
+          <div class="relative">
+            <button
+              class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-gray-300 transition-colors"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 6h18M7 12h10m-7 6h4" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              Sortuj według: <strong>Najnowsze</strong>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEKCJA: Siatka wpisów z newsletterem na pozycji 6 -->
+      <section>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {gridPosts.map((post, index) => {
+            const items = [];
+
+            // Dodaj NewsletterBox jako 6. element (index 5) - tylko na stronie 1
+            if (index === 5 && page.currentPage === 1) {
+              items.push(<NewsletterBox />);
+            }
+
+            // Dodaj PostCard
+            items.push(<PostCard post={post} />);
+
+            return items;
+          })}
+        </div>
+      </section>
+
+      <!-- SEKCJA: Paginacja (Dynamiczna) -->
+      {(page.lastPage > 1) && (
+        <section class="mt-16">
+          <nav
+            class="flex items-center justify-center gap-2"
+            aria-label="Paginacja"
+          >
+            {/* Przycisk Poprzednia */}
+            {page.url.prev ? (
+              <a
+                href={page.url.prev}
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+                aria-label="Poprzednia strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            ) : (
+              <button
+                class="px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+                disabled
+                aria-label="Poprzednia strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            )}
+
+            {/* Numery stron */}
+            {paginationPages.map((pageData) => {
+              if (pageData.showEllipsisBefore || pageData.showEllipsisAfter) {
+                return <span class="px-2 text-gray-400">...</span>;
+              }
+
+              if (!pageData.showPage) return null;
+
+              return (
+                <a
+                  href={pageData.pageUrl}
+                  class={`px-4 py-2 font-medium text-sm rounded-lg transition-colors ${
+                    pageData.isCurrentPage
+                      ? 'bg-accent text-white'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent'
+                  }`}
+                  aria-current={pageData.isCurrentPage ? 'page' : undefined}
+                >
+                  {pageData.pageNum}
+                </a>
+              );
+            })}
+
+            {/* Przycisk Następna */}
+            {page.url.next ? (
+              <a
+                href={page.url.next}
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+                aria-label="Następna strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            ) : (
+              <button
+                class="px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+                disabled
+                aria-label="Następna strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            )}
+          </nav>
+        </section>
+      )}
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,281 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Navigation from '../../../../components/Navigation.astro';
+import Footer from '../../../../components/Footer.astro';
+import PostCard from '../../../../components/PostCard.astro';
+import { Image } from 'astro:assets';
+import { getAllAuthors, getPostsByAuthor, type BlogPost, type Author } from '../../../../lib/wordpress';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Pobierz wszystkich autorów
+  const authors = await getAllAuthors();
+
+  // Dla każdego autora stwórz paginowane strony
+  const paths = await Promise.all(
+    authors.map(async (author) => {
+      // Pobierz wpisy dla tego autora
+      const authorPosts = await getPostsByAuthor(author.slug);
+
+      // Jeśli autor nie ma wpisów, pomiń go
+      if (authorPosts.length === 0) {
+        return [];
+      }
+
+      // Zwróć paginowane ścieżki dla tego autora
+      return paginate(authorPosts, {
+        pageSize: 12,
+        params: { slug: author.slug },
+        props: { author, postsCount: authorPosts.length },
+      });
+    })
+  );
+
+  // Spłaszcz tablicę (każdy autor zwraca tablicę stron)
+  return paths.flat();
+}) satisfies GetStaticPaths;
+
+// Pobierz dane z Astro props
+const { page, author, postsCount } = Astro.props as {
+  page: Page<BlogPost>;
+  author: Author;
+  postsCount: number;
+};
+
+// Wszystkie wpisy do siatki
+const gridPosts = page.data;
+
+// Przygotuj numery stron do wyświetlenia w paginacji
+const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => {
+  const showPage =
+    pageNum === 1 ||
+    pageNum === page.lastPage ||
+    Math.abs(pageNum - page.currentPage) <= 1;
+
+  const showEllipsisBefore =
+    pageNum === page.currentPage - 2 && page.currentPage > 3;
+  const showEllipsisAfter =
+    pageNum === page.currentPage + 2 && page.currentPage < page.lastPage - 2;
+
+  const pageUrl = pageNum === 1
+    ? `/blog/autor/${author.slug}`
+    : `/blog/autor/${author.slug}/${pageNum}`;
+  const isCurrentPage = pageNum === page.currentPage;
+
+  return {
+    pageNum,
+    showPage,
+    showEllipsisBefore,
+    showEllipsisAfter,
+    pageUrl,
+    isCurrentPage,
+  };
+});
+---
+
+<BaseLayout
+  title={page.currentPage === 1
+    ? `${author.name} - Autor | Blog Talem`
+    : `${author.name} - Strona ${page.currentPage} | Blog Talem`}
+  description={author.description || `Artykuły autora ${author.name}. Blog SEO, e-commerce i marketing internetowy.`}
+>
+  <Navigation />
+
+  <main class="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- SEKCJA HERO: Profil autora (wyśrodkowany) -->
+      <section class="mb-16">
+        <div class="text-center max-w-3xl mx-auto">
+          <!-- Okrągły duży awatar -->
+          <div class="mb-6 flex justify-center">
+            <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl">
+              <Image
+                src={author.avatar.large}
+                alt={author.name}
+                width={128}
+                height={128}
+                class="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+          </div>
+
+          <!-- Imię i nazwisko (H1) -->
+          <h1 class="text-4xl lg:text-5xl font-bold text-black mb-4">
+            {author.name}
+          </h1>
+
+          <!-- Bio autora -->
+          {author.description && (
+            <div
+              class="text-lg text-gray-600 leading-relaxed mb-6 prose prose-lg max-w-2xl mx-auto"
+              set:html={author.description}
+            />
+          )}
+
+          <!-- Statystyka wpisów -->
+          <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>
+              {postsCount} {postsCount === 1 ? 'artykuł' : postsCount < 5 ? 'artykuły' : 'artykułów'}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Separator -->
+      <div class="border-t border-gray-200 mb-12"></div>
+
+      <!-- SEKCJA: Siatka wpisów autora -->
+      <section>
+        {gridPosts.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {gridPosts.map((post) => (
+              <PostCard post={post} />
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-16">
+            <svg
+              class="w-16 h-16 text-gray-300 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-gray-500 text-lg">Ten autor nie opublikował jeszcze żadnych artykułów.</p>
+          </div>
+        )}
+      </section>
+
+      <!-- SEKCJA: Paginacja (Dynamiczna) -->
+      {(page.lastPage > 1) && (
+        <section class="mt-16">
+          <nav
+            class="flex items-center justify-center gap-2"
+            aria-label="Paginacja"
+          >
+            {/* Przycisk Poprzednia */}
+            {page.url.prev ? (
+              <a
+                href={page.url.prev}
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+                aria-label="Poprzednia strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            ) : (
+              <button
+                class="px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+                disabled
+                aria-label="Poprzednia strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            )}
+
+            {/* Numery stron */}
+            {paginationPages.map((pageData) => {
+              if (pageData.showEllipsisBefore || pageData.showEllipsisAfter) {
+                return <span class="px-2 text-gray-400">...</span>;
+              }
+
+              if (!pageData.showPage) return null;
+
+              return (
+                <a
+                  href={pageData.pageUrl}
+                  class={`px-4 py-2 font-medium text-sm rounded-lg transition-colors ${
+                    pageData.isCurrentPage
+                      ? 'bg-accent text-white'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent'
+                  }`}
+                  aria-current={pageData.isCurrentPage ? 'page' : undefined}
+                >
+                  {pageData.pageNum}
+                </a>
+              );
+            })}
+
+            {/* Przycisk Następna */}
+            {page.url.next ? (
+              <a
+                href={page.url.next}
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+                aria-label="Następna strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            ) : (
+              <button
+                class="px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed"
+                disabled
+                aria-label="Następna strona"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            )}
+          </nav>
+        </section>
+      )}
+
+      <!-- Powrót do bloga -->
+      <div class="mt-12 text-center">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 text-accent hover:text-black font-medium transition-colors"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Powrót do bloga
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

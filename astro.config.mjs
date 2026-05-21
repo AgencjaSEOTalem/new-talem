@@ -12,6 +12,9 @@ export default defineConfig({
   build: {
     format: 'file'
   },
+  image: {
+    domains: ['api.talem.eu'],
+  },
   integrations: [
     tailwind(),
     sitemap({
