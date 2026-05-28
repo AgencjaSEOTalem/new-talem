@@ -5,6 +5,7 @@ import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
 import NewsletterBox from '../../components/NewsletterBox.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import { getAllPosts, getAllCategories, type BlogPost } from '../../lib/wordpress';
 
@@ -24,6 +25,12 @@ const { page } = Astro.props as { page: Page<BlogPost> };
 // Pobierz kategorie
 const categories = await getAllCategories();
 
+// Breadcrumbs
+const breadcrumbs = [
+  { label: 'Strona główna', href: '/' },
+  { label: 'Blog' },
+];
+
 // Podziel wpisy: pierwszy jako wyróżniony (tylko na stronie 1), reszta do siatki
 const featuredPost = page.currentPage === 1 ? page.data[0] : null;
 const gridPosts = page.currentPage === 1 ? page.data.slice(1) : page.data;
@@ -32,9 +39,6 @@ const gridPosts = page.currentPage === 1 ? page.data.slice(1) : page.data;
 const featuredExcerpt = featuredPost?.excerpt
   ? featuredPost.excerpt.substring(0, 200).trim() + '...'
   : '';
-
-// Aktualny pathname dla aktywnych stanów kategorii
-const currentPath = Astro.url.pathname;
 
 // Przygotuj numery stron do wyświetlenia w paginacji
 const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => {
@@ -71,6 +75,52 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
   <main class="min-h-screen pt-24 pb-16 bg-gray-50">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
+      <!-- Breadcrumbs -->
+      <Breadcrumbs items={breadcrumbs} />
+
+      <!-- H1 Title -->
+      <div class="mb-8">
+        {page.currentPage === 1 ? (
+          <>
+            <h1 class="text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
+              Blog - Twoje centrum wiedzy
+            </h1>
+            <p class="text-lg text-gray-600">
+              Eksperckie artykuły o SEO, e-commerce i marketingu internetowym
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 class="text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
+              Blog - Strona {page.currentPage}
+            </h1>
+            <p class="text-lg text-gray-600">
+              Przeglądaj artykuły o SEO, e-commerce i marketingu internetowym
+            </p>
+          </>
+        )}
+      </div>
+
+      <!-- Kategorie -->
+      {page.currentPage === 1 && categories.length > 0 && (
+        <nav class="mb-12 flex flex-wrap gap-3" aria-label="Kategorie bloga">
+          <a
+            href="/blog"
+            class="px-4 py-2 bg-[#650017] text-white font-semibold text-sm rounded-lg hover:bg-[#8f0024] transition-colors"
+          >
+            Wszystkie
+          </a>
+          {categories.map((category) => (
+            <a
+              href={`/blog/kategoria/${category.slug}`}
+              class="px-4 py-2 bg-white text-gray-700 font-medium text-sm rounded-lg border border-gray-200 hover:border-[#650017] hover:text-[#650017] transition-colors"
+            >
+              {category.name} ({category.count})
+            </a>
+          ))}
+        </nav>
+      )}
+
       <!-- SEKCJA 1: Wyróżniony artykuł (TYLKO na stronie 1) -->
       {featuredPost && page.currentPage === 1 && (
         <section class="mb-16">
@@ -105,9 +155,9 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
                   </span>
                 )}
 
-                <h1 class="text-3xl lg:text-4xl font-bold text-black leading-tight mb-4">
+                <span class="text-3xl lg:text-4xl font-bold text-black leading-tight mb-4">
                   {featuredPost.title}
-                </h1>
+                </span>
 
                 <p class="text-gray-600 text-base leading-relaxed mb-6">
                   {featuredExcerpt}
@@ -162,70 +212,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
         </section>
       )}
 
-      <!-- SEKCJA 2: Pasek nawigacji kategorii + Sortowanie -->
-      <section class="mb-10">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-6 border-b border-gray-200">
-          <!-- Kategorie -->
-          <nav class="flex flex-wrap gap-2" aria-label="Filtruj po kategorii">
-            <a
-              href="/blog"
-              class={`px-4 py-2 font-medium text-sm rounded-full transition-colors ${
-                currentPath === '/blog' || currentPath.startsWith('/blog/')
-                  ? 'bg-accent text-white'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent'
-              }`}
-            >
-              WSZYSTKIE
-            </a>
-            {categories.map((category) => {
-              const categoryPath = `/blog/kategoria/${category.slug}`;
-              const isActive = currentPath.startsWith(categoryPath);
-
-              return (
-                <a
-                  href={categoryPath}
-                  class={`px-4 py-2 font-medium text-sm rounded-full transition-colors ${
-                    isActive
-                      ? 'bg-accent text-white'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:border-accent hover:text-accent'
-                  }`}
-                >
-                  {category.name.toUpperCase()}
-                </a>
-              );
-            })}
-          </nav>
-
-          <!-- Dropdown sortowania (statyczny) -->
-          <div class="relative">
-            <button
-              class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-gray-300 transition-colors"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M3 6h18M7 12h10m-7 6h4" stroke-width="2" stroke-linecap="round" />
-              </svg>
-              Sortuj według: <strong>Najnowsze</strong>
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- SEKCJA 3: Siatka wpisów z newsletterem na pozycji 6 -->
+      <!-- SEKCJA 2: Siatka wpisów z newsletterem na pozycji 6 -->
       <section>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {gridPosts.map((post, index) => {

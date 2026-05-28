@@ -47,14 +47,14 @@ const shortExcerpt = post.excerpt.length > 120
     )}
 
     <!-- Tytuł -->
-    <h3 class="mb-3">
+    <div class="mb-3">
       <a
         href={`/blog/${post.slug}`}
-        class="text-xl font-bold text-black leading-tight hover:text-accent transition-colors duration-200 line-clamp-2"
+        class="text-xl font-bold text-black leading-tight hover:text-accent transition-colors duration-200 line-clamp-2 block"
       >
         {post.title}
       </a>
-    </h3>
+    </div>
 
     <!-- Excerpt -->
     <p class="text-gray-600 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">

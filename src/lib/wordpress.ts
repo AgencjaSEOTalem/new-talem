@@ -52,9 +52,12 @@ interface GraphQLPostNode {
       count: number;
     }>;
   };
-  postRating?: {
-    averageRating: number;
-    ratingCount: number;
+  rating?: {
+    average: number;
+    count: number;
+  };
+  keyInformation?: {
+    keyInformation?: string;
   };
 }
 
@@ -106,6 +109,7 @@ export interface BlogPost {
     average: number;
     count: number;
   };
+  keyInformation?: string;
 }
 
 export interface Category {
@@ -229,10 +233,11 @@ function transformPost(node: GraphQLPostNode): BlogPost {
       width: node.featuredImage.node.mediaDetails?.width,
       height: node.featuredImage.node.mediaDetails?.height,
     } : undefined,
-    rating: node.postRating ? {
-      average: node.postRating.averageRating || 0,
-      count: node.postRating.ratingCount || 0,
+    rating: node.rating ? {
+      average: node.rating.average || 0,
+      count: node.rating.count || 0,
     } : undefined,
+    keyInformation: node.keyInformation?.keyInformation,
   };
 }
 
@@ -276,9 +281,12 @@ const POST_FRAGMENT = `
         count
       }
     }
-    postRating {
-      averageRating
-      ratingCount
+    rating {
+      average
+      count
+    }
+    keyInformation {
+      keyInformation
     }
   }
 `;

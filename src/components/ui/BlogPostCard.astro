@@ -36,9 +36,7 @@ const { post } = Astro.props;
   <!-- Tytuł -->
   <span class="d-block flex-grow">
     <a
-      href={post.link}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`/blog/${post.slug}`}
       class="text-accent font-semibold text-lg leading-tight hover:underline underline-offset-2 transition-all"
     >
       {post.title}
