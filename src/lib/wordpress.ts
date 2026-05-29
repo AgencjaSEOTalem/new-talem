@@ -17,6 +17,25 @@ interface GraphQLResponse<T> {
   }>;
 }
 
+// Shared ACF types
+interface GraphQLACFImage {
+  node?: {
+    sourceUrl?: string;
+    altText?: string;
+    mediaDetails?: {
+      width?: number;
+      height?: number;
+    };
+  };
+}
+
+interface GraphQLProfilAutora {
+  ekspertyza?: string | null;
+  cytat?: string | null;
+  rola?: string | null;
+  zdjecie?: GraphQLACFImage | null;
+}
+
 interface GraphQLPostNode {
   databaseId: number;
   slug: string;
@@ -42,6 +61,7 @@ interface GraphQLPostNode {
       avatar: {
         url: string;
       };
+      profilAutora?: GraphQLProfilAutora;
     };
   };
   categories: {
@@ -76,6 +96,7 @@ interface GraphQLUserNode {
   avatar: {
     url: string;
   };
+  profilAutora?: GraphQLProfilAutora;
 }
 
 // ============================================
@@ -93,6 +114,13 @@ export interface BlogPost {
   formattedDate: string;
   author: string;
   authorSlug: string;
+  authorExpertise?: string;
+  authorPhoto?: {
+    url: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  };
   readingTime: string;
   categories: Array<{
     id: number;
@@ -130,6 +158,15 @@ export interface Author {
     large: string;
   };
   postsCount?: number;
+  expertise?: string;
+  quote?: string;
+  role?: string;
+  photo?: {
+    url: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  };
 }
 
 // ============================================
@@ -161,6 +198,20 @@ function calculateReadingTime(content: string): string {
 
   if (minutes === 1) return '1 min czytania';
   return `${minutes} min czytania`;
+}
+
+function transformACFPhoto(
+  acfImage: GraphQLACFImage | null | undefined,
+  fallbackAlt: string
+): { url: string; alt: string; width?: number; height?: number } | undefined {
+  if (!acfImage?.node?.sourceUrl) return undefined;
+
+  return {
+    url: acfImage.node.sourceUrl,
+    alt: acfImage.node.altText || fallbackAlt,
+    width: acfImage.node.mediaDetails?.width,
+    height: acfImage.node.mediaDetails?.height,
+  };
 }
 
 // ============================================
@@ -221,6 +272,8 @@ function transformPost(node: GraphQLPostNode): BlogPost {
     formattedDate: formatPolishDate(node.date),
     author: node.author.node.name,
     authorSlug: node.author.node.slug,
+    authorExpertise: node.author.node.profilAutora?.ekspertyza || undefined,
+    authorPhoto: transformACFPhoto(node.author.node.profilAutora?.zdjecie, node.author.node.name),
     readingTime,
     categories: node.categories.nodes.map(cat => ({
       id: cat.databaseId,
@@ -270,6 +323,19 @@ const POST_FRAGMENT = `
         description
         avatar {
           url
+        }
+        profilAutora {
+          ekspertyza
+          zdjecie {
+            node {
+              sourceUrl
+              altText
+              mediaDetails {
+                width
+                height
+              }
+            }
+          }
         }
       }
     }
@@ -457,6 +523,21 @@ export async function getAllAuthors(): Promise<Author[]> {
           avatar {
             url
           }
+          profilAutora {
+            ekspertyza
+            cytat
+            rola
+            zdjecie {
+              node {
+                sourceUrl
+                altText
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -475,6 +556,10 @@ export async function getAllAuthors(): Promise<Author[]> {
         medium: user.avatar.url,
         large: user.avatar.url,
       },
+      expertise: user.profilAutora?.ekspertyza || undefined,
+      quote: user.profilAutora?.cytat || undefined,
+      role: user.profilAutora?.rola || undefined,
+      photo: transformACFPhoto(user.profilAutora?.zdjecie, user.name),
     }));
   } catch (error) {
     console.error('Error fetching authors:', error);
@@ -495,6 +580,21 @@ export async function getAuthorBySlug(slug: string): Promise<Author | null> {
         description
         avatar {
           url
+        }
+        profilAutora {
+          ekspertyza
+          cytat
+          rola
+          zdjecie {
+            node {
+              sourceUrl
+              altText
+              mediaDetails {
+                width
+                height
+              }
+            }
+          }
         }
       }
     }
@@ -517,6 +617,15 @@ export async function getAuthorBySlug(slug: string): Promise<Author | null> {
         medium: data.user.avatar.url,
         large: data.user.avatar.url,
       },
+      expertise: data.user.profilAutora?.ekspertyza || undefined,
+      quote: data.user.profilAutora?.cytat || undefined,
+      role: data.user.profilAutora?.rola || undefined,
+      photo: data.user.profilAutora?.zdjecie?.node?.sourceUrl ? {
+        url: data.user.profilAutora.zdjecie.node.sourceUrl,
+        alt: data.user.profilAutora.zdjecie.node.altText || data.user.name,
+        width: data.user.profilAutora.zdjecie.node.mediaDetails?.width,
+        height: data.user.profilAutora.zdjecie.node.mediaDetails?.height,
+      } : undefined,
     };
   } catch (error) {
     console.error('Error fetching author:', error);

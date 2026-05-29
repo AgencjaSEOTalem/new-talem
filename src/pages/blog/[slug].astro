@@ -22,15 +22,100 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-// Pobierz 3 losowe powiązane wpisy
+// Pobierz 3 najnowsze wpisy z tej samej kategorii
 const allPosts = await getAllPosts();
-const relatedPosts = allPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
+const postCategoryIds = post.categories.map(cat => cat.id);
+
+// Filtruj wpisy, które mają wspólną kategorię z obecnym wpisem
+let relatedPosts = allPosts
+  .filter((p) =>
+    p.slug !== post.slug &&
+    p.categories.some(cat => postCategoryIds.includes(cat.id))
+  )
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+// Jeśli nie ma 3 wpisów z tej samej kategorii, uzupełnij innymi najnowszymi
+if (relatedPosts.length < 3) {
+  const remainingPosts = allPosts
+    .filter((p) => p.slug !== post.slug && !relatedPosts.some(rp => rp.slug === p.slug))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3 - relatedPosts.length);
+
+  relatedPosts = [...relatedPosts, ...remainingPosts];
+}
 
 const publishedDate = new Date(post.date).toISOString();
 const primaryCategory = post.categories?.[0];
 
+// Word count dla schema
+const wordCount = post.content
+  ? post.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(w => w.length > 0).length
+  : 0;
+
+// JSON-LD Schema dla Article
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  image: post.featuredImage ? {
+    '@type': 'ImageObject',
+    url: post.featuredImage.url,
+    width: post.featuredImage.width || 1200,
+    height: post.featuredImage.height || 630,
+  } : undefined,
+  datePublished: publishedDate,
+  dateModified: publishedDate,
+  author: {
+    '@type': 'Person',
+    name: post.author,
+    url: `${Astro.site}blog/autor/${post.authorSlug}`,
+    ...(post.authorExpertise && { description: post.authorExpertise }),
+    ...(post.authorPhoto && {
+      image: {
+        '@type': 'ImageObject',
+        url: post.authorPhoto.url,
+        width: post.authorPhoto.width,
+        height: post.authorPhoto.height,
+      }
+    }),
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Talem',
+    url: Astro.site?.toString() || 'https://talem.eu',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${Astro.site}images/logo-talem.svg`,
+      width: 250,
+      height: 60,
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${Astro.site}blog/${post.slug}`,
+  },
+  articleBody: post.excerpt,
+  ...(wordCount > 0 && { wordCount }),
+  ...(post.categories.length > 0 && {
+    articleSection: post.categories.map(cat => cat.name),
+    keywords: post.categories.map(cat => cat.name).join(', '),
+  }),
+  inLanguage: 'pl-PL',
+  ...(post.rating && post.rating.count > 0 && {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: post.rating.average,
+      reviewCount: post.rating.count,
+      bestRating: 5,
+      worstRating: 1,
+    },
+  }),
+};
+
 // Breadcrumbs
-const breadcrumbs = [
+const breadcrumbs: Array<{ label: string; href?: string }> = [
   { label: 'Strona główna', href: '/' },
   { label: 'Blog', href: '/blog' },
 ];
@@ -43,6 +128,18 @@ if (primaryCategory) {
 }
 
 breadcrumbs.push({ label: post.title });
+
+// JSON-LD Schema dla BreadcrumbList
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    ...(crumb.href && { item: `${Astro.site}${crumb.href.replace(/^\//, '')}` }),
+  })),
+};
 
 // Dekoduj HTML entities
 function decodeHTMLEntities(text: string): string {
@@ -109,6 +206,12 @@ const tableOfContents = generateTableOfContents(post.content || '');
   description={post.excerpt}
   ogImage={post.featuredImage?.url}
 >
+  <!-- JSON-LD Schema for Article -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <!-- JSON-LD Schema for Breadcrumbs -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
   <style is:global>
     /* Smooth Scroll */
     html {
@@ -671,11 +774,22 @@ const tableOfContents = generateTableOfContents(post.content || '');
           class="mt-24 p-8 bg-[#edeef0] border border-[#191c1e]/5 rounded flex flex-col md:flex-row gap-8 items-center md:items-start"
         >
           <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
-            <div
-              class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl"
-            >
-              {post.author.charAt(0).toUpperCase()}
-            </div>
+            {post.authorPhoto ? (
+              <Image
+                src={post.authorPhoto.url}
+                alt={post.authorPhoto.alt}
+                width={post.authorPhoto.width || 128}
+                height={post.authorPhoto.height || 128}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div
+                class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl"
+              >
+                {post.author.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
           <div class="text-center md:text-left">
             <h4 class="font-['Newsreader'] text-2xl font-medium mb-2">
@@ -684,10 +798,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
                 class="hover:text-[#650017] transition-colors">{post.author}</a
               >
             </h4>
-            <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">
-              Ekspert SEO z wieloletnim doświadczeniem w content marketingu i strategiach cyfrowych.
-              W Talem odpowiada za jakość treści i standardy redakcyjne.
-            </p>
+            {post.authorExpertise && (
+              <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">
+                {post.authorExpertise}
+              </p>
+            )}
           </div>
         </section>
       </article>
