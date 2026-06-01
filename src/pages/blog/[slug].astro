@@ -24,13 +24,12 @@ if (!post) {
 
 // Pobierz 3 najnowsze wpisy z tej samej kategorii
 const allPosts = await getAllPosts();
-const postCategoryIds = post.categories.map(cat => cat.id);
+const postCategoryIds = post.categories.map((cat) => cat.id);
 
 // Filtruj wpisy, które mają wspólną kategorię z obecnym wpisem
 let relatedPosts = allPosts
-  .filter((p) =>
-    p.slug !== post.slug &&
-    p.categories.some(cat => postCategoryIds.includes(cat.id))
+  .filter(
+    (p) => p.slug !== post.slug && p.categories.some((cat) => postCategoryIds.includes(cat.id))
   )
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 3);
@@ -38,7 +37,7 @@ let relatedPosts = allPosts
 // Jeśli nie ma 3 wpisów z tej samej kategorii, uzupełnij innymi najnowszymi
 if (relatedPosts.length < 3) {
   const remainingPosts = allPosts
-    .filter((p) => p.slug !== post.slug && !relatedPosts.some(rp => rp.slug === p.slug))
+    .filter((p) => p.slug !== post.slug && !relatedPosts.some((rp) => rp.slug === p.slug))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3 - relatedPosts.length);
 
@@ -50,7 +49,10 @@ const primaryCategory = post.categories?.[0];
 
 // Word count dla schema
 const wordCount = post.content
-  ? post.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(w => w.length > 0).length
+  ? post.content
+      .replace(/<[^>]*>/g, '')
+      .split(/\s+/)
+      .filter((w) => w.length > 0).length
   : 0;
 
 // JSON-LD Schema dla Article
@@ -59,12 +61,14 @@ const articleSchema = {
   '@type': 'BlogPosting',
   headline: post.title,
   description: post.excerpt,
-  image: post.featuredImage ? {
-    '@type': 'ImageObject',
-    url: post.featuredImage.url,
-    width: post.featuredImage.width || 1200,
-    height: post.featuredImage.height || 630,
-  } : undefined,
+  image: post.featuredImage
+    ? {
+        '@type': 'ImageObject',
+        url: post.featuredImage.url,
+        width: post.featuredImage.width || 1200,
+        height: post.featuredImage.height || 630,
+      }
+    : undefined,
   datePublished: publishedDate,
   dateModified: publishedDate,
   author: {
@@ -78,7 +82,7 @@ const articleSchema = {
         url: post.authorPhoto.url,
         width: post.authorPhoto.width,
         height: post.authorPhoto.height,
-      }
+      },
     }),
   },
   publisher: {
@@ -99,19 +103,20 @@ const articleSchema = {
   articleBody: post.excerpt,
   ...(wordCount > 0 && { wordCount }),
   ...(post.categories.length > 0 && {
-    articleSection: post.categories.map(cat => cat.name),
-    keywords: post.categories.map(cat => cat.name).join(', '),
+    articleSection: post.categories.map((cat) => cat.name),
+    keywords: post.categories.map((cat) => cat.name).join(', '),
   }),
   inLanguage: 'pl-PL',
-  ...(post.rating && post.rating.count > 0 && {
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: post.rating.average,
-      reviewCount: post.rating.count,
-      bestRating: 5,
-      worstRating: 1,
-    },
-  }),
+  ...(post.rating &&
+    post.rating.count > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: post.rating.average,
+        reviewCount: post.rating.count,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }),
 };
 
 // Breadcrumbs
@@ -203,7 +208,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
 <BaseLayout
   title={`${post.title} | Blog Talem`}
-  description={post.excerpt}
+  description={post.excerpt.substring(0, 152) + '...'}
   ogImage={post.featuredImage?.url}
 >
   <!-- JSON-LD Schema for Article -->
@@ -672,9 +677,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
                   {post.author}
                 </a>
               </p>
-              <p class="text-sm font-medium text-[#5f5e5e]">
+              {
+                /*<p class="text-sm font-medium text-[#5f5e5e]">
                 <time datetime={publishedDate}>{post.formattedDate}</time>
-              </p>
+              </p>*/
+              }
             </div>
           </div>
         </header>
@@ -703,7 +710,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
             {
               tableOfContents.length > 0 && (
                 <div class="bg-[#edeef0] p-6 border-l-4 border-[#650017]">
-                  <h3 class="font-bold text-sm uppercase tracking-widest text-[#650017] mb-4 flex items-center gap-2">
+                  <span class="font-bold text-sm uppercase tracking-widest text-[#650017] mb-4 flex items-center gap-2">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fill-rule="evenodd"
@@ -712,7 +719,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
                       />
                     </svg>
                     SPIS TREŚCI
-                  </h3>
+                  </span>
                   <nav
                     class="flex flex-col gap-3 text-sm font-medium text-[#5f5e5e]"
                     id="table-of-contents"
@@ -774,22 +781,22 @@ const tableOfContents = generateTableOfContents(post.content || '');
           class="mt-24 p-8 bg-[#edeef0] border border-[#191c1e]/5 rounded flex flex-col md:flex-row gap-8 items-center md:items-start"
         >
           <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
-            {post.authorPhoto ? (
-              <Image
-                src={post.authorPhoto.url}
-                alt={post.authorPhoto.alt}
-                width={post.authorPhoto.width || 128}
-                height={post.authorPhoto.height || 128}
-                class="w-full h-full object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <div
-                class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl"
-              >
-                {post.author.charAt(0).toUpperCase()}
-              </div>
-            )}
+            {
+              post.authorPhoto ? (
+                <Image
+                  src={post.authorPhoto.url}
+                  alt={post.authorPhoto.alt}
+                  width={post.authorPhoto.width || 128}
+                  height={post.authorPhoto.height || 128}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
+                  {post.author.charAt(0).toUpperCase()}
+                </div>
+              )
+            }
           </div>
           <div class="text-center md:text-left">
             <h4 class="font-['Newsreader'] text-2xl font-medium mb-2">
@@ -798,11 +805,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
                 class="hover:text-[#650017] transition-colors">{post.author}</a
               >
             </h4>
-            {post.authorExpertise && (
-              <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">
-                {post.authorExpertise}
-              </p>
-            )}
+            {
+              post.authorExpertise && (
+                <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">{post.authorExpertise}</p>
+              )
+            }
           </div>
         </section>
       </article>
@@ -810,7 +817,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       <!-- Related Articles -->
       <section class="mt-24 border-t border-[#191c1e]/10 pt-16">
         <div class="flex justify-between items-end mb-12">
-          <h2 class="font-['Newsreader'] text-4xl font-medium">Powiązane artykuły</h2>
+          <span class="font-['Newsreader'] text-4xl font-medium">Powiązane artykuły</span>
           <a
             href="/blog"
             class="font-bold text-xs uppercase tracking-widest text-[#650017] border-b border-[#650017] hover:pb-1 transition-all"
@@ -840,9 +847,9 @@ const tableOfContents = generateTableOfContents(post.content || '');
                     {relatedPost.categories[0].name}
                   </p>
                 )}
-                <h3 class="font-['Newsreader'] text-2xl font-medium group-hover:text-[#650017] transition-colors">
+                <span class="font-['Newsreader'] text-2xl font-medium group-hover:text-[#650017] transition-colors">
                   {relatedPost.title}
-                </h3>
+                </span>
               </a>
             ))
           }

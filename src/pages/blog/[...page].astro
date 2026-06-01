@@ -83,7 +83,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
         {page.currentPage === 1 ? (
           <>
             <h1 class="text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
-              Blog - Twoje centrum wiedzy
+                SEO Insider - Twoje centrum wiedzy
             </h1>
             <p class="text-lg text-gray-600">
               Eksperckie artykuły o SEO, e-commerce i marketingu internetowym
@@ -92,11 +92,8 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
         ) : (
           <>
             <h1 class="text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
-              Blog - Strona {page.currentPage}
+              SEO Insider - Twoje centrum wiedzy - Strona {page.currentPage}
             </h1>
-            <p class="text-lg text-gray-600">
-              Przeglądaj artykuły o SEO, e-commerce i marketingu internetowym
-            </p>
           </>
         )}
       </div>
@@ -164,7 +161,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
                 </p>
 
                 <div class="flex items-center gap-4 text-sm text-gray-500 mb-6">
-                  <time datetime={featuredPost.date} class="flex items-center gap-1.5">
+                  {/*<time datetime={featuredPost.date} class="flex items-center gap-1.5">
                     <svg
                       class="w-4 h-4"
                       fill="none"
@@ -177,7 +174,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
                       <line x1="3" y1="10" x2="21" y2="10" />
                     </svg>
                     {featuredPost.formattedDate}
-                  </time>
+                  </time>*/}
                   <span class="flex items-center gap-1.5">
                     <svg
                       class="w-4 h-4"
