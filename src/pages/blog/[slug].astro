@@ -665,7 +665,22 @@ const tableOfContents = generateTableOfContents(post.content || '');
               <div
                 class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-lg"
               >
-                {post.author.charAt(0).toUpperCase()}
+                {
+                  post.authorPhoto ? (
+                    <Image
+                      src={post.authorPhoto.url}
+                      alt={post.authorPhoto.alt}
+                      width={post.authorPhoto.width || 128}
+                      height={post.authorPhoto.height || 128}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
+                      {post.author.charAt(0).toUpperCase()}
+                    </div>
+                  )
+                }
               </div>
             </div>
             <div>
@@ -768,13 +783,15 @@ const tableOfContents = generateTableOfContents(post.content || '');
         <div id="content" class="article-content" set:html={post.content} />
 
         <!-- Post Rating Section -->
-        <section class="mt-16">
+        {
+          /*<section class="mt-16">
           <PostRating
             postId={post.databaseId}
             averageRating={post.rating?.average}
             ratingCount={post.rating?.count}
           />
-        </section>
+        </section>*/
+        }
 
         <!-- Author Bio Card -->
         <section
