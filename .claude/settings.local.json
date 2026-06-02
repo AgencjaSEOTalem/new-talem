@@ -4,7 +4,14 @@
       "Bash(npm view:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd --legacy-peer-deps to npm install in GitHub Actions\n\nFix peer dependency conflict between Astro 6 and @astrojs/tailwind@6.0.2\nwhich currently only supports Astro 3-5.\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout 10 npm run preview:*)",
+      "WebSearch",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.talem.eu)",
+      "Bash(tail:*)",
+      "Bash(npm run dev:*)"
     ]
   }
 }

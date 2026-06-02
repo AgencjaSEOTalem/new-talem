@@ -1,0 +1,210 @@
+---
+export interface Props {
+  postId: number;
+  averageRating?: number;
+  ratingCount?: number;
+}
+
+const { postId, averageRating = 0, ratingCount = 0 } = Astro.props;
+---
+
+<div class="post-rating bg-gray-50 rounded-xl p-8 border border-gray-200" data-post-id={postId}>
+  <h3 class="text-2xl font-bold text-gray-900 mb-4">Oceń ten artykuł</h3>
+
+  <!-- Current Rating Display -->
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="flex gap-1" id="rating-display">
+        {Array.from({ length: 5 }, (_, i) => {
+          const filled = i < Math.round(averageRating);
+          return (
+            <svg
+              class={`w-6 h-6 ${filled ? 'text-yellow-500' : 'text-gray-300'}`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          );
+        })}
+      </div>
+      <span class="text-gray-600 text-sm" id="rating-text">
+        {averageRating > 0
+          ? `Średnia ocena: ${averageRating.toFixed(1)} (${ratingCount} ${ratingCount === 1 ? 'głos' : ratingCount < 5 ? 'głosy' : 'głosów'})`
+          : 'Bądź pierwszy, który oceni ten artykuł'}
+      </span>
+    </div>
+  </div>
+
+  <!-- Rating Input -->
+  <div class="rating-input" id="rating-input">
+    <p class="text-gray-700 mb-3 font-medium">Twoja ocena:</p>
+    <div class="flex gap-2" id="star-input">
+      {Array.from({ length: 5 }, (_, i) => (
+        <button
+          type="button"
+          class="star-button transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded"
+          data-rating={i + 1}
+          aria-label={`Oceń ${i + 1} ${i + 1 === 1 ? 'gwiazdka' : 'gwiazdki'}`}
+        >
+          <svg
+            class="w-10 h-10 text-gray-300 hover:text-yellow-500 transition-colors cursor-pointer"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Thank You Message (hidden by default) -->
+  <div class="thank-you-message hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-lg" id="thank-you-message">
+    <p class="text-green-800 font-medium flex items-center gap-2">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      Dziękujemy za ocenę!
+    </p>
+  </div>
+
+  <!-- Error Message (hidden by default) -->
+  <div class="error-message hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg" id="error-message">
+    <p class="text-red-800 font-medium">Wystąpił błąd. Spróbuj ponownie później.</p>
+  </div>
+</div>
+
+<script>
+  // Rating functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const ratingContainer = document.querySelector('.post-rating');
+    if (!ratingContainer) return;
+
+    const postId = ratingContainer.getAttribute('data-post-id');
+    const storageKey = `post-rating-${postId}`;
+
+    // Check if user already rated
+    const hasRated = localStorage.getItem(storageKey);
+
+    const starButtons = document.querySelectorAll('.star-button');
+    const ratingInput = document.getElementById('rating-input');
+    const thankYouMessage = document.getElementById('thank-you-message');
+    const errorMessage = document.getElementById('error-message');
+    const ratingDisplay = document.getElementById('rating-display');
+    const ratingText = document.getElementById('rating-text');
+
+    if (hasRated) {
+      // User already rated - hide input, show thank you
+      if (ratingInput) ratingInput.classList.add('hidden');
+      if (thankYouMessage) thankYouMessage.classList.remove('hidden');
+      return;
+    }
+
+    // Hover effect
+    starButtons.forEach((button, index) => {
+      button.addEventListener('mouseenter', () => {
+        starButtons.forEach((btn, i) => {
+          const svg = btn.querySelector('svg');
+          if (i <= index) {
+            svg?.classList.remove('text-gray-300');
+            svg?.classList.add('text-yellow-500');
+          } else {
+            svg?.classList.remove('text-yellow-500');
+            svg?.classList.add('text-gray-300');
+          }
+        });
+      });
+
+      button.addEventListener('mouseleave', () => {
+        starButtons.forEach((btn) => {
+          const svg = btn.querySelector('svg');
+          svg?.classList.remove('text-yellow-500');
+          svg?.classList.add('text-gray-300');
+        });
+      });
+
+      // Click to submit rating
+      button.addEventListener('click', async () => {
+        const rating = parseInt(button.getAttribute('data-rating') || '0');
+
+        // Disable all buttons during submission
+        starButtons.forEach(btn => btn.setAttribute('disabled', 'true'));
+
+        try {
+          const response = await fetch('https://dev1.zapel.eu/graphql', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
+                mutation SubmitRating($postId: Int!, $rating: Int!) {
+                  submitPostRating(input: { postId: $postId, rating: $rating }) {
+                    averageRating
+                    ratingCount
+                  }
+                }
+              `,
+              variables: {
+                postId: parseInt(postId || '0'),
+                rating: rating,
+              },
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.errors) {
+            throw new Error(result.errors[0].message);
+          }
+
+          // Success - update display
+          const newRating = result.data.submitPostRating;
+
+          // Update display stars
+          if (ratingDisplay) {
+            const displayStars = ratingDisplay.querySelectorAll('svg');
+            displayStars.forEach((star, i) => {
+              if (i < Math.round(newRating.averageRating)) {
+                star.classList.remove('text-gray-300');
+                star.classList.add('text-yellow-500');
+              } else {
+                star.classList.remove('text-yellow-500');
+                star.classList.add('text-gray-300');
+              }
+            });
+          }
+
+          // Update text
+          if (ratingText) {
+            const count = newRating.ratingCount;
+            const countText = count === 1 ? 'głos' : count < 5 ? 'głosy' : 'głosów';
+            ratingText.textContent = `Średnia ocena: ${newRating.averageRating.toFixed(1)} (${count} ${countText})`;
+          }
+
+          // Save to localStorage
+          localStorage.setItem(storageKey, 'true');
+
+          // Hide input, show thank you
+          if (ratingInput) ratingInput.classList.add('hidden');
+          if (thankYouMessage) thankYouMessage.classList.remove('hidden');
+
+        } catch (error) {
+          console.error('Error submitting rating:', error);
+
+          // Show error message
+          if (errorMessage) errorMessage.classList.remove('hidden');
+
+          // Re-enable buttons
+          starButtons.forEach(btn => btn.removeAttribute('disabled'));
+
+          // Hide error after 5 seconds
+          setTimeout(() => {
+            if (errorMessage) errorMessage.classList.add('hidden');
+          }, 5000);
+        }
+      });
+    });
+  });
+</script>

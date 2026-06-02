@@ -1,39 +1,24 @@
-# 1. Wyłączamy automatyczne dodawanie slasha do fizycznych folderów (kluczowe!)
-DirectorySlash Off
 Options -Indexes
+DirectorySlash Off
 
 RewriteEngine On
 RewriteBase /
 
-# 2. Wyjątek dla wp-admin - panel WordPressa MUSI mieć slash, inaczej się nie zalogujesz
-RewriteCond %{REQUEST_URI} ^/blog/wp-admin$
-RewriteRule ^blog/wp-admin$ /blog/wp-admin/ [R=301,L]
-
-# 3. Jeśli ktoś wejdzie na /blog/ (ze slashem), przekieruj na /blog (bez slasha)
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_URI} ^/blog/$
-RewriteRule ^blog/$ /blog [R=301,L]
-
-# 4. Obsługa wejścia na /blog - pokaż index.php, ale nie zmieniaj adresu w przeglądarce
-RewriteCond %{REQUEST_URI} ^/blog$
-RewriteRule ^blog$ blog/index.php [L]
-
-# 5. Ogólne usuwanie slasha dla całej reszty (Astro i podstrony bloga)
-# Usunąłem warunek !-d, aby reguła działała też na folder /blog
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !(^/blog/wp-admin)
-RewriteCond %{REQUEST_URI} ^/(.+)/$
+# Canonical URL: bez końcowego slasha (poza "/")
+RewriteCond %{REQUEST_URI} !^/$
 RewriteRule ^(.+)/$ /$1 [R=301,L]
 
-# 6. Ignoruj WordPressa (dalsze przetwarzanie plików wewnątrz /blog)
-RewriteCond %{REQUEST_URI} ^/blog [NC]
-RewriteRule . - [L]
+# Canonical URL: bez rozszerzenia .html
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ %1 [R=301,L,NE]
 
-# 7. Obsługa plików .html bez rozszerzenia (Astro Clean URLs)
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-RewriteRule ^([^/]+)$ $1.html [L]
+# Strona główna
+RewriteRule ^$ index.html [L]
+
+# Clean URLs -> fizyczne pliki .html (również dla ścieżek zagnieżdżonych)
+# Przykłady: /kontakt -> /kontakt.html, /blog/slug -> /blog/slug.html
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
+RewriteRule ^(.+)$ $1.html [L]
 
 ErrorDocument 404 /404.html
 ErrorDocument 500 /500.html

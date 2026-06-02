@@ -1,0 +1,962 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import PostRating from '../../components/PostRating.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import { getAllPosts, getPostBySlug, type BlogPost } from '../../lib/wordpress';
+
+export const getStaticPaths = (async () => {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Pobierz 3 najnowsze wpisy z tej samej kategorii
+const allPosts = await getAllPosts();
+const postCategoryIds = post.categories.map((cat) => cat.id);
+
+// Filtruj wpisy, które mają wspólną kategorię z obecnym wpisem
+let relatedPosts = allPosts
+  .filter(
+    (p) => p.slug !== post.slug && p.categories.some((cat) => postCategoryIds.includes(cat.id))
+  )
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+// Jeśli nie ma 3 wpisów z tej samej kategorii, uzupełnij innymi najnowszymi
+if (relatedPosts.length < 3) {
+  const remainingPosts = allPosts
+    .filter((p) => p.slug !== post.slug && !relatedPosts.some((rp) => rp.slug === p.slug))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3 - relatedPosts.length);
+
+  relatedPosts = [...relatedPosts, ...remainingPosts];
+}
+
+const publishedDate = new Date(post.date).toISOString();
+const primaryCategory = post.categories?.[0];
+
+// Word count dla schema
+const wordCount = post.content
+  ? post.content
+      .replace(/<[^>]*>/g, '')
+      .split(/\s+/)
+      .filter((w) => w.length > 0).length
+  : 0;
+
+// JSON-LD Schema dla Article
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  image: post.featuredImage
+    ? {
+        '@type': 'ImageObject',
+        url: post.featuredImage.url,
+        width: post.featuredImage.width || 1200,
+        height: post.featuredImage.height || 630,
+      }
+    : undefined,
+  datePublished: publishedDate,
+  dateModified: publishedDate,
+  author: {
+    '@type': 'Person',
+    name: post.author,
+    url: `${Astro.site}blog/autor/${post.authorSlug}`,
+    ...(post.authorExpertise && { description: post.authorExpertise }),
+    ...(post.authorPhoto && {
+      image: {
+        '@type': 'ImageObject',
+        url: post.authorPhoto.url,
+        width: post.authorPhoto.width,
+        height: post.authorPhoto.height,
+      },
+    }),
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Talem',
+    url: Astro.site?.toString() || 'https://talem.eu',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${Astro.site}images/logo-talem.svg`,
+      width: 250,
+      height: 60,
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${Astro.site}blog/${post.slug}`,
+  },
+  articleBody: post.excerpt,
+  ...(wordCount > 0 && { wordCount }),
+  ...(post.categories.length > 0 && {
+    articleSection: post.categories.map((cat) => cat.name),
+    keywords: post.categories.map((cat) => cat.name).join(', '),
+  }),
+  inLanguage: 'pl-PL',
+  ...(post.rating &&
+    post.rating.count > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: post.rating.average,
+        reviewCount: post.rating.count,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }),
+};
+
+// Breadcrumbs
+const breadcrumbs: Array<{ label: string; href?: string }> = [
+  { label: 'Strona główna', href: '/' },
+  { label: 'Blog', href: '/blog' },
+];
+
+if (primaryCategory) {
+  breadcrumbs.push({
+    label: primaryCategory.name,
+    href: `/blog/kategoria/${primaryCategory.slug}`,
+  });
+}
+
+breadcrumbs.push({ label: post.title });
+
+// JSON-LD Schema dla BreadcrumbList
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    ...(crumb.href && { item: `${Astro.site}${crumb.href.replace(/^\//, '')}` }),
+  })),
+};
+
+// Dekoduj HTML entities
+function decodeHTMLEntities(text: string): string {
+  const entities: { [key: string]: string } = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#039;': "\'",
+    '&#8211;': '–',
+    '&#8212;': '—',
+    '&#8216;': '\u2018',
+    '&#8217;': '\u2019',
+    '&#8220;': '\u201C',
+    '&#8221;': '\u201D',
+    '&nbsp;': ' ',
+    '&ndash;': '–',
+    '&mdash;': '—',
+    '&lsquo;': '\u2018',
+    '&rsquo;': '\u2019',
+    '&ldquo;': '\u201C',
+    '&rdquo;': '\u201D',
+  };
+
+  return text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
+}
+
+// Generuj spis treści z nagłówków H2
+function generateTableOfContents(content: string) {
+  const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
+  const headings: Array<{ id: string; text: string }> = [];
+  let match;
+
+  while ((match = h2Regex.exec(content)) !== null) {
+    const rawText = match[1]
+      .replace(/<[^>]+>/g, '') // Usuń tagi HTML
+      .trim();
+
+    // Dekoduj HTML entities
+    const decodedText = decodeHTMLEntities(rawText);
+
+    // Utwórz slug (ID) z tekstu nagłówka
+    const id = decodedText
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Usuń polskie znaki diakrytyczne
+      .replace(/ł/g, 'l')
+      .replace(/[^\w\s-]/g, '') // Usuń znaki specjalne
+      .replace(/\s+/g, '-') // Zamień spacje na myślniki
+      .replace(/-+/g, '-') // Usuń podwójne myślniki
+      .substring(0, 100); // Ogranicz długość
+
+    headings.push({ id, text: decodedText });
+  }
+
+  return headings;
+}
+
+const tableOfContents = generateTableOfContents(post.content || '');
+---
+
+<BaseLayout
+  title={`${post.title} | Blog Talem`}
+  description={post.excerpt.substring(0, 152) + '...'}
+  ogImage={post.featuredImage?.url}
+>
+  <!-- JSON-LD Schema for Article -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <!-- JSON-LD Schema for Breadcrumbs -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <style is:global>
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Editorial Blog Styling - Optimized */
+    .article-content {
+      font-family: 'Manrope', sans-serif;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #1f2937;
+    }
+
+    /* Headings */
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4,
+    .article-content h5,
+    .article-content h6 {
+      font-family: 'Newsreader', serif;
+      font-weight: 600;
+      color: #111827;
+      letter-spacing: -0.02em;
+      scroll-margin-top: 100px;
+    }
+
+    .article-content h2 {
+      font-size: 2rem;
+      line-height: 1.25;
+      margin-top: 3rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .article-content h3 {
+      font-size: 1.5rem;
+      line-height: 1.35;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .article-content h4 {
+      font-size: 1.25rem;
+      line-height: 1.4;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .article-content h5,
+    .article-content h6 {
+      font-size: 1.125rem;
+      line-height: 1.5;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Paragraphs */
+    .article-content p {
+      margin-bottom: 1.75rem;
+      text-align: justify;
+    }
+
+    .article-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Drop Cap - pierwsza litera pierwszego akapitu */
+    .article-content > p:first-of-type::first-letter {
+      font-size: 4rem;
+      font-family: 'Newsreader', serif;
+      font-weight: 700;
+      color: #650017;
+      float: left;
+      line-height: 0.85;
+      margin-right: 0.5rem;
+      margin-top: 0.1rem;
+    }
+
+    /* Lists */
+    .article-content ul,
+    .article-content ol {
+      margin-left: 2rem;
+      margin-bottom: 1.75rem;
+      padding-left: 0.5rem;
+    }
+
+    .article-content ul {
+      list-style-type: none;
+    }
+
+    .article-content ul li {
+      position: relative;
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+    }
+
+    .article-content ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: #650017;
+      font-weight: bold;
+    }
+
+    .article-content ol {
+      list-style-type: decimal;
+      list-style-position: outside;
+    }
+
+    .article-content ol li {
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+
+    .article-content ol li::marker {
+      color: #650017;
+      font-weight: 600;
+    }
+
+    .article-content li > ul,
+    .article-content li > ol {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Links */
+    .article-content a {
+      color: #650017;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .article-content a:hover {
+      color: #8f0024;
+      text-decoration-thickness: 2px;
+    }
+
+    /* Blockquotes */
+    .article-content blockquote {
+      border-left: 4px solid #650017;
+      padding: 1.5rem 1.5rem 1.5rem 2rem;
+      margin: 2.5rem 0;
+      background: #f9fafb;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      font-family: 'Newsreader', serif;
+      font-size: 1.125rem;
+      color: #374151;
+    }
+
+    .article-content blockquote p {
+      margin-bottom: 0;
+    }
+
+    .article-content blockquote cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      font-style: normal;
+      color: #6b7280;
+    }
+
+    .article-content blockquote cite::before {
+      content: '— ';
+    }
+
+    /* Strong & Em */
+    .article-content strong {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .article-content em {
+      font-style: italic;
+    }
+
+    /* Code */
+    .article-content code {
+      background: #f3f4f6;
+      color: #dc2626;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875em;
+      font-weight: 500;
+    }
+
+    .article-content pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid #334155;
+    }
+
+    .article-content pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    /* Images & Figures */
+    .article-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2.5rem auto;
+      display: block;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .article-content figure {
+      margin: 2.5rem 0;
+    }
+
+    .article-content figure img {
+      margin: 0 auto;
+    }
+
+    .article-content figcaption {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.75rem;
+      font-style: italic;
+    }
+
+    /* Tables */
+    .article-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.9375rem;
+    }
+
+    .article-content table thead {
+      background: #f9fafb;
+    }
+
+    .article-content table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #111827;
+      border-bottom: 2px solid #650017;
+    }
+
+    .article-content table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .article-content table tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    /* HR */
+    .article-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 3rem 0;
+    }
+
+    /* WordPress specific classes */
+    .article-content .wp-caption {
+      max-width: 100%;
+      margin: 2rem 0;
+    }
+
+    .article-content .wp-caption-text {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .article-content .alignleft {
+      float: left;
+      margin: 0.5rem 1.5rem 1.5rem 0;
+    }
+
+    .article-content .alignright {
+      float: right;
+      margin: 0.5rem 0 1.5rem 1.5rem;
+    }
+
+    .article-content .aligncenter {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .article-content {
+        font-size: 17px;
+      }
+
+      .article-content h2 {
+        font-size: 1.75rem;
+        margin-top: 2.5rem;
+      }
+
+      .article-content h3 {
+        font-size: 1.375rem;
+        margin-top: 2rem;
+      }
+
+      .article-content > p:first-of-type::first-letter {
+        font-size: 3rem;
+      }
+
+      .article-content blockquote {
+        padding: 1rem 1rem 1rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    /* Prose styling for sidebar content */
+    .prose {
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .prose ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .prose ul li {
+      position: relative;
+      padding-left: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .prose ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #650017;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    .prose p {
+      margin-bottom: 0.75rem;
+    }
+
+    .prose p:last-child {
+      margin-bottom: 0;
+    }
+
+    .prose strong {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    /* Key Information Section Styling */
+    .prose-key-info {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .prose-key-info ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .prose-key-info ul li {
+      position: relative;
+      padding-left: 2.5rem;
+      padding-top: 0.25rem;
+    }
+
+    .prose-key-info ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0.25rem;
+      color: #650017;
+      font-weight: bold;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .prose-key-info p {
+      margin-bottom: 1rem;
+    }
+
+    .prose-key-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .prose-key-info strong {
+      font-weight: 700;
+      color: #650017;
+    }
+  </style>
+
+  <Navigation />
+
+  <main class="bg-[#f8f9fb] min-h-screen">
+    <div class="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
+      <!-- Breadcrumbs -->
+      <Breadcrumbs items={breadcrumbs} />
+
+      <!-- Article Header -->
+      <article class="max-w-[1120px] mx-auto">
+        <header class="mb-16">
+          <!-- Category Badge + Reading Time -->
+          <div class="flex items-center gap-4 mb-4">
+            {
+              primaryCategory && (
+                <span class="bg-[#e1e2e4] text-[#594041] font-bold text-xs uppercase tracking-widest px-3 py-1">
+                  {primaryCategory.name}
+                </span>
+              )
+            }
+            <span class="text-sm font-medium text-[#5f5e5e]">{post.readingTime}</span>
+          </div>
+
+          <!-- Main Title (H1) -->
+          <h1
+            class="font-['Newsreader'] text-5xl lg:text-6xl font-semibold text-[#191c1e] mb-8 leading-[1.1] tracking-tight"
+          >
+            {post.title}
+          </h1>
+
+          <!-- Author Info -->
+          <div class="flex items-center gap-4 border-t border-[#191c1e]/10 pt-4">
+            <div class="w-12 h-12 bg-[#ffdada] rounded overflow-hidden flex-shrink-0">
+              <div
+                class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-lg"
+              >
+                {post.author.charAt(0).toUpperCase()}
+              </div>
+            </div>
+            <div>
+              <p class="font-bold text-xs uppercase tracking-widest text-[#191c1e]">
+                <a
+                  href={`/blog/autor/${post.authorSlug}`}
+                  class="hover:text-[#650017] transition-colors"
+                >
+                  {post.author}
+                </a>
+              </p>
+              {
+                /*<p class="text-sm font-medium text-[#5f5e5e]">
+                <time datetime={publishedDate}>{post.formattedDate}</time>
+              </p>*/
+              }
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Layout: Featured Image + Sidebar -->
+        <div class="flex flex-col lg:flex-row gap-8 mb-12">
+          <!-- Left Column: Featured Image -->
+          <div class="lg:flex-[1.8]">
+            {
+              post.featuredImage?.url && (
+                <Image
+                  src={post.featuredImage.url}
+                  alt={post.featuredImage.alt}
+                  width={post.featuredImage.width || 1200}
+                  height={post.featuredImage.height || 675}
+                  class="w-full h-[300px] md:h-[500px] object-cover rounded"
+                  loading="eager"
+                />
+              )
+            }
+          </div>
+
+          <!-- Right Column: Sidebar -->
+          <div class="lg:flex-1 flex flex-col gap-8">
+            <!-- Table of Contents -->
+            {
+              tableOfContents.length > 0 && (
+                <div class="bg-[#edeef0] p-6 border-l-4 border-[#650017]">
+                  <span class="font-bold text-sm uppercase tracking-widest text-[#650017] mb-4 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    SPIS TREŚCI
+                  </span>
+                  <nav
+                    class="flex flex-col gap-3 text-sm font-medium text-[#5f5e5e]"
+                    id="table-of-contents"
+                  >
+                    {tableOfContents.map((heading, index) => (
+                      <a
+                        href={`#${heading.id}`}
+                        class="hover:text-[#650017] transition-colors toc-link"
+                        data-toc-target={heading.id}
+                      >
+                        {index + 1}. {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )
+            }
+          </div>
+        </div>
+
+        <!-- Najważniejsze informacje - Full Width Section -->
+        {
+          post.keyInformation && (
+            <section class="mb-16">
+              <div class="bg-[#edeef0] p-8 border-l-4 border-[#650017]">
+                <h2 class="font-['Newsreader'] text-2xl font-semibold text-[#191c1e] mb-6 flex items-center gap-3">
+                  <svg class="w-6 h-6 text-[#650017]" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  Najważniejsze informacje w artykule
+                </h2>
+                <div
+                  class="prose-key-info text-[#191c1e] leading-relaxed"
+                  set:html={post.keyInformation}
+                />
+              </div>
+            </section>
+          )
+        }
+
+        <!-- Article Content -->
+        <div id="content" class="article-content" set:html={post.content} />
+
+        <!-- Post Rating Section -->
+        <section class="mt-16">
+          <PostRating
+            postId={post.databaseId}
+            averageRating={post.rating?.average}
+            ratingCount={post.rating?.count}
+          />
+        </section>
+
+        <!-- Author Bio Card -->
+        <section
+          class="mt-24 p-8 bg-[#edeef0] border border-[#191c1e]/5 rounded flex flex-col md:flex-row gap-8 items-center md:items-start"
+        >
+          <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
+            {
+              post.authorPhoto ? (
+                <Image
+                  src={post.authorPhoto.url}
+                  alt={post.authorPhoto.alt}
+                  width={post.authorPhoto.width || 128}
+                  height={post.authorPhoto.height || 128}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
+                  {post.author.charAt(0).toUpperCase()}
+                </div>
+              )
+            }
+          </div>
+          <div class="text-center md:text-left">
+            <h4 class="font-['Newsreader'] text-2xl font-medium mb-2">
+              O autorze: <a
+                href={`/blog/autor/${post.authorSlug}`}
+                class="hover:text-[#650017] transition-colors">{post.author}</a
+              >
+            </h4>
+            {
+              post.authorExpertise && (
+                <p class="text-base text-[#5f5e5e] mb-4 leading-relaxed">{post.authorExpertise}</p>
+              )
+            }
+          </div>
+        </section>
+      </article>
+
+      <!-- Related Articles -->
+      <section class="mt-24 border-t border-[#191c1e]/10 pt-16">
+        <div class="flex justify-between items-end mb-12">
+          <span class="font-['Newsreader'] text-4xl font-medium">Powiązane artykuły</span>
+          <a
+            href="/blog"
+            class="font-bold text-xs uppercase tracking-widest text-[#650017] border-b border-[#650017] hover:pb-1 transition-all"
+          >
+            WSZYSTKIE WPISY
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {
+            relatedPosts.map((relatedPost) => (
+              <a href={`/blog/${relatedPost.slug}`} class="group">
+                {relatedPost.featuredImage?.url && (
+                  <div class="aspect-video bg-[#e7e8ea] overflow-hidden mb-4 rounded">
+                    <Image
+                      src={relatedPost.featuredImage.url}
+                      alt={relatedPost.featuredImage.alt}
+                      width={400}
+                      height={225}
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                {relatedPost.categories?.[0] && (
+                  <p class="font-bold text-xs uppercase tracking-widest text-[#650017] mb-2">
+                    {relatedPost.categories[0].name}
+                  </p>
+                )}
+                <span class="font-['Newsreader'] text-2xl font-medium group-hover:text-[#650017] transition-colors">
+                  {relatedPost.title}
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Table of Contents Script: Add IDs to H2 and Smooth Scroll -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('TOC script loaded');
+
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const articleContent = document.getElementById('content');
+
+      if (!articleContent) {
+        console.log('Article content not found');
+        return;
+      }
+
+      if (tocLinks.length === 0) {
+        console.log('No TOC links found');
+        return;
+      }
+
+      // Funkcja do dekodowania HTML entities
+      function decodeHTMLEntities(text) {
+        const textarea = document.createElement('textarea');
+        textarea.innerHTML = text;
+        return textarea.value;
+      }
+
+      // Funkcja do generowania slug z tekstu
+      function generateSlug(text) {
+        return decodeHTMLEntities(text)
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/ł/g, 'l')
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .substring(0, 100);
+      }
+
+      // Dodaj ID do każdego H2
+      const h2Elements = articleContent.querySelectorAll('h2');
+      console.log(`Found ${h2Elements.length} H2 elements`);
+
+      h2Elements.forEach((h2, index) => {
+        const h2Text = h2.textContent.trim();
+        const slug = generateSlug(h2Text);
+        h2.id = slug;
+        h2.style.scrollMarginTop = '100px';
+        console.log(`H2 ${index}: "${h2Text}" -> ID: "${slug}"`);
+      });
+
+      // Smooth scroll dla TOC links
+      tocLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('data-toc-target');
+          console.log(`Clicked link with target: ${targetId}`);
+
+          const targetElement = document.getElementById(targetId);
+
+          if (targetElement) {
+            console.log('Target found, scrolling...');
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+            history.pushState(null, '', `#${targetId}`);
+          } else {
+            console.log('Target element not found!');
+          }
+        });
+      });
+
+      // Highlight aktywnej sekcji
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              tocLinks.forEach((link) => link.classList.remove('text-[#650017]', 'font-bold'));
+              const activeLink = document.querySelector(`[data-toc-target="${id}"]`);
+              if (activeLink) {
+                activeLink.classList.add('text-[#650017]', 'font-bold');
+              }
+            }
+          });
+        },
+        {
+          rootMargin: '-100px 0px -80% 0px',
+          threshold: 0,
+        }
+      );
+
+      h2Elements.forEach((h2) => {
+        if (h2.id) {
+          observer.observe(h2);
+        }
+      });
+    });
+  </script>
+</BaseLayout>

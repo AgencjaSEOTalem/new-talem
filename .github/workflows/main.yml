@@ -3,6 +3,14 @@ name: Deploy Astro via NPM to Seohost
 on:
   push:
     branches: [ master ] 
+  # Wyzwalacz nasłuchujący sygnału z WordPressa
+  repository_dispatch:
+    types: [wordpress_publish]
+
+# Zabezpieczenie przed jednoczesnym uruchomieniem dwóch deployów na raz
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -39,10 +47,3 @@ jobs:
           timeout: 600000
           dangerous-clean-slate: false
           log-level: verbose
-          exclude: |
-            **/blog/**
-            **/wp-admin/**
-            **/wp-content/**
-            **/wp-includes/**
-            wp-config.php
-            index.php
