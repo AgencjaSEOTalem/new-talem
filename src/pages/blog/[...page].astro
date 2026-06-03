@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
 import NewsletterBox from '../../components/NewsletterBox.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { getAllPosts, getAllCategories, type BlogPost } from '../../lib/wordpress';
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -129,13 +129,17 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
                   href={`/blog/${featuredPost.slug}`}
                   class="block overflow-hidden h-full min-h-[400px]"
                 >
-                  <Image
+                  <Picture
                     src={featuredPost.featuredImage.url}
                     alt={featuredPost.featuredImage.alt}
                     width={featuredPost.featuredImage.width || 1200}
                     height={featuredPost.featuredImage.height || 800}
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    widths={[600, 900, 1200]}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    formats={['avif', 'webp']}
                     loading="eager"
+                    fetchpriority="high"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                   />
                 </a>
               )}

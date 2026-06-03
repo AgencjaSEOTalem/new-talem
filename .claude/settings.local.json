@@ -12,7 +12,10 @@
       "WebFetch(domain:www.talem.eu)",
       "Bash(tail:*)",
       "Bash(npm run dev:*)",
-      "Bash(code --list-extensions)"
+      "Bash(code --list-extensions)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(echo:*)"
     ]
   }
 }

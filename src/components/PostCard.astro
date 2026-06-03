@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import type { BlogPost } from '../lib/wordpress';
 
 interface Props {
@@ -23,12 +23,19 @@ const shortExcerpt =
   {
     post.featuredImage?.url && (
       <a href={`/blog/${post.slug}`} class="block overflow-hidden aspect-[16/10]">
-        <Image
+        <Picture
           src={post.featuredImage.url}
           alt={post.featuredImage.alt}
           width={post.featuredImage.width || 800}
           height={post.featuredImage.height || 500}
+          widths={[400, 800, 1200]}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+          formats={['avif', 'webp']}
           loading="lazy"
+          decoding="async"
+          pictureAttributes={{
+            class: "w-full h-full"
+          }}
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </a>

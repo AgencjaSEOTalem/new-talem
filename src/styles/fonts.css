@@ -1,0 +1,7 @@
+/* Fonty załadowane z font-display: swap dla lepszej wydajności */
+@import "@fontsource-variable/manrope/index.css";
+@import "@fontsource-variable/playfair-display/index.css";
+
+/* Fonty opcjonalne - załadowane lazy */
+@import "@fontsource-variable/jetbrains-mono/index.css" layer(optional);
+@import "@fontsource-variable/newsreader/index.css" layer(optional);

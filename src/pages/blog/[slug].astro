@@ -5,7 +5,7 @@ import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
 import PostRating from '../../components/PostRating.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { getAllPosts, getPostBySlug, type BlogPost } from '../../lib/wordpress';
 
 export const getStaticPaths = (async () => {
@@ -666,13 +666,16 @@ const tableOfContents = generateTableOfContents(post.content || '');
               >
                 {
                   post.authorPhoto ? (
-                    <Image
+                    <Picture
                       src={post.authorPhoto.url}
                       alt={post.authorPhoto.alt}
                       width={post.authorPhoto.width || 128}
                       height={post.authorPhoto.height || 128}
-                      class="w-full h-full object-cover"
+                      widths={[48, 96, 128]}
+                      formats={['avif', 'webp']}
                       loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover"
                     />
                   ) : (
                     <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
@@ -706,13 +709,20 @@ const tableOfContents = generateTableOfContents(post.content || '');
           <div class="lg:flex-[1.8]">
             {
               post.featuredImage?.url && (
-                <Image
+                <Picture
                   src={post.featuredImage.url}
                   alt={post.featuredImage.alt}
                   width={post.featuredImage.width || 1200}
                   height={post.featuredImage.height || 675}
-                  class="w-full h-[300px] md:h-[500px] object-cover rounded"
+                  widths={[600, 900, 1200, 1800]}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 800px"
+                  formats={['avif', 'webp']}
                   loading="eager"
+                  fetchpriority="high"
+                  pictureAttributes={{
+                    class: "w-full"
+                  }}
+                  class="w-full h-[300px] md:h-[500px] object-cover rounded"
                 />
               )
             }
@@ -800,13 +810,16 @@ const tableOfContents = generateTableOfContents(post.content || '');
           <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
             {
               post.authorPhoto ? (
-                <Image
+                <Picture
                   src={post.authorPhoto.url}
                   alt={post.authorPhoto.alt}
                   width={post.authorPhoto.width || 128}
                   height={post.authorPhoto.height || 128}
-                  class="w-full h-full object-cover"
+                  widths={[64, 128]}
+                  formats={['avif', 'webp']}
                   loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover"
                 />
               ) : (
                 <div class="w-full h-full bg-gradient-to-br from-[#650017] to-[#8f0024] flex items-center justify-center text-white font-bold text-4xl">
@@ -849,13 +862,17 @@ const tableOfContents = generateTableOfContents(post.content || '');
               <a href={`/blog/${relatedPost.slug}`} class="group">
                 {relatedPost.featuredImage?.url && (
                   <div class="aspect-video bg-[#e7e8ea] overflow-hidden mb-4 rounded">
-                    <Image
+                    <Picture
                       src={relatedPost.featuredImage.url}
                       alt={relatedPost.featuredImage.alt}
                       width={400}
                       height={225}
-                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      widths={[300, 400, 600]}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                      formats={['avif', 'webp']}
                       loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                 )}
@@ -877,44 +894,21 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
   <Footer />
 
-  <!-- Table of Contents Script: Synchronize IDs and Smooth Scroll -->
-  <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
+  <!-- Table of Contents Script: Zoptymalizowany -->
+  <script>
+    // Funkcja inicjalizująca TOC - może być wywołana wielokrotnie (View Transitions)
+    function initTableOfContents() {
       const tocLinks = document.querySelectorAll('.toc-link');
       const articleContent = document.getElementById('content');
 
-      if (!articleContent) return;
+      if (!articleContent || !tocLinks.length) return;
 
       const h2Elements = articleContent.querySelectorAll('h2');
+      if (!h2Elements.length) return;
 
-      if (h2Elements.length === 0) return;
-
-      // Wspólna funkcja do generowania slug (IDENTYCZNA jak server-side)
-      function generateSlug(text) {
-        const entities = {
-          '&amp;': '&',
-          '&lt;': '<',
-          '&gt;': '>',
-          '&quot;': '"',
-          '&#039;': "'",
-          '&#8211;': '-',
-          '&#8212;': '-',
-          '&#8216;': "'",
-          '&#8217;': "'",
-          '&#8220;': '"',
-          '&#8221;': '"',
-          '&nbsp;': ' ',
-          '&ndash;': '-',
-          '&mdash;': '-',
-          '&lsquo;': "'",
-          '&rsquo;': "'",
-          '&ldquo;': '"',
-          '&rdquo;': '"',
-        };
-
-        let decoded = text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
-
-        return decoded
+      // Szybkie generowanie slug
+      const generateSlug = (text) => {
+        return text
           .toLowerCase()
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
@@ -923,58 +917,59 @@ const tableOfContents = generateTableOfContents(post.content || '');
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-')
           .trim()
-          .substring(0, 100);
-      }
+          .slice(0, 100);
+      };
 
-      // 1. Dodaj ID do H2 elementów
-      const h2Map = new Map();
+      // Dodaj ID do nagłówków i przygotuj mapę
+      const slugMap = new Map();
       h2Elements.forEach((h2, index) => {
-        const h2Text = h2.textContent.trim();
-        const slug = generateSlug(h2Text);
+        const slug = generateSlug(h2.textContent.trim());
         h2.id = slug;
         h2.style.scrollMarginTop = '100px';
-        h2Map.set(index, slug);
+        slugMap.set(index, slug);
       });
 
-      // 2. Zaktualizuj TOC linki z wygenerowanymi ID
+      // Zaktualizuj linki TOC
       tocLinks.forEach((link) => {
-        const index = parseInt(link.getAttribute('data-toc-index'));
-        const slug = h2Map.get(index);
-
+        const index = parseInt(link.dataset.tocIndex);
+        const slug = slugMap.get(index);
         if (slug) {
           link.href = `#${slug}`;
-          link.setAttribute('data-toc-target', slug);
+          link.dataset.tocTarget = slug;
         }
       });
 
-      // 3. Smooth scroll dla TOC links
-      tocLinks.forEach((link) => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = link.getAttribute('data-toc-target');
+      // Event delegation dla kliknięć - jeden listener zamiast wielu
+      const tocContainer = document.getElementById('table-of-contents');
+      if (tocContainer) {
+        tocContainer.addEventListener('click', (e) => {
+          const link = e.target.closest('.toc-link');
+          if (!link) return;
 
+          e.preventDefault();
+          const targetId = link.dataset.tocTarget;
           if (!targetId) return;
 
-          const targetElement = document.getElementById(targetId);
-
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            });
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             history.pushState(null, '', `#${targetId}`);
           }
         });
-      });
+      }
 
-      // 4. Highlight aktywnej sekcji podczas scrollowania
+      // Zoptymalizowany IntersectionObserver
+      let activeLink = null;
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              const id = entry.target.id;
-              tocLinks.forEach((link) => link.classList.remove('text-[#650017]', 'font-bold'));
-              const activeLink = document.querySelector(`[data-toc-target="${id}"]`);
+              // Usuń poprzednie highlight
+              if (activeLink) {
+                activeLink.classList.remove('text-[#650017]', 'font-bold');
+              }
+              // Dodaj nowe
+              activeLink = document.querySelector(`[data-toc-target="${entry.target.id}"]`);
               if (activeLink) {
                 activeLink.classList.add('text-[#650017]', 'font-bold');
               }
@@ -989,28 +984,36 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
       h2Elements.forEach((h2) => observer.observe(h2));
 
-      // 5. Scroll do sekcji jeśli URL zawiera hash przy ładowaniu
-      function scrollToHash() {
-        if (window.location.hash) {
-          const hash = window.location.hash.substring(1);
-          const targetElement = document.getElementById(hash);
+      // Scroll do hash przy ładowaniu
+      const scrollToHash = () => {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return;
 
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            });
-          }
+        const target = document.getElementById(hash);
+        if (target) {
+          // Natychmiastowy scroll bez animacji przy ładowaniu
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
+          }, 100);
         }
-      }
+      };
 
-      // Poczekaj aż DOM się ustabilizuje przed scrollowaniem
-      requestAnimationFrame(() => {
-        setTimeout(scrollToHash, 300);
-      });
+      // Wykonaj scroll po krótkim opóźnieniu (czekaj na render)
+      requestAnimationFrame(() => setTimeout(scrollToHash, 150));
 
-      // 6. Obsługa zmiany hasha (historia przeglądarki, nowe linki)
-      window.addEventListener('hashchange', scrollToHash);
-    });
+      // Cleanup funkcja zwracana dla View Transitions
+      return () => {
+        observer.disconnect();
+        if (tocContainer) {
+          tocContainer.replaceWith(tocContainer.cloneNode(true));
+        }
+      };
+    }
+
+    // Inicjalizuj przy ładowaniu
+    document.addEventListener('DOMContentLoaded', initTableOfContents);
+
+    // Re-inicjalizuj po View Transitions (Astro)
+    document.addEventListener('astro:page-load', initTableOfContents);
   </script>
 </BaseLayout>

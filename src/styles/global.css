@@ -1,7 +1,5 @@
-@import "@fontsource-variable/playfair-display/index.css";
-@import "@fontsource-variable/jetbrains-mono/index.css";
-@import "@fontsource-variable/manrope/index.css";
-@import "@fontsource-variable/newsreader/index.css";
+/* Fonty załadowane w osobnym pliku dla lepszej kontroli */
+@import "./fonts.css";
 
 @tailwind base;
 @tailwind components;

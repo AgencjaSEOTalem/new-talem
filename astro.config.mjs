@@ -11,11 +11,12 @@ export default defineConfig({
   trailingSlash: 'never',
   build: {
     format: 'file',
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always', // Inline critical CSS dla lepszego FCP/LCP
   },
   vite: {
     build: {
-      cssCodeSplit: false,
+      cssCodeSplit: true, // Split CSS per page/component
+      cssMinify: 'lightningcss',
     },
   },
   image: {
