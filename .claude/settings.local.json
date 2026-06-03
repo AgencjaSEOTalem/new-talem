@@ -15,7 +15,8 @@
       "Bash(code --list-extensions)",
       "Bash(dir:*)",
       "Bash(ls:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(npm run preview:*)"
     ]
   }
 }
