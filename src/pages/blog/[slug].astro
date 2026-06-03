@@ -146,58 +146,57 @@ const breadcrumbSchema = {
   })),
 };
 
-// Dekoduj HTML entities
-function decodeHTMLEntities(text: string): string {
+// Wspólna funkcja do generowania slug (używana zarówno server-side jak i client-side)
+function generateSlugFromText(text: string): string {
+  // Najpierw dekoduj wszystkie HTML entities używając prostej mapy
   const entities: { [key: string]: string } = {
     '&amp;': '&',
     '&lt;': '<',
     '&gt;': '>',
     '&quot;': '"',
-    '&#039;': "\'",
-    '&#8211;': '–',
-    '&#8212;': '—',
-    '&#8216;': '\u2018',
-    '&#8217;': '\u2019',
-    '&#8220;': '\u201C',
-    '&#8221;': '\u201D',
+    '&#039;': "'",
+    '&#8211;': '-',
+    '&#8212;': '-',
+    '&#8216;': "'",
+    '&#8217;': "'",
+    '&#8220;': '"',
+    '&#8221;': '"',
     '&nbsp;': ' ',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&lsquo;': '\u2018',
-    '&rsquo;': '\u2019',
-    '&ldquo;': '\u201C',
-    '&rdquo;': '\u201D',
+    '&ndash;': '-',
+    '&mdash;': '-',
+    '&lsquo;': "'",
+    '&rsquo;': "'",
+    '&ldquo;': '"',
+    '&rdquo;': '"',
   };
 
-  return text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
+  let decoded = text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
+
+  // Generuj slug
+  return decoded
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ł/g, 'l')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+    .substring(0, 100);
 }
 
-// Generuj spis treści z nagłówków H2
+// Generuj spis treści z nagłówków H2 (tylko tekst, ID generowane client-side)
 function generateTableOfContents(content: string) {
   const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
-  const headings: Array<{ id: string; text: string }> = [];
+  const headings: Array<{ text: string }> = [];
   let match;
 
   while ((match = h2Regex.exec(content)) !== null) {
     const rawText = match[1]
-      .replace(/<[^>]+>/g, '') // Usuń tagi HTML
+      .replace(/<[^>]+>/g, '')
       .trim();
 
-    // Dekoduj HTML entities
-    const decodedText = decodeHTMLEntities(rawText);
-
-    // Utwórz slug (ID) z tekstu nagłówka
-    const id = decodedText
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Usuń polskie znaki diakrytyczne
-      .replace(/ł/g, 'l')
-      .replace(/[^\w\s-]/g, '') // Usuń znaki specjalne
-      .replace(/\s+/g, '-') // Zamień spacje na myślniki
-      .replace(/-+/g, '-') // Usuń podwójne myślniki
-      .substring(0, 100); // Ogranicz długość
-
-    headings.push({ id, text: decodedText });
+    headings.push({ text: rawText });
   }
 
   return headings;
@@ -238,7 +237,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
     .article-content h4,
     .article-content h5,
     .article-content h6 {
-      font-family: 'Newsreader', serif;
+      font-family: var(--font-newsreader);
       font-weight: 600;
       color: #111827;
       letter-spacing: -0.02em;
@@ -289,7 +288,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
     /* Drop Cap - pierwsza litera pierwszego akapitu */
     .article-content > p:first-of-type::first-letter {
       font-size: 4rem;
-      font-family: 'Newsreader', serif;
+      font-family: var(--font-newsreader);
       font-weight: 700;
       color: #650017;
       float: left;
@@ -367,7 +366,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       background: #f9fafb;
       border-radius: 0 8px 8px 0;
       font-style: italic;
-      font-family: 'Newsreader', serif;
+      font-family: var(--font-newsreader);
       font-size: 1.125rem;
       color: #374151;
     }
@@ -654,7 +653,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
           <!-- Main Title (H1) -->
           <h1
-            class="font-['Newsreader'] text-5xl lg:text-6xl font-semibold text-[#191c1e] mb-8 leading-[1.1] tracking-tight"
+            class="font-newsreader text-5xl lg:text-6xl font-semibold text-[#191c1e] mb-8 leading-[1.1] tracking-tight"
           >
             {post.title}
           </h1>
@@ -741,9 +740,10 @@ const tableOfContents = generateTableOfContents(post.content || '');
                   >
                     {tableOfContents.map((heading, index) => (
                       <a
-                        href={`#${heading.id}`}
+                        href="#"
                         class="hover:text-[#650017] transition-colors toc-link"
-                        data-toc-target={heading.id}
+                        data-toc-text={heading.text}
+                        data-toc-index={index}
                       >
                         {index + 1}. {heading.text}
                       </a>
@@ -760,7 +760,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
           post.keyInformation && (
             <section class="mb-16">
               <div class="bg-[#edeef0] p-8 border-l-4 border-[#650017]">
-                <h2 class="font-['Newsreader'] text-2xl font-semibold text-[#191c1e] mb-6 flex items-center gap-3">
+                <h2 class="font-newsreader text-2xl font-semibold text-[#191c1e] mb-6 flex items-center gap-3">
                   <svg class="w-6 h-6 text-[#650017]" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fill-rule="evenodd"
@@ -816,7 +816,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
             }
           </div>
           <div class="text-center md:text-left">
-            <h4 class="font-['Newsreader'] text-2xl font-medium mb-2">
+            <h4 class="font-newsreader text-2xl font-medium mb-2">
               O autorze: <a
                 href={`/blog/autor/${post.authorSlug}`}
                 class="hover:text-[#650017] transition-colors">{post.author}</a
@@ -834,7 +834,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       <!-- Related Articles -->
       <section class="mt-24 border-t border-[#191c1e]/10 pt-16">
         <div class="flex justify-between items-end mb-12">
-          <span class="font-['Newsreader'] text-4xl font-medium">Powiązane artykuły</span>
+          <span class="font-newsreader text-4xl font-medium">Powiązane artykuły</span>
           <a
             href="/blog"
             class="font-bold text-xs uppercase tracking-widest text-[#650017] border-b border-[#650017] hover:pb-1 transition-all"
@@ -864,7 +864,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
                     {relatedPost.categories[0].name}
                   </p>
                 )}
-                <span class="font-['Newsreader'] text-2xl font-medium group-hover:text-[#650017] transition-colors">
+                <span class="font-newsreader text-2xl font-medium group-hover:text-[#650017] transition-colors">
                   {relatedPost.title}
                 </span>
               </a>
@@ -877,34 +877,44 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
   <Footer />
 
-  <!-- Table of Contents Script: Add IDs to H2 and Smooth Scroll -->
+  <!-- Table of Contents Script: Synchronize IDs and Smooth Scroll -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('TOC script loaded');
-
       const tocLinks = document.querySelectorAll('.toc-link');
       const articleContent = document.getElementById('content');
 
-      if (!articleContent) {
-        console.log('Article content not found');
-        return;
-      }
+      if (!articleContent) return;
 
-      if (tocLinks.length === 0) {
-        console.log('No TOC links found');
-        return;
-      }
+      const h2Elements = articleContent.querySelectorAll('h2');
 
-      // Funkcja do dekodowania HTML entities
-      function decodeHTMLEntities(text) {
-        const textarea = document.createElement('textarea');
-        textarea.innerHTML = text;
-        return textarea.value;
-      }
+      if (h2Elements.length === 0) return;
 
-      // Funkcja do generowania slug z tekstu
+      // Wspólna funkcja do generowania slug (IDENTYCZNA jak server-side)
       function generateSlug(text) {
-        return decodeHTMLEntities(text)
+        const entities = {
+          '&amp;': '&',
+          '&lt;': '<',
+          '&gt;': '>',
+          '&quot;': '"',
+          '&#039;': "'",
+          '&#8211;': '-',
+          '&#8212;': '-',
+          '&#8216;': "'",
+          '&#8217;': "'",
+          '&#8220;': '"',
+          '&#8221;': '"',
+          '&nbsp;': ' ',
+          '&ndash;': '-',
+          '&mdash;': '-',
+          '&lsquo;': "'",
+          '&rsquo;': "'",
+          '&ldquo;': '"',
+          '&rdquo;': '"',
+        };
+
+        let decoded = text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
+
+        return decoded
           .toLowerCase()
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
@@ -912,44 +922,52 @@ const tableOfContents = generateTableOfContents(post.content || '');
           .replace(/[^\w\s-]/g, '')
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-')
+          .trim()
           .substring(0, 100);
       }
 
-      // Dodaj ID do każdego H2
-      const h2Elements = articleContent.querySelectorAll('h2');
-      console.log(`Found ${h2Elements.length} H2 elements`);
-
+      // 1. Dodaj ID do H2 elementów
+      const h2Map = new Map();
       h2Elements.forEach((h2, index) => {
         const h2Text = h2.textContent.trim();
         const slug = generateSlug(h2Text);
         h2.id = slug;
         h2.style.scrollMarginTop = '100px';
-        console.log(`H2 ${index}: "${h2Text}" -> ID: "${slug}"`);
+        h2Map.set(index, slug);
       });
 
-      // Smooth scroll dla TOC links
+      // 2. Zaktualizuj TOC linki z wygenerowanymi ID
+      tocLinks.forEach((link) => {
+        const index = parseInt(link.getAttribute('data-toc-index'));
+        const slug = h2Map.get(index);
+
+        if (slug) {
+          link.href = `#${slug}`;
+          link.setAttribute('data-toc-target', slug);
+        }
+      });
+
+      // 3. Smooth scroll dla TOC links
       tocLinks.forEach((link) => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           const targetId = link.getAttribute('data-toc-target');
-          console.log(`Clicked link with target: ${targetId}`);
+
+          if (!targetId) return;
 
           const targetElement = document.getElementById(targetId);
 
           if (targetElement) {
-            console.log('Target found, scrolling...');
             targetElement.scrollIntoView({
               behavior: 'smooth',
               block: 'start',
             });
             history.pushState(null, '', `#${targetId}`);
-          } else {
-            console.log('Target element not found!');
           }
         });
       });
 
-      // Highlight aktywnej sekcji
+      // 4. Highlight aktywnej sekcji podczas scrollowania
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -969,11 +987,30 @@ const tableOfContents = generateTableOfContents(post.content || '');
         }
       );
 
-      h2Elements.forEach((h2) => {
-        if (h2.id) {
-          observer.observe(h2);
+      h2Elements.forEach((h2) => observer.observe(h2));
+
+      // 5. Scroll do sekcji jeśli URL zawiera hash przy ładowaniu
+      function scrollToHash() {
+        if (window.location.hash) {
+          const hash = window.location.hash.substring(1);
+          const targetElement = document.getElementById(hash);
+
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
         }
+      }
+
+      // Poczekaj aż DOM się ustabilizuje przed scrollowaniem
+      requestAnimationFrame(() => {
+        setTimeout(scrollToHash, 300);
       });
+
+      // 6. Obsługa zmiany hasha (historia przeglądarki, nowe linki)
+      window.addEventListener('hashchange', scrollToHash);
     });
   </script>
 </BaseLayout>

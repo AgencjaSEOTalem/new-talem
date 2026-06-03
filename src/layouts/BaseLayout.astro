@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
+// import SpeedInsights from '@vercel/speed-insights/astro';
 import cookieConsentConfig from '../config/cookieconsent.js';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import '../styles/cookieconsent-overrides.css';
@@ -65,11 +65,6 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.ico" />
 
-    <!-- Fonty dla blogowych artykułów -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
-
     <!-- Client Router dla płynnych przejść bez przeładowania (View Transitions) -->
     <ClientRouter />
 
@@ -84,7 +79,7 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
   </head>
   <body>
     <slot />
-    <SpeedInsights />
+    <!-- <SpeedInsights /> -->
     <script>
       import '../scripts/scroll-reveal';
     </script>

@@ -134,7 +134,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
               )}
 
               <!-- Imię i nazwisko (H1) -->
-              <h1 class="font-['Newsreader'] text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
+              <h1 class="font-newsreader text-4xl lg:text-5xl font-bold text-[#191c1e] mb-4">
                 {page.currentPage === 1
                   ? author.name
                   : `${author.name} - Strona ${page.currentPage}`}

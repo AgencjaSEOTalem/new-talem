@@ -10,7 +10,13 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
   build: {
-    format: 'file'
+    format: 'file',
+    inlineStylesheets: 'auto',
+  },
+  vite: {
+    build: {
+      cssCodeSplit: false,
+    },
   },
   image: {
     domains: ['api.talem.eu'],

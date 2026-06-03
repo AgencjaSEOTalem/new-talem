@@ -23,11 +23,11 @@ const checkBgClass =
 <section id={id} class:list={[bgClass, 'px-4 sm:px-6 lg:px-8 py-24 lg:py-32']}>
   <div class="max-w-[800px] mx-auto">
     <div class="text-center mb-16">
-      <h2
+      <span
         class="font-display text-[2.5rem] lg:text-[4rem] font-black mb-6 leading-[1.2] text-balance"
       >
         Dobra współpraca zaczyna się od rozmowy
-      </h2>
+    </span>
       <p class="text-[1rem] lg:text-[1.125rem] text-gray-500 leading-[1.8] max-w-[700px] mx-auto">
         Nie działamy w oparciu o stały cennik ani gotowe pakiety usług. Każdą współpracę poprzedzamy
         rozmową i analizą projektu. Na tej podstawie przygotujemy budżet adekwatny do potrzeb i
@@ -149,6 +149,7 @@ const checkBgClass =
         <select
           name="budget"
           required
+          aria-label="Miesięczny budżet na działania SEO"
           class="w-full px-6 py-5 border-2 border-gray-300 rounded-xl text-base font-body transition-all bg-white outline-none focus:border-accent appearance-none pr-12 cursor-pointer aria-[invalid=true]:border-red-400"
         >
           <option value="">Miesięczny budżet na działania SEO</option>

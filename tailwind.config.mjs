@@ -28,6 +28,7 @@ export default {
                 display: ['var(--font-display)', 'serif'],
                 mono: ['var(--font-mono)', 'monospace'],
                 body: ['var(--font-body)', 'sans-serif'],
+                newsreader: ['var(--font-newsreader)', 'serif'],
             },
         },
     },

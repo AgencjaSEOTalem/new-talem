@@ -1,6 +1,7 @@
 @import "@fontsource-variable/playfair-display/index.css";
 @import "@fontsource-variable/jetbrains-mono/index.css";
 @import "@fontsource-variable/manrope/index.css";
+@import "@fontsource-variable/newsreader/index.css";
 
 @tailwind base;
 @tailwind components;
@@ -10,6 +11,7 @@
   --font-display: "Playfair Display Variable", serif;
   --font-mono: "JetBrains Mono Variable", monospace;
   --font-body: "Manrope Variable", sans-serif;
+  --font-newsreader: "Newsreader Variable", serif;
 
   --color-black: #0a0a0a;
   --color-white: #ffffff;
