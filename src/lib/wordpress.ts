@@ -261,21 +261,12 @@ async function fetchGraphQL<T>(query: string, variables: Record<string, any> = {
 function transformPost(node: GraphQLPostNode): BlogPost {
   const readingTime = calculateReadingTime(node.content || node.excerpt);
 
-  // Konwertuj absolutne URL-e na względne ścieżki
-  const transformContent = (content: string | undefined): string | undefined => {
-    if (!content) return content;
-    // Zamień https://www.talem.eu/blog/ i https://talem.eu/blog/ na /blog/
-    return content
-      .replace(/https?:\/\/(www\.)?talem\.eu\/blog\//g, '/blog/')
-      .replace(/https?:\/\/(www\.)?talem\.eu\//g, '/');
-  };
-
   return {
     id: node.databaseId,
     databaseId: node.databaseId,
     title: stripHtml(node.title),
     excerpt: stripHtml(node.excerpt),
-    content: transformContent(node.content),
+    content: node.content,
     slug: node.slug,
     date: node.date,
     formattedDate: formatPolishDate(node.date),

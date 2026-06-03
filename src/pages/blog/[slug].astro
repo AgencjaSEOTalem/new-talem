@@ -5,7 +5,7 @@ import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
 import PostRating from '../../components/PostRating.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { Picture } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { getAllPosts, getPostBySlug, type BlogPost } from '../../lib/wordpress';
 
 export const getStaticPaths = (async () => {
@@ -666,13 +666,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
               >
                 {
                   post.authorPhoto ? (
-                    <Picture
+                    <img
                       src={post.authorPhoto.url}
                       alt={post.authorPhoto.alt}
                       width={post.authorPhoto.width || 128}
                       height={post.authorPhoto.height || 128}
-                      widths={[48, 96, 128]}
-                      formats={['avif', 'webp']}
                       loading="lazy"
                       decoding="async"
                       class="w-full h-full object-cover"
@@ -709,19 +707,13 @@ const tableOfContents = generateTableOfContents(post.content || '');
           <div class="lg:flex-[1.8]">
             {
               post.featuredImage?.url && (
-                <Picture
+                <img
                   src={post.featuredImage.url}
                   alt={post.featuredImage.alt}
                   width={post.featuredImage.width || 1200}
                   height={post.featuredImage.height || 675}
-                  widths={[600, 900, 1200, 1800]}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 800px"
-                  formats={['avif', 'webp']}
                   loading="eager"
                   fetchpriority="high"
-                  pictureAttributes={{
-                    class: "w-full"
-                  }}
                   class="w-full h-[300px] md:h-[500px] object-cover rounded"
                 />
               )
@@ -810,13 +802,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
           <div class="w-32 h-32 flex-shrink-0 bg-[#ffdada] rounded overflow-hidden">
             {
               post.authorPhoto ? (
-                <Picture
+                <img
                   src={post.authorPhoto.url}
                   alt={post.authorPhoto.alt}
                   width={post.authorPhoto.width || 128}
                   height={post.authorPhoto.height || 128}
-                  widths={[64, 128]}
-                  formats={['avif', 'webp']}
                   loading="lazy"
                   decoding="async"
                   class="w-full h-full object-cover"
@@ -862,14 +852,11 @@ const tableOfContents = generateTableOfContents(post.content || '');
               <a href={`/blog/${relatedPost.slug}`} class="group">
                 {relatedPost.featuredImage?.url && (
                   <div class="aspect-video bg-[#e7e8ea] overflow-hidden mb-4 rounded">
-                    <Picture
+                    <img
                       src={relatedPost.featuredImage.url}
                       alt={relatedPost.featuredImage.alt}
                       width={400}
                       height={225}
-                      widths={[300, 400, 600]}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                      formats={['avif', 'webp']}
                       loading="lazy"
                       decoding="async"
                       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
