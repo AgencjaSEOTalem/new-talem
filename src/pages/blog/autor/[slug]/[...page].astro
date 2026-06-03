@@ -5,7 +5,7 @@ import Navigation from '../../../../components/Navigation.astro';
 import Footer from '../../../../components/Footer.astro';
 import PostCard from '../../../../components/PostCard.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
-import { Picture } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { getAllAuthors, getPostsByAuthor, type BlogPost, type Author } from '../../../../lib/wordpress';
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -102,26 +102,22 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
             <!-- Lewa kolumna: Zdjęcie -->
             <div class="bg-gradient-to-br from-[#650017] to-[#8f0024] p-8 flex items-center justify-center">
               {author.photo ? (
-                <Picture
+                <img
                   src={author.photo.url}
                   alt={author.photo.alt}
                   width={author.photo.width || 300}
                   height={author.photo.height || 400}
-                  widths={[300, 600]}
-                  formats={['avif', 'webp']}
                   loading="eager"
                   fetchpriority="high"
                   class="w-full h-auto rounded-lg shadow-2xl"
                 />
               ) : (
                 <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                  <Picture
+                  <img
                     src={author.avatar.large}
                     alt={author.name}
                     width={192}
                     height={192}
-                    widths={[96, 192]}
-                    formats={['avif', 'webp']}
                     loading="eager"
                     fetchpriority="high"
                     class="w-full h-full object-cover"

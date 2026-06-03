@@ -16,7 +16,9 @@
       "Bash(dir:*)",
       "Bash(ls:*)",
       "Bash(echo:*)",
-      "Bash(npm run preview:*)"
+      "Bash(npm run preview:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)"
     ]
   }
 }
