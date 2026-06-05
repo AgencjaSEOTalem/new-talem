@@ -363,6 +363,11 @@ const POST_FRAGMENT = `
 
 /**
  * Pobiera wszystkie wpisy (max 1000)
+ *
+ * UWAGA: celowo NIE łapiemy wyjątków po cichu. Jeśli WordPress zwróci błąd
+ * lub 0 opublikowanych wpisów, rzucamy wyjątek — `astro build` padnie,
+ * krok FTP Deploy w GitHub Actions się nie wykona i na serwerze zostanie
+ * poprzednia, działająca wersja zamiast pustego bloga.
  */
 export async function getAllPosts(): Promise<BlogPost[]> {
   const query = `
@@ -376,13 +381,18 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     }
   `;
 
-  try {
-    const data = await fetchGraphQL<{ posts: { nodes: GraphQLPostNode[] } }>(query);
-    return data.posts.nodes.map(transformPost);
-  } catch (error) {
-    console.error('Error fetching all posts:', error);
-    return [];
+  const data = await fetchGraphQL<{ posts: { nodes: GraphQLPostNode[] } }>(query);
+  const posts = data.posts.nodes.map(transformPost);
+
+  if (posts.length === 0) {
+    throw new Error(
+      'getAllPosts() zwrócił 0 wpisów z WordPressa — przerywam build, ' +
+      'żeby nie nadpisać działającej wersji pustym blogiem. ' +
+      'Sprawdź WordPress (czy są opublikowane wpisy) i status api.talem.eu/graphql.'
+    );
   }
+
+  return posts;
 }
 
 /**
