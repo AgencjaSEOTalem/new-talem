@@ -2,3 +2,10 @@ User-agent: *
 Allow: /
 
 Sitemap: https://talem.eu/sitemap-index.xml
+
+#================================
+#           _
+#       .__(.)< (KWA KWA)
+#        \___)  
+#
+#================================
