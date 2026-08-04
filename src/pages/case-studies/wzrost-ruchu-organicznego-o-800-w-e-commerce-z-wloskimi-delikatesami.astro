@@ -1,0 +1,460 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { breadcrumb } from '../../lib/schema';
+
+import silosowaArchitektura from '../../assets/case-studies/silosowa-architektura.webp';
+import widocznoscOrganiczna from '../../assets/case-studies/widocznosc-organiczna-od-poczatku-wspolpracy.png';
+import wykresKolowy from '../../assets/case-studies/wykres-kolowy-podzial-kanalow-sprzedazy.png';
+import zalamanieWidocznosci from '../../assets/case-studies/zalamanie-widocznosci-core-update.png';
+
+const breadcrumbs = [
+  { label: 'Strona główna', href: '/' },
+  { label: 'Case studies', href: '/case-studies' },
+  { label: 'Wzrost ruchu o 800% - włoskie delikatesy' },
+];
+
+const schema = [
+  ...breadcrumb('Case studies', '/case-studies'),
+  {
+    "@type": "Article",
+    "headline": "Wzrost ruchu organicznego o 800% w e-commerce z włoskimi delikatesami",
+    "description": "Transformacja niszowego sklepu z delikatesami w lidera rynku SEO dzięki precyzyjnemu doborowi fraz long-tail oraz wdrożeniu autorskiej strategii Programmatic SEO dla ponad 1500 produktów.",
+    "url": "https://www.talem.eu/case-studies/wzrost-ruchu-organicznego-o-800-w-e-commerce-z-wloskimi-delikatesami",
+    "author": { "@type": "Organization", "name": "Talem Technologies Sp. z o. o." },
+    "publisher": { "@id": "https://www.talem.eu/#organization" },
+  },
+];
+---
+
+<BaseLayout
+  title="Case Study: Wzrost ruchu organicznego o 800% w e-commerce | Talem"
+  description="Transformacja niszowego sklepu z włoskimi delikatesami w lidera rynku SEO. Programmatic SEO, content hubs, E-E-A-T i link building - zobacz mierzalne wyniki."
+  schema={schema}
+>
+  <Navigation />
+
+  <main class="min-h-screen pt-24 bg-white">
+    <!-- Breadcrumbs -->
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <Breadcrumbs items={breadcrumbs} />
+    </div>
+
+    <!-- Hero Section -->
+    <section class="px-4 sm:px-6 lg:px-8 py-16 lg:py-24 max-w-[1400px] mx-auto">
+      <div>
+        <div class="inline-block bg-accent px-3 py-1 text-white font-mono text-[0.75rem] font-semibold tracking-[0.05em] uppercase mb-6">
+          E-COMMERCE CASE STUDY
+        </div>
+        <h1 class="font-display text-[2rem] md:text-[3.5rem] lg:text-[5rem] font-bold leading-[1.1] tracking-[-0.02em] text-black mb-8">
+          Wzrost ruchu organicznego o 800% w e-commerce z włoskimi delikatesami
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-gray-300 pt-8">
+          <div>
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-gray-600 mb-2">Miesięczne sesje</p>
+            <div class="flex items-baseline gap-4">
+              <span class="font-body text-[3rem] lg:text-[4rem] font-extrabold leading-none tracking-[-0.04em] text-black">36k</span>
+              <span class="text-accent font-bold text-lg">↑ 800%</span>
+            </div>
+            <p class="text-gray-600">z poziomu 4,000 / msc</p>
+          </div>
+          <div class="bg-gray-200 p-6 border-l-4 border-accent">
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-accent mb-2">30-second summary</p>
+            <p class="font-body italic leading-relaxed text-black">Transformacja niszowego sklepu z delikatesami w lidera rynku SEO dzięki precyzyjnemu doborowi fraz "long-tail" oraz wdrożeniu autorskiej strategii Programmatic SEO dla ponad 1500 produktów.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Sidebar & Content Layout -->
+    <div class="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 lg:gap-16">
+      <!-- Sidebar Navigation -->
+      <aside class="hidden md:block w-56 lg:w-64 flex-shrink-0">
+        <div class="sticky top-32 space-y-4">
+          <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-gray-500 mb-6">Przegląd sekcji</p>
+          <a class="flex items-center gap-3 text-accent font-bold border-l-2 border-accent pl-4 py-1 transition-all" href="#context">Kontekst projektu</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#challenge">Wyzwania</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#goals">Cele SEO</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#strategy">Strategia (Etapy)</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#results">Wyniki końcowe</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#lessons">Lekcje i Wnioski</a>
+        </div>
+      </aside>
+
+      <!-- Main Body Content -->
+      <div class="flex-grow space-y-16 lg:space-y-24 pb-16">
+
+        <!-- Project Context -->
+        <section class="scroll-mt-32" id="context">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Kontekst projektu</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div class="space-y-6">
+              <p class="text-lg text-gray-600 leading-relaxed">
+                Klient to butikowy e-commerce specjalizujący się w imporcie autentycznych produktów "Slow Food" prosto z Włoch. Mimo doskonałej jakości asortymentu, sklep walczył o widoczność w Google z gigantami rynkowymi i dużymi sieciami delikatesów.
+              </p>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <p class="font-mono text-[0.75rem] text-gray-500">BRANŻA</p>
+                  <p class="font-bold">Premium Food / Gourmet</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <p class="font-mono text-[0.75rem] text-gray-500">PLATFORMA</p>
+                  <p class="font-bold">Shoper Premium</p>
+                </div>
+              </div>
+            </div>
+            <div class="border-l border-gray-300 pl-8 py-2">
+              <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-accent mb-4">Sytuacja wyjściowa</p>
+              <ul class="space-y-4">
+                <li class="flex items-start gap-3">
+                  <span class="text-accent text-sm mt-1">⚠</span>
+                  Ruch oparty głównie na markach własnych produktów.
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-accent text-sm mt-1">⚠</span>
+                  Brak widoczności na frazy ogólne (np. "oliwa z oliwek").
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-accent text-sm mt-1">⚠</span>
+                  Niski współczynnik konwersji z urządzeń mobilnych.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Widoczność organiczna chart -->
+          <div class="mt-12 rounded-lg overflow-hidden border border-gray-200">
+            <Picture
+              src={widocznoscOrganiczna}
+              alt="Wykres widoczności organicznej od początku współpracy - stały wzrost"
+              widths={[400, 800, 1200, 1600]}
+              sizes="(max-width: 768px) 100vw, 1400px"
+              class="w-full h-auto"
+              loading="lazy"
+              quality="high"
+            />
+          </div>
+        </section>
+
+        <!-- The Challenge -->
+        <section class="scroll-mt-32 bg-black p-8 lg:p-16 rounded-lg -mx-4 lg:mx-0" id="challenge">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight text-white mb-12">Główne przeszkody</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">01</span>
+              <h3 class="font-bold text-white mb-3">Kanibalizacja treści</h3>
+              <p class="text-gray-400 text-sm">Wiele produktów o niemal identycznych nazwach rywalizowało o te same słowa kluczowe.</p>
+            </div>
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">02</span>
+              <h3 class="font-bold text-white mb-3">Duplikacja opisów</h3>
+              <p class="text-gray-400 text-sm">Opisy producentów używane przez dziesiątki innych sklepów w sieci.</p>
+            </div>
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">03</span>
+              <h3 class="font-bold text-white mb-3">Słaby profil linków</h3>
+              <p class="text-gray-400 text-sm">Brak jakościowych linków przychodzących z portali kulinarnych i lifestylowych.</p>
+            </div>
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">04</span>
+              <h3 class="font-bold text-white mb-3">Błędy techniczne</h3>
+              <p class="text-gray-400 text-sm">Wolne ładowanie zasobów graficznych (LCP > 4s) na kartach produktów.</p>
+            </div>
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">05</span>
+              <h3 class="font-bold text-white mb-3">Niska struktura URL</h3>
+              <p class="text-gray-400 text-sm">Nieprzyjazne adresy URL uniemożliwiające poprawną indeksację kategorii.</p>
+            </div>
+            <div class="border border-gray-700 p-8 hover:bg-gray-900 transition-all">
+              <span class="font-mono text-accent text-lg mb-4 block">06</span>
+              <h3 class="font-bold text-white mb-3">Brak E-E-A-T</h3>
+              <p class="text-gray-400 text-sm">Brak autorytetu autorów i potwierdzonej wiedzy o pochodzeniu produktów.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Project Goals -->
+        <section class="scroll-mt-32" id="goals">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-12">Cele strategiczne</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="p-6 border-t-2 rounded-lg" style="border-color: #7A8471; background-color: rgba(122, 132, 113, 0.1);">
+              <span class="text-xl mb-4 block" style="color: #7A8471;">📈</span>
+              <p class="font-bold text-sm">Wzrost ruchu organicznego o min. 300%</p>
+            </div>
+            <div class="p-6 border-t-2 rounded-lg" style="border-color: #7A8471; background-color: rgba(122, 132, 113, 0.1);">
+              <span class="text-xl mb-4 block" style="color: #7A8471;">🛒</span>
+              <p class="font-bold text-sm">Zwiększenie liczby transakcji z SEO</p>
+            </div>
+            <div class="p-6 border-t-2 rounded-lg" style="border-color: #7A8471; background-color: rgba(122, 132, 113, 0.1);">
+              <span class="text-xl mb-4 block" style="color: #7A8471;">✓</span>
+              <p class="font-bold text-sm">Budowa autorytetu domeny (DR > 40)</p>
+            </div>
+            <div class="p-6 border-t-2 rounded-lg" style="border-color: #7A8471; background-color: rgba(122, 132, 113, 0.1);">
+              <span class="text-xl mb-4 block" style="color: #7A8471;">⚡</span>
+              <p class="font-bold text-sm">Optymalizacja Core Web Vitals</p>
+            </div>
+            <div class="p-6 border-t-2 rounded-lg" style="border-color: #7A8471; background-color: rgba(122, 132, 113, 0.1);">
+              <span class="text-xl mb-4 block" style="color: #7A8471;">👥</span>
+              <p class="font-bold text-sm">Redukcja kosztu pozyskania (CAC)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Strategy & Phases -->
+        <section class="scroll-mt-32" id="strategy">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-16">Strategia wdrożenia</h2>
+          <div class="relative border-l border-gray-300 ml-4 space-y-16 lg:space-y-24">
+            <!-- Phase 1 -->
+            <div class="relative pl-12">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-accent" style="box-shadow: 0 0 0 4px rgba(139, 0, 41, 0.2);"></div>
+              <p class="font-mono text-accent mb-2 text-sm">ETAP 01: FUNDAMENTY (MIESIĄC 1)</p>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Audyt techniczny i Content Pruning</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <p class="text-gray-600">Usunięcie 400 zduplikowanych podstron i naprawa błędów 404. Wdrożenie schematów danych (Schema.org) dla produktów FoodEstablishment.</p>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <p class="font-mono text-[0.625rem] text-gray-500 mb-2">NARZĘDZIA</p>
+                  <div class="flex gap-4">
+                    <span class="text-xs font-bold">Screaming Frog</span>
+                    <span class="text-xs font-bold">GSC</span>
+                    <span class="text-xs font-bold">Ahrefs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="relative pl-12">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black"></div>
+              <p class="font-mono text-gray-500 mb-2 text-sm">ETAP 02: ARCHITEKTURA INFORMACJI (MIESIĄC 2-3)</p>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Semantyczne grupowanie fraz</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <p class="text-gray-600">Opracowanie nowej struktury kategorii w oparciu o intent użytkownika (np. "produkty na deskę serów" zamiast tylko "sery").</p>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <p class="font-mono text-[0.625rem] text-gray-500 mb-2">KLUCZOWY KPI</p>
+                  <span class="text-accent font-bold">+150% fraz w TOP50</span>
+                </div>
+              </div>
+              <!-- Silosowa architektura image -->
+              <div class="mt-8 rounded-lg overflow-hidden border border-gray-200">
+                <Picture
+                  src={silosowaArchitektura}
+                  alt="Diagram silosowej architektury informacji - struktura kategorii SEO"
+                  widths={[400, 800, 1200, 1600]}
+                  sizes="(max-width: 768px) 100vw, 1400px"
+                  class="w-full h-auto"
+                  loading="lazy"
+                  quality="high"
+                />
+              </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="relative pl-12">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black"></div>
+              <p class="font-mono text-gray-500 mb-2 text-sm">ETAP 03: CONTENT SCALE (MIESIĄC 4-8)</p>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Programmatic SEO i Content Hubs</h3>
+              <p class="text-gray-600 max-w-2xl">Wykorzystanie AI i bazy danych produktów do wygenerowania unikalnych opisów technicznych, wartości odżywczych i sugestii parowania win (Wine Pairing) dla każdego produktu.</p>
+              <!-- Wykres kołowy -->
+              <div class="mt-8 rounded-lg overflow-hidden border border-gray-200">
+                <Picture
+                  src={wykresKolowy}
+                  alt="Wykres kołowy podziału kanałów sprzedaży po wdrożeniu SEO"
+                  widths={[400, 800, 1200, 1600]}
+                  sizes="(max-width: 768px) 100vw, 1400px"
+                  class="w-full h-auto"
+                  loading="lazy"
+                  quality="high"
+                />
+              </div>
+            </div>
+
+            <!-- Phase 4-6 Summary -->
+            <div class="relative pl-12">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black"></div>
+              <p class="font-mono text-gray-500 mb-2 text-sm">ETAP 04-06: AUTORYTET I OPTYMALIZACJA</p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 border border-gray-300 rounded-lg">
+                  <h4 class="font-bold mb-2">Link Building</h4>
+                  <p class="text-xs text-gray-600">Pozyskanie 50+ linków z topowych portali kulinarnych.</p>
+                </div>
+                <div class="p-4 border border-gray-300 rounded-lg">
+                  <h4 class="font-bold mb-2">E-E-A-T Enhancement</h4>
+                  <p class="text-xs text-gray-600">Dodanie sekcji "Opinia Eksperta" przy każdym produkcie.</p>
+                </div>
+                <div class="p-4 border border-gray-300 rounded-lg">
+                  <h4 class="font-bold mb-2">CRO Tuning</h4>
+                  <p class="text-xs text-gray-600">Testy A/B przycisków dodawania do koszyka.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Difficulties & Solutions -->
+        <section class="bg-gray-100 p-8 lg:p-16 rounded-lg">
+          <div class="flex items-center gap-4 mb-8">
+            <span class="text-accent text-2xl">⚠</span>
+            <h2 class="font-body text-[1.5rem] lg:text-[2rem] font-bold">Kryzys i rozwiązanie</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <p class="font-bold mb-4">Problem: Google Core Update (Marzec 2025)</p>
+              <p class="text-gray-600">Podczas aktualizacji algorytmu zaobserwowaliśmy nagły spadek widoczności o 15% na frazach związanych z poradnikami kulinarnymi.</p>
+              <!-- Załamanie widoczności image -->
+              <div class="mt-6 rounded-lg overflow-hidden border border-gray-200">
+                <Picture
+                  src={zalamanieWidocznosci}
+                  alt="Wykres załamania widoczności podczas Google Core Update marzec 2025"
+                  widths={[400, 800, 1200, 1600]}
+                  sizes="(max-width: 768px) 100vw, 1400px"
+                  class="w-full h-auto"
+                  loading="lazy"
+                  quality="high"
+                />
+              </div>
+            </div>
+            <div class="border-l-2 pl-8" style="border-color: #7A8471;">
+              <p class="font-bold mb-4">Reakcja Talem.eu</p>
+              <p class="text-gray-600">Natychmiastowe wdrożenie "Source of Truth" – linkowanie do certyfikatów autentyczności DOP/IGP oraz weryfikacja treści przez certyfikowanego sommeliera oliwy. Ruch odrobił straty w 14 dni.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final Results -->
+        <section class="scroll-mt-32" id="results">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-12">Wyniki końcowe (Po 18 miesiącach)</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-black">
+                  <th class="py-4 font-mono text-[0.75rem] text-gray-500">METRYKA</th>
+                  <th class="py-4 font-mono text-[0.75rem] text-gray-500">START</th>
+                  <th class="py-4 font-mono text-[0.75rem] text-gray-500">META</th>
+                  <th class="py-4 font-mono text-[0.75rem] text-accent">ZMIANA</th>
+                </tr>
+              </thead>
+              <tbody class="text-lg">
+                <tr class="border-b border-gray-300">
+                  <td class="py-6 font-bold">Sesje Organiczne / msc</td>
+                  <td class="py-6">4,200</td>
+                  <td class="py-6 font-bold">36,150</td>
+                  <td class="py-6 text-accent font-bold">↑ 860%</td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                  <td class="py-6 font-bold">Słowa w TOP 3</td>
+                  <td class="py-6">84</td>
+                  <td class="py-6 font-bold">592</td>
+                  <td class="py-6 text-accent font-bold">↑ 704%</td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                  <td class="py-6 font-bold">Słowa w TOP 10</td>
+                  <td class="py-6">312</td>
+                  <td class="py-6 font-bold">2,480</td>
+                  <td class="py-6 text-accent font-bold">↑ 794%</td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                  <td class="py-6 font-bold">Konwersja (E-commerce)</td>
+                  <td class="py-6">1.2%</td>
+                  <td class="py-6 font-bold">2.8%</td>
+                  <td class="py-6 text-accent font-bold">↑ 133%</td>
+                </tr>
+                <tr>
+                  <td class="py-6 font-bold">Koszt Pozyskania (CAC)</td>
+                  <td class="py-6">42.00 zł</td>
+                  <td class="py-6 font-bold">14.50 zł</td>
+                  <td class="py-6 font-bold" style="color: #7A8471;">↓ 65%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Bar Chart Visualization -->
+          <div class="mt-12 h-80 bg-gray-200 relative flex items-end justify-between px-8 pb-12 border border-gray-300 rounded-lg overflow-hidden">
+            <div class="absolute inset-0 opacity-5 pointer-events-none">
+              <div class="grid grid-cols-12 h-full w-full border-r border-b border-gray-700"></div>
+            </div>
+            <div class="w-[8%] bg-gray-700 h-[10%] relative">
+              <span class="absolute -top-12 left-1/2 -translate-x-1/2 text-[0.625rem] font-mono">Miesiąc 1</span>
+            </div>
+            <div class="w-[8%] bg-gray-700 h-[15%]"></div>
+            <div class="w-[8%] bg-gray-700 h-[18%]"></div>
+            <div class="w-[8%] bg-gray-700 h-[25%]"></div>
+            <div class="w-[8%] bg-accent h-[40%]"></div>
+            <div class="w-[8%] bg-accent h-[55%]"></div>
+            <div class="w-[8%] bg-accent h-[70%]"></div>
+            <div class="w-[8%] bg-accent h-[85%]"></div>
+            <div class="w-[8%] bg-accent h-[100%] relative">
+              <span class="absolute -top-12 left-1/2 -translate-x-1/2 text-[0.625rem] font-mono font-bold text-accent">Miesiąc 18</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Lessons Learned -->
+        <section class="scroll-mt-32" id="lessons">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Lekcje i Wnioski</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="flex gap-6 items-start">
+              <div class="bg-black text-white w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-xl rounded-lg">1</div>
+              <div>
+                <h4 class="font-bold mb-2">Autorytet to nowa waluta</h4>
+                <p class="text-gray-600 text-sm">W branży YMYL (Your Money Your Life), jaką jest żywność premium, Google wymaga bezwzględnej eksperckości. Inwestycja w E-E-A-T zwróciła się z nawiązką podczas aktualizacji algorytmów.</p>
+              </div>
+            </div>
+            <div class="flex gap-6 items-start">
+              <div class="bg-black text-white w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-xl rounded-lg">2</div>
+              <div>
+                <h4 class="font-bold mb-2">Programmatic SEO działa</h4>
+                <p class="text-gray-600 text-sm">Automatyzacja opisów produktów na dużą skalę (przy zachowaniu jakości) pozwoliła zdominować frazy "długiego ogona", które generują 60% obecnej sprzedaży.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="bg-black p-8 lg:p-16 text-center rounded-lg">
+          <h2 class="font-display text-[2rem] lg:text-[3rem] font-bold text-white mb-6">Twoja marka może być następna</h2>
+          <p class="text-gray-400 max-w-xl mx-auto mb-10">Osiągnij mierzalne wzrosty w organicznych wynikach wyszukiwania dzięki strategii opartej na danych i eksperckiej wiedzy SEO.</p>
+          <a
+            href="/kontakt"
+            class="inline-block bg-accent text-white px-10 py-5 font-bold text-lg hover:bg-accent-light transition-all active:scale-95 rounded-lg"
+          >
+            Umów bezpłatną konsultację
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    // Scroll spy for sidebar navigation
+    window.addEventListener('scroll', () => {
+      const sections = ['context', 'challenge', 'goals', 'strategy', 'results', 'lessons'];
+      const navLinks = document.querySelectorAll('aside a');
+
+      let current = '';
+      sections.forEach(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const sectionTop = element.offsetTop;
+          if (pageYOffset >= sectionTop - 150) {
+            current = section;
+          }
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('text-accent', 'font-bold', 'border-accent');
+        link.classList.add('text-gray-600', 'border-gray-300');
+        if (link.getAttribute('href')?.includes(current)) {
+          link.classList.add('text-accent', 'font-bold', 'border-accent');
+          link.classList.remove('text-gray-600', 'border-gray-300');
+        }
+      });
+    });
+  </script>
+</BaseLayout>

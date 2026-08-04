@@ -1,5 +1,7 @@
 ---
+import { Picture } from 'astro:assets';
 import SectionHeader from "../ui/SectionHeader.astro";
+import heroImage from "../../assets/case-studies/hero-wloskie-delikatesy.jpg";
 ---
 
 <section
@@ -13,19 +15,21 @@ import SectionHeader from "../ui/SectionHeader.astro";
     />
   </div>
 
-  <div class="max-w-[1400px] mx-auto flex flex-col gap-12 sm:gap-16">
+  <div class="max-w-[1400px] mx-auto">
     <!-- CS 1 - Image left, content right -->
-    <div
+    <a
+      href="/case-studies/wzrost-ruchu-organicznego-o-800-w-e-commerce-z-wloskimi-delikatesami"
       class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white border-2 border-gray-200 rounded-2xl overflow-hidden transition-all duration-300 hover:border-accent hover:shadow-2xl"
       data-reveal
     >
       <div class="relative min-h-[300px] lg:min-h-[420px] overflow-hidden">
-        <img
-          src="/images/case-cosmetics.jpg"
-          alt="Sklep z ekologiczna kosmetyka - case study SEO"
+        <Picture
+          src={heroImage}
+          alt="E-commerce z włoskimi delikatesami - case study SEO"
+          widths={[400, 800, 1200]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
           class="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
-          decoding="async"
         />
         <div
           class="absolute bottom-6 left-6 font-mono text-[0.75rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-4 py-2 rounded-md uppercase z-10"
@@ -37,11 +41,12 @@ import SectionHeader from "../ui/SectionHeader.astro";
         <h3
           class="font-display text-2xl lg:text-[2.25rem] font-bold mb-6 leading-[1.3]"
         >
-          Sklep z ekologiczną kosmetyką
+          Wzrost ruchu organicznego o 800% w e-commerce z włoskimi delikatesami
         </h3>
         <p class="text-gray-600 leading-[1.8] mb-10 text-[1rem]">
-          W 9 miesięcy zwiększyliśmy ruch organiczny o 412% i przychody z SEO o
-          380%. Strategia: technical optimization + content hub + link building.
+          W 18 miesięcy zwiększyliśmy ruch organiczny o 860% i konwersję o 133%.
+          Strategia: Programmatic SEO dla 1500+ produktów, content hubs, E-E-A-T
+          i link building.
         </p>
         <div
           class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t-2 border-gray-100"
@@ -50,7 +55,7 @@ import SectionHeader from "../ui/SectionHeader.astro";
             <div
               class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
             >
-              412%
+              860%
             </div>
             <div
               class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
@@ -62,101 +67,47 @@ import SectionHeader from "../ui/SectionHeader.astro";
             <div
               class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
             >
-              3.4K
+              592
             </div>
             <div
               class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
             >
-              keywords
+              słowa w TOP 3
             </div>
           </div>
           <div>
             <div
               class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
             >
-              380%
+              133%
             </div>
             <div
               class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
             >
-              ROI z SEO
+              wzrost konwersji
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
+  </div>
 
-    <!-- CS 2 - Content left, image right -->
-    <div
-      class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white border-2 border-gray-200 rounded-2xl overflow-hidden transition-all duration-300 hover:border-accent hover:shadow-2xl"
-      data-reveal
+  <!-- Link to all case studies -->
+  <div class="max-w-[1400px] mx-auto mt-16 text-center">
+    <a
+      href="/case-studies"
+      class="inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-bold rounded-lg hover:bg-accent transition-all duration-300 hover:scale-105 active:scale-95"
     >
-      <div class="p-8 lg:p-16 flex flex-col justify-center">
-        <h3
-          class="font-display text-2xl lg:text-[2.25rem] font-bold mb-6 leading-[1.3]"
-        >
-          Platforma do zarządzania projektami
-        </h3>
-        <p class="text-gray-600 leading-[1.8] mb-10 text-[1rem]">
-          Zbudowaliśmy widoczność od zera. Po 12 miesiącach: TOP 3 dla 23
-          głównych keywordów i 230% ROI.
-        </p>
-        <div
-          class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t-2 border-gray-100"
-        >
-          <div>
-            <div
-              class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
-            >
-              45K
-            </div>
-            <div
-              class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
-            >
-              wizyt / m-c
-            </div>
-          </div>
-          <div>
-            <div
-              class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
-            >
-              23
-            </div>
-            <div
-              class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
-            >
-              TOP 3 frazy
-            </div>
-          </div>
-          <div>
-            <div
-              class="font-mono text-3xl lg:text-[2.75rem] font-bold text-accent leading-none mb-2"
-            >
-              230%
-            </div>
-            <div
-              class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold"
-            >
-              ROI
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="relative min-h-[300px] lg:min-h-[420px] overflow-hidden lg:order-last">
-        <img
-          src="/images/case-saas.jpg"
-          alt="Platforma do zarzadzania projektami - case study SEO"
-          class="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-        <div
-          class="absolute bottom-6 right-6 font-mono text-[0.75rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-4 py-2 rounded-md uppercase z-10"
-        >
-          B2B SAAS
-        </div>
-      </div>
-    </div>
+      Zobacz wszystkie case studies
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
   </div>
 </section>
 
