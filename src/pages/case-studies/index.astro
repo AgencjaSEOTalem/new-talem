@@ -17,7 +17,7 @@ const schema = breadcrumb('Case studies', '/case-studies');
 
 interface CaseStudy {
   slug: string;
-  image: ImageMetadata;
+  image?: ImageMetadata;
   tag: string;
   title: string;
   excerpt: string;
@@ -26,6 +26,18 @@ interface CaseStudy {
 }
 
 const caseStudies: CaseStudy[] = [
+  {
+    slug: '/case-studies/real-user-monitoring-rum-wydajnosc-ecommerce',
+    tag: 'WYDAJNOŚĆ',
+    title: 'Real User Monitoring: Jak przestaliśmy zgadywać i wskazaliśmy IT, co dokładnie psuje sprzedaż w e-commerce',
+    excerpt: 'Projekt i wdrożenie systemu analityki wydajności opartego na danych od realnych użytkowników (RUM). Zgromadziliśmy ponad 329 000 zwalidowanych zdarzeń z 566 kluczowych adresów URL i wskazaliśmy IT konkretne błędy psujące sprzedaż.',
+    duration: '9 tygodni + monitoring ciągły',
+    kpis: [
+      { value: '329k+', label: 'zwalidowane zdarzenia' },
+      { value: '566', label: 'monitorowane URL' },
+      { value: '5', label: 'warstw systemu' },
+    ],
+  },
   {
     slug: '/case-studies/wzrost-ruchu-organicznego-o-800-w-e-commerce-z-wloskimi-delikatesami',
     image: heroImage,
@@ -41,8 +53,6 @@ const caseStudies: CaseStudy[] = [
   },
 ];
 
-const featured = caseStudies[0];
-const rest = caseStudies.slice(1);
 ---
 
 <BaseLayout
@@ -68,125 +78,69 @@ const rest = caseStudies.slice(1);
         </p>
       </div>
 
-      <!-- Wyróżnione case study (pierwsze na liście) -->
-      {featured && (
-        <section class="mb-16">
-          <a
-            href={featured.slug}
-            class="block bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-lg transition-shadow duration-300 group"
-          >
-            <div class="grid lg:grid-cols-2 gap-0">
-              <!-- Zdjęcie po lewej -->
-              <div class="overflow-hidden h-full min-h-[400px] relative">
-                <Picture
-                  src={featured.image}
-                  alt={featured.title}
-                  widths={[400, 800, 1200]}
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="eager"
-                />
-                <div class="absolute bottom-6 left-6 font-mono text-[0.75rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-4 py-2 rounded-md uppercase z-10">
-                  {featured.tag}
+      <!-- Siatka wszystkich case studies -->
+      <section>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {caseStudies.map((cs) => (
+            <a
+              href={cs.slug}
+              class="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col"
+            >
+              <div class="relative min-h-[280px] overflow-hidden">
+                {cs.image ? (
+                  <Picture
+                    src={cs.image}
+                    alt={cs.title}
+                    widths={[400, 800]}
+                    sizes="(max-width: 768px) 100vw, 600px"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-[#0a0c0d] via-[#191c1e] to-[#2a0a12] flex items-center justify-center">
+                    <div class="absolute inset-0 opacity-[0.07]" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+                    <svg class="w-16 h-16 text-accent/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l3-9 4 18 3-9h4" />
+                    </svg>
+                  </div>
+                )}
+                <div class="absolute bottom-4 left-4 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-md uppercase z-10">
+                  {cs.tag}
                 </div>
               </div>
-
-              <!-- Treść po prawej -->
-              <div class="p-8 lg:p-12 flex flex-col justify-center">
-                <span class="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-mono uppercase tracking-wider rounded-full mb-4 w-fit">
-                  Najnowsze case study
-                </span>
-
-                <h2 class="text-2xl lg:text-3xl font-bold text-black leading-tight mb-4 group-hover:text-accent transition-colors">
-                  {featured.title}
-                </h2>
-
-                <p class="text-gray-600 text-base leading-relaxed mb-6">
-                  {featured.excerpt}
+              <div class="p-6 flex flex-col flex-grow">
+                <h3 class="font-bold text-lg text-black leading-snug mb-3 group-hover:text-accent transition-colors">
+                  {cs.title}
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4 flex-grow">
+                  {cs.excerpt}
                 </p>
-
-                <div class="flex items-center gap-4 text-sm text-gray-500 mb-6">
+                <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
                   <span class="flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <circle cx="12" cy="12" r="10" />
                       <polyline points="12 6 12 12 16 14" />
                     </svg>
-                    {featured.duration}
+                    {cs.duration}
                   </span>
                 </div>
-
-                <div class="grid grid-cols-3 gap-4 pt-6 border-t-2 border-gray-100 mb-6">
-                  {featured.kpis.map((kpi) => (
+                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-gray-100">
+                  {cs.kpis.map((kpi) => (
                     <div>
-                      <div class="font-mono text-xl lg:text-[1.75rem] font-bold text-accent leading-none mb-1">
+                      <div class="font-mono text-base font-bold text-accent leading-none mb-1">
                         {kpi.value}
                       </div>
-                      <div class="text-[0.7rem] text-gray-500 uppercase tracking-widest font-semibold">
+                      <div class="text-[0.6rem] text-gray-500 uppercase tracking-wider font-semibold">
                         {kpi.label}
                       </div>
                     </div>
                   ))}
                 </div>
-
-                <span class="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white font-bold rounded-lg hover:bg-black transition-colors w-fit group/btn">
-                  CZYTAJ CASE STUDY
-                  <svg class="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </span>
               </div>
-            </div>
-          </a>
-        </section>
-      )}
-
-      <!-- Siatka pozostałych case studies -->
-      {rest.length > 0 && (
-        <section>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {rest.map((cs) => (
-              <a
-                href={cs.slug}
-                class="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col"
-              >
-                <div class="relative min-h-[220px] overflow-hidden">
-                  <Picture
-                    src={cs.image}
-                    alt={cs.title}
-                    widths={[400, 800]}
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div class="absolute bottom-4 left-4 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-md uppercase z-10">
-                    {cs.tag}
-                  </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                  <h3 class="font-bold text-lg text-black leading-snug mb-3 group-hover:text-accent transition-colors">
-                    {cs.title}
-                  </h3>
-                  <p class="text-gray-600 text-sm leading-relaxed mb-4 flex-grow">
-                    {cs.excerpt}
-                  </p>
-                  <div class="grid grid-cols-3 gap-2 pt-4 border-t border-gray-100">
-                    {cs.kpis.map((kpi) => (
-                      <div>
-                        <div class="font-mono text-base font-bold text-accent leading-none mb-1">
-                          {kpi.value}
-                        </div>
-                        <div class="text-[0.6rem] text-gray-500 uppercase tracking-wider font-semibold">
-                          {kpi.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
+            </a>
+          ))}
+        </div>
+      </section>
 
     </div>
   </main>

@@ -1,0 +1,461 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { breadcrumb } from '../../lib/schema';
+
+const breadcrumbs = [
+  { label: 'Strona główna', href: '/' },
+  { label: 'Case studies', href: '/case-studies' },
+  { label: 'Real User Monitoring – wydajność e-commerce' },
+];
+
+const schema = [
+  ...breadcrumb('Case studies', '/case-studies'),
+  {
+    "@type": "Article",
+    "headline": "Real User Monitoring: Jak przestaliśmy zgadywać i wskazaliśmy IT, co dokładnie psuje sprzedaż w e-commerce",
+    "description": "Projekt i wdrożenie systemu analityki wydajności opartego na danych od realnych użytkowników (RUM) dla dużego sklepu sportowego. Diagnoza wąskich gardeł i gotowe wytyczne dla IT.",
+    "url": "https://www.talem.eu/case-studies/real-user-monitoring-rum-wydajnosc-ecommerce",
+    "author": { "@type": "Organization", "name": "Talem Technologies Sp. z o. o." },
+    "publisher": { "@id": "https://www.talem.eu/#organization" },
+  },
+];
+---
+
+<BaseLayout
+  title="Case Study RUM: Real User Monitoring w e-commerce sportowym | Talem"
+  description="Jak system RUM oparty na web-vitals.js, GA4 i BigQuery ujawnił wąskie gardła wydajności w sklepie sportowym. Od domysłów do twardych danych z 329 000 zdarzeń."
+  schema={schema}
+>
+  <Navigation />
+
+  <main class="min-h-screen pt-24 bg-white">
+    <!-- Breadcrumbs -->
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <Breadcrumbs items={breadcrumbs} />
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden mb-16 lg:mb-24">
+      <!-- Gradient background -->
+      <div class="absolute inset-0 z-0 bg-gradient-to-br from-[#0a0c0d] via-[#191c1e] to-[#2a0a12]"></div>
+      <div class="absolute inset-0 z-0 bg-gradient-to-r from-black/90 via-black/70 to-black/30"></div>
+
+      <!-- Decorative grid pattern -->
+      <div class="absolute inset-0 z-0 opacity-[0.07]" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+      <!-- Decorative accent bar (left edge) -->
+      <div class="absolute top-0 left-0 w-1.5 h-full bg-accent z-10 hidden sm:block"></div>
+
+      <!-- Decorative geometric circles (top-right) -->
+      <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full border-2 border-accent/20 z-10 hidden lg:block"></div>
+      <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full border border-accent/10 z-10 hidden lg:block"></div>
+
+      <!-- Content -->
+      <div class="relative z-20 px-4 sm:px-6 lg:px-8 py-16 lg:py-28 max-w-[1400px] mx-auto">
+        <div class="inline-block bg-accent px-3 py-1 text-white font-mono text-[0.75rem] font-semibold tracking-[0.05em] uppercase mb-6">
+          E-COMMERCE CASE STUDY
+        </div>
+        <h1 class="font-display text-[2rem] md:text-[3rem] lg:text-[4rem] font-bold leading-[1.1] tracking-[-0.02em] text-white mb-8 max-w-5xl">
+          Real User Monitoring: Jak przestaliśmy zgadywać i wskazaliśmy IT, co dokładnie psuje sprzedaż w e-commerce
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-white/20 pt-8 max-w-5xl">
+          <div>
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-gray-300 mb-2">Zwalidowane zdarzenia</p>
+            <div class="flex items-baseline gap-4">
+              <span class="font-body text-[3rem] lg:text-[4rem] font-extrabold leading-none tracking-[-0.04em] text-white">329k+</span>
+              <span class="text-accent-light font-bold text-lg">z 566 URL</span>
+            </div>
+            <p class="text-gray-300">z prawdziwych sesji zakupowych</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md p-6 border-l-4 border-accent rounded-r-lg">
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-accent-light mb-2">30-second summary</p>
+            <p class="font-body italic leading-relaxed text-white">Projekt i wdrożenie systemu analityki wydajności opartego na danych od realnych użytkowników (RUM), diagnoza wąskich gardeł oraz przygotowanie gotowych do wdrożenia wytycznych dla działu IT.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Sidebar & Content Layout -->
+    <div class="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto flex flex-col md:flex-row gap-8 lg:gap-16">
+      <!-- Sidebar Navigation -->
+      <aside class="hidden md:block w-56 lg:w-64 flex-shrink-0">
+        <div class="sticky top-32 space-y-4">
+          <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-gray-500 mb-6">Przegląd sekcji</p>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#klient">Klient i rola</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#punkt-wyjscia">Punkt wyjścia</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#architektura">Architektura rozwiązania</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#dane">Co pokazały dane</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#konsekwencje">Konsekwencje biznesowe</a>
+          <a class="flex items-center gap-3 text-gray-600 hover:text-accent border-l-2 border-gray-300 hover:border-accent pl-4 py-1 transition-all" href="#rezultat">Rezultat</a>
+        </div>
+      </aside>
+
+      <!-- Main Body Content -->
+      <div class="flex-grow space-y-16 lg:space-y-24 pb-16">
+
+        <!-- Sekcja 1: Klient i rola -->
+        <section class="scroll-mt-32" id="klient">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Klient i rola TALEM</h2>
+          <div class="space-y-6 mb-10">
+            <p class="text-lg text-gray-600 leading-relaxed">
+              <strong>Klient:</strong> Duży sklep internetowy z asortymentem sportowym (rowery, sprzęt turystyczny, sporty zimowe), działający na kilku rynkach europejskich.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              <strong>Rola TALEM:</strong> Projekt i wdrożenie systemu analityki wydajności opartego na danych od realnych użytkowników (RUM), diagnoza wąskich gardeł oraz przygotowanie gotowych do wdrożenia wytycznych dla działu IT.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              <strong>Czas trwania:</strong> 9 tygodni do pierwszego pełnego raportu, następnie monitoring ciągły.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <p class="font-mono text-[0.75rem] text-gray-500 mb-1">NASZ KLIENT</p>
+              <p class="font-bold text-sm">Duży sklep internetowy z asortymentem sportowym</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <p class="font-mono text-[0.75rem] text-gray-500 mb-1">BRANŻA</p>
+              <p class="font-bold text-sm">E-commerce sportowy, multi-market (rowery, turystyka, sporty zimowe)</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <p class="font-mono text-[0.75rem] text-gray-500 mb-1">CZAS TRWANIA</p>
+              <p class="font-bold text-sm">9 tygodni do pierwszego raportu, następnie monitoring ciągły</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <p class="font-mono text-[0.75rem] text-gray-500 mb-1">ZAKRES</p>
+              <p class="font-bold text-sm">RUM, web-vitals.js, Server-Side GTM, BigQuery, Looker Studio</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sekcja 2: Punkt wyjścia -->
+        <section class="scroll-mt-32" id="punkt-wyjscia">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Punkt wyjścia: Kiedy dane laboratoryjne to za mało</h2>
+          <div class="space-y-6 mb-10">
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Projekt dotyczył serwisu, którego specyfika wymusza rozbudowaną architekturę. Rower to nie jeden SKU, ale rozmiar ramy, wariant osprzętu i kolor. W efekcie ścieżka klienta jest długa: użytkownik filtruje, porównuje modele, sprawdza tabele geometrii.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Do tego dochodzi kluczowy czynnik – <strong>sezonowość</strong>. Sklep przeżywa potężne piki ruchu zimą (narty) i latem (rowery). To właśnie w tych wąskich oknach sprzedażowych wydajność serwisu ma krytyczne znaczenie dla przychodów.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Firma korzystała ze standardowych narzędzi i sprawdzała wydajność w PageSpeed Insights. Niestety, narzędzie to miało ograniczenia, które uniemożliwiały skuteczną optymalizację:
+            </p>
+            <ul class="space-y-4 text-gray-600 leading-relaxed pl-6 list-disc">
+              <li>
+                <strong>Dane laboratoryjne i mocno zagregowane terenowe:</strong> Test Lighthouse to symulacja jednego urządzenia na stabilnym łączu – nie mówi nic o kliencie sprawdzającym dostępność sprzętu na stoku narciarskim przy słabym zasięgu LTE. Dane terenowe z CrUX w PSI są z kolei uśrednione (poziom originu/URL, 28-dniowe okno), dostępne tylko dla adresów o dużym ruchu i bez wskazania, <em>który</em> element odpowiada za problem.
+              </li>
+              <li>
+                <strong>Brak szerszego obrazu:</strong> Skuteczne, ręczne sprawdzanie setek podstron kategorii i produktów jest nierealne.
+              </li>
+              <li>
+                <strong>Ślepota na szczyty sezonu:</strong> Test uruchomiony w maju nie przewidzi zachowania serwisu podczas pierwszego śnieżnego weekendu w roku, przy wielokrotnie większym obciążeniu.
+              </li>
+              <li>
+                <strong>Brak konkretów dla IT:</strong> Informacja o przekroczeniu metryki CLS nie podpowiada programiście, który dokładnie element kodu odpowiada za problem.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Cel projektu - blockquote -->
+          <blockquote class="border-l-4 border-accent bg-accent/5 p-6 lg:p-8 rounded-r-lg">
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.05em] text-accent mb-3">Cel projektu</p>
+            <p class="text-lg text-gray-800 leading-relaxed font-medium">
+              Zbudowanie systemu, który zmierzy wydajność na podstawie prawdziwych sesji użytkowników, wskaże konkretne błędy w kodzie i nie obciąży dodatkowo samego serwisu.
+            </p>
+          </blockquote>
+        </section>
+
+        <!-- Sekcja 3: Architektura rozwiązania -->
+        <section class="scroll-mt-32" id="architektura">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Architektura rozwiązania: Od pomiaru do decyzji biznesowej</h2>
+          <p class="text-lg text-gray-600 leading-relaxed mb-6 max-w-3xl">
+            Zaprojektowany system składa się z pięciu warstw. Aby zachować najwyższą precyzję i odsiać ruch z botów, zawęziliśmy początkową analizę do kluczowych ścieżek zakupowych i głównych rynków. Zgromadziliśmy reprezentatywną próbę <strong>ponad 329 000 zwalidowanych zdarzeń</strong> z 566 kluczowych adresów URL.
+          </p>
+
+          <div class="space-y-8">
+            <!-- Warstwa 1 -->
+            <div class="relative pl-12 border-l-2 border-gray-200 pb-2">
+              <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-accent flex items-center justify-center text-white font-bold text-xs">1</div>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Zbieranie danych u źródła (web-vitals.js)</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Wykorzystaliśmy oficjalną bibliotekę Google <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-sm">web-vitals.js</code> – tę samą, która mierzy Core Web Vitals zgodnie z metodologią Chrome i Chrome UX Report (CrUX). Różnica jest kluczowa: CrUX to zagregowane, publiczne dane zbierane bezpośrednio przez przeglądarkę, podczas gdy <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-sm">web-vitals.js</code> pozwala zbierać <em>własną</em> telemetrię na poziomie pojedynczej odsłony – a tylko taka umożliwia trafną diagnozę i szybką reakcję na regresje. Dzięki temu system nie dostarcza suchych liczb, ale precyzyjnie wskazuje konkretny selektor CSS i element DOM wywołujący problem.
+              </p>
+            </div>
+
+            <!-- Warstwa 2 -->
+            <div class="relative pl-12 border-l-2 border-gray-200 pb-2">
+              <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs">2</div>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">GA4 powiązane ze ścieżką zakupową</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Zestawiliśmy metryki wydajnościowe z realnymi zachowaniami użytkowników: od użycia filtrów, przez konfiguratory sprzętu, aż po dodanie produktu do koszyka.
+              </p>
+            </div>
+
+            <!-- Warstwa 3 -->
+            <div class="relative pl-12 border-l-2 border-gray-200 pb-2">
+              <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs">3</div>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Server-Side GTM: Szybkość bez kompromisów</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Przenieśliśmy obsługę tagów analitycznych z przeglądarki użytkownika na własny serwer w usłudze Google Cloud Run. Znacznie odciążyło to witrynę i uodporniło pomiary na blokery reklam.
+              </p>
+            </div>
+
+            <!-- Warstwa 4 -->
+            <div class="relative pl-12 border-l-2 border-gray-200 pb-2">
+              <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs">4</div>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">BigQuery: Standaryzacja analityki</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Wdrożyliśmy natywny eksport danych do BigQuery i zbudowaliśmy warstwę modeli SQL. Zagwarantowało to niezmienność definicji metryk i umożliwiło miarodajne porównania wydajności "rok do roku" przed kolejnymi szczytami sprzedaży.
+              </p>
+            </div>
+
+            <!-- Warstwa 5 -->
+            <div class="relative pl-12">
+              <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs">5</div>
+              <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-4">Looker Studio: Trzy poziomy raportowania</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Stworzyliśmy dedykowane widoki: techniczny dla działu IT (szczegóły kodu), alertowy pod nadchodzące sprinty programistyczne oraz biznesowy dla zarządu (wpływ wydajności na konwersje).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sekcja 4: Co pokazały dane -->
+        <section class="scroll-mt-32 bg-black p-8 lg:p-16 rounded-lg -mx-4 lg:mx-0" id="dane">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight text-white mb-8">Co pokazały dane (i dlaczego uśrednianie maskuje problemy)</h2>
+          <p class="text-lg text-gray-400 leading-relaxed mb-12 max-w-3xl">
+            Gdybyśmy opierali się wyłącznie na uśrednionych wartościach dla całego serwisu (LCP na poziomie 0,8 s, CLS bliski zera), wniosek byłby jednoznaczny: witryna działa bez zarzutu.
+          </p>
+          <p class="text-lg text-gray-400 leading-relaxed mb-12 max-w-3xl">
+            W rzeczywistości setki szybkich, ale rzadziej odwiedzanych podstron skutecznie maskowały krytyczne problemy na stronach o największym znaczeniu biznesowym. Szczegółowa analiza RUM ujawniła trzy kluczowe wąskie gardła:
+          </p>
+          <div class="space-y-10">
+            <div>
+              <h3 class="font-bold text-white text-xl mb-3">Czas odpowiedzi serwera (TTFB) dusił stronę główną.</h3>
+              <p class="text-gray-400 leading-relaxed">Najbardziej eksponowane strony wejściowe notowały TTFB na poziomie 2,5 sekundy (przy progu Google wynoszącym 800 ms). Wąskim gardłem okazało się pobieranie zasobów statycznych z osobnej subdomeny. Dopóki serwer nie zacznie odpowiadać szybciej, optymalizacja warstwy wizualnej (np. banerów) mija się z celem.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-xl mb-3">Jeden błąd CLS psuł wszystkie listingi kategorii.</h3>
+              <p class="text-gray-400 leading-relaxed">Dane udowodniły, że za przeskoki układu na listach produktów odpowiadał ten sam kontener. Diagnoza wskazała konkretną przyczynę: opóźnione ładowanie właściwości CSS <code class="bg-white/10 px-1.5 py-0.5 rounded font-mono text-sm text-white">order</code>. Dział IT otrzymał precyzyjne zadanie zamiast ogólnej wytycznej.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-xl mb-3">Wyszukiwarka frustrowała klientów (INP).</h3>
+              <p class="text-gray-400 leading-relaxed">Responsywność paska wyszukiwania wynosiła nawet 285 ms. W e-commerce z tak rozbudowanym asortymentem każda sekunda opóźnienia w podpowiedziach wyszukiwarki bezpośrednio uderza w ścieżkę zakupową zdecydowanego klienta.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sekcja 5: Biznesowe konsekwencje -->
+        <section class="scroll-mt-32" id="konsekwencje">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Biznesowe konsekwencje: Ile kosztuje ignorowanie tych błędów?</h2>
+          <div class="space-y-6">
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Celem projektu było dostarczenie działowi IT klienta precyzyjnych i gotowych do wdrożenia wytycznych – ten cel został zrealizowany, a zadania trafiły do backlogu programistów.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Nawet jeśli proces wdrażania zmian w architekturze sklepu trwa, potencjał biznesowy jest łatwy do oszacowania. Zgodnie z badaniami Google i Deloitte dla branży e-commerce, poprawa mobilnego czasu ładowania o zaledwie 0,1 sekundy może przełożyć się na wzrost współczynnika konwersji o ok. 8%. Dla analizowanego sklepu, skrócenie czasu odpowiedzi serwera (TTFB) z 2,5 sekundy do rekomendowanych 0,8 sekundy stanowi ogromną szansę na redukcję liczby porzuconych koszyków, szczególnie w kluczowych tygodniach sezonu.
+            </p>
+          </div>
+
+          <!-- Highlight stats -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+            <div class="bg-accent/5 border-l-4 border-accent p-6 rounded-r-lg">
+              <div class="font-mono text-3xl lg:text-[2.5rem] font-bold text-accent leading-none mb-2">2,5 s</div>
+              <div class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold">TTFB na stronie głównej</div>
+              <p class="text-sm text-gray-600 mt-2">przy progu Google 800 ms</p>
+            </div>
+            <div class="bg-accent/5 border-l-4 border-accent p-6 rounded-r-lg">
+              <div class="font-mono text-3xl lg:text-[2.5rem] font-bold text-accent leading-none mb-2">285 ms</div>
+              <div class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold">INP wyszukiwarki</div>
+              <p class="text-sm text-gray-600 mt-2">frustrujące dla zdecydowanych klientów</p>
+            </div>
+            <div class="bg-accent/5 border-l-4 border-accent p-6 rounded-r-lg">
+              <div class="font-mono text-3xl lg:text-[2.5rem] font-bold text-accent leading-none mb-2">~8%</div>
+              <div class="text-[0.8rem] text-gray-500 uppercase tracking-widest font-semibold">potencjalny wzrost konwersji</div>
+              <p class="text-sm text-gray-600 mt-2">za każde 0,1 s poprawy (Google/Deloitte)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sekcja 6: Rezultat -->
+        <section class="scroll-mt-32" id="rezultat">
+          <h2 class="font-body text-[2rem] lg:text-[3rem] font-bold leading-tight mb-8">Rezultat: Od domysłów do twardych danych</h2>
+          <p class="text-lg text-gray-600 leading-relaxed mb-10 max-w-3xl">
+            Skutkiem wdrożenia było przejście z analityki opartej na symulacjach na twarde dane z urządzeń użytkowników. IT otrzymało gotową listę zadań, spriorytyzowaną na podstawie realnego obciążenia poszczególnych podstron.
+          </p>
+
+          <!-- Comparison: desktop table + mobile cards -->
+          <div class="mb-12">
+            <!-- Desktop table -->
+            <div class="hidden md:block overflow-hidden rounded-lg border border-gray-200">
+              <div class="grid grid-cols-[200px_1fr_1fr] gap-px bg-gray-200">
+                <div class="bg-gray-100 p-4 font-mono text-[0.7rem] text-gray-500 uppercase tracking-wider">Obszar</div>
+                <div class="bg-gray-100 p-4 font-mono text-[0.7rem] text-gray-500 uppercase tracking-wider">Przed — PageSpeed Insights</div>
+                <div class="bg-accent/10 p-4 font-mono text-[0.7rem] text-accent uppercase tracking-wider">Po — RUM przez TALEM</div>
+
+                <div class="bg-white p-4 font-bold text-sm border-t border-gray-200">Źródło danych</div>
+                <div class="bg-white p-4 text-sm text-gray-600 leading-relaxed border-t border-gray-200">Symulacja jednego urządzenia (Lighthouse) + zagregowane dane terenowe CrUX</div>
+                <div class="bg-accent/5 p-4 text-sm font-bold text-gray-900 leading-relaxed border-t border-gray-200">Zdarzenia z prawdziwych sesji zakupowych, na poziomie pojedynczej odsłony</div>
+
+                <div class="bg-white p-4 font-bold text-sm border-t border-gray-200">Diagnoza błędu</div>
+                <div class="bg-white p-4 text-sm text-gray-600 leading-relaxed border-t border-gray-200">Ogólna informacja o przekroczeniu wskaźnika</div>
+                <div class="bg-accent/5 p-4 text-sm font-bold text-gray-900 leading-relaxed border-t border-gray-200">Konkretny element DOM / selektor CSS</div>
+
+                <div class="bg-white p-4 font-bold text-sm border-t border-gray-200">Pokrycie serwisu</div>
+                <div class="bg-white p-4 text-sm text-gray-600 leading-relaxed border-t border-gray-200">Pojedyncze, wyrywkowe testy podstron</div>
+                <div class="bg-accent/5 p-4 text-sm font-bold text-gray-900 leading-relaxed border-t border-gray-200">Ciągły monitoring setek kluczowych adresów URL</div>
+
+                <div class="bg-white p-4 font-bold text-sm border-t border-gray-200">Priorytetyzacja IT</div>
+                <div class="bg-white p-4 text-sm text-gray-600 leading-relaxed border-t border-gray-200">Oparta na subiektywnych ocenach lub audytach ad hoc</div>
+                <div class="bg-accent/5 p-4 text-sm font-bold text-gray-900 leading-relaxed border-t border-gray-200">Oparta na faktycznym ruchu na ścieżce konwersji</div>
+
+                <div class="bg-white p-4 font-bold text-sm border-t border-gray-200">Wykrywanie regresji</div>
+                <div class="bg-white p-4 text-sm text-gray-600 leading-relaxed border-t border-gray-200">Ręczne, problem zauważany zazwyczaj po fakcie</div>
+                <div class="bg-accent/5 p-4 text-sm font-bold text-gray-900 leading-relaxed border-t border-gray-200">Automatyczne alerty o przekroczeniu progów wydajności</div>
+              </div>
+            </div>
+
+            <!-- Mobile cards -->
+            <div class="md:hidden space-y-4">
+              <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="px-4 py-3 bg-gray-100 font-bold text-sm">Źródło danych</div>
+                <div class="px-4 py-3">
+                  <p class="font-mono text-[0.65rem] text-gray-500 uppercase tracking-wider mb-1">Przed — PageSpeed Insights</p>
+                  <p class="text-sm text-gray-600 leading-relaxed">Symulacja jednego urządzenia (Lighthouse) + zagregowane dane terenowe CrUX</p>
+                </div>
+                <div class="px-4 py-3 bg-accent/5 border-t border-gray-100">
+                  <p class="font-mono text-[0.65rem] text-accent uppercase tracking-wider mb-1">Po — RUM przez TALEM</p>
+                  <p class="text-sm font-bold text-gray-900 leading-relaxed">Zdarzenia z prawdziwych sesji zakupowych, na poziomie pojedynczej odsłony</p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="px-4 py-3 bg-gray-100 font-bold text-sm">Diagnoza błędu</div>
+                <div class="px-4 py-3">
+                  <p class="font-mono text-[0.65rem] text-gray-500 uppercase tracking-wider mb-1">Przed — PageSpeed Insights</p>
+                  <p class="text-sm text-gray-600 leading-relaxed">Ogólna informacja o przekroczeniu wskaźnika</p>
+                </div>
+                <div class="px-4 py-3 bg-accent/5 border-t border-gray-100">
+                  <p class="font-mono text-[0.65rem] text-accent uppercase tracking-wider mb-1">Po — RUM przez TALEM</p>
+                  <p class="text-sm font-bold text-gray-900 leading-relaxed">Konkretny element DOM / selektor CSS</p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="px-4 py-3 bg-gray-100 font-bold text-sm">Pokrycie serwisu</div>
+                <div class="px-4 py-3">
+                  <p class="font-mono text-[0.65rem] text-gray-500 uppercase tracking-wider mb-1">Przed — PageSpeed Insights</p>
+                  <p class="text-sm text-gray-600 leading-relaxed">Pojedyncze, wyrywkowe testy podstron</p>
+                </div>
+                <div class="px-4 py-3 bg-accent/5 border-t border-gray-100">
+                  <p class="font-mono text-[0.65rem] text-accent uppercase tracking-wider mb-1">Po — RUM przez TALEM</p>
+                  <p class="text-sm font-bold text-gray-900 leading-relaxed">Ciągły monitoring setek kluczowych adresów URL</p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="px-4 py-3 bg-gray-100 font-bold text-sm">Priorytetyzacja IT</div>
+                <div class="px-4 py-3">
+                  <p class="font-mono text-[0.65rem] text-gray-500 uppercase tracking-wider mb-1">Przed — PageSpeed Insights</p>
+                  <p class="text-sm text-gray-600 leading-relaxed">Oparta na subiektywnych ocenach lub audytach ad hoc</p>
+                </div>
+                <div class="px-4 py-3 bg-accent/5 border-t border-gray-100">
+                  <p class="font-mono text-[0.65rem] text-accent uppercase tracking-wider mb-1">Po — RUM przez TALEM</p>
+                  <p class="text-sm font-bold text-gray-900 leading-relaxed">Oparta na faktycznym ruchu na ścieżce konwersji</p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="px-4 py-3 bg-gray-100 font-bold text-sm">Wykrywanie regresji</div>
+                <div class="px-4 py-3">
+                  <p class="font-mono text-[0.65rem] text-gray-500 uppercase tracking-wider mb-1">Przed — PageSpeed Insights</p>
+                  <p class="text-sm text-gray-600 leading-relaxed">Ręczne, problem zauważany zazwyczaj po fakcie</p>
+                </div>
+                <div class="px-4 py-3 bg-accent/5 border-t border-gray-100">
+                  <p class="font-mono text-[0.65rem] text-accent uppercase tracking-wider mb-1">Po — RUM przez TALEM</p>
+                  <p class="text-sm font-bold text-gray-900 leading-relaxed">Automatyczne alerty o przekroczeniu progów wydajności</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kluczowe lekcje -->
+          <div class="bg-gray-100 p-8 lg:p-12 rounded-lg">
+            <h3 class="font-body text-[1.5rem] lg:text-[2rem] font-bold mb-8">Kluczowe lekcje dla Twojego e-commerce:</h3>
+            <div class="space-y-8">
+              <div class="flex gap-6 items-start">
+                <div class="bg-accent text-white w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-xl rounded-lg">1</div>
+                <div>
+                  <h4 class="font-bold text-lg mb-2">Średnia to pułapka.</h4>
+                  <p class="text-gray-600 leading-relaxed">Dobry ogólny wynik witryny może ukrywać krytyczne błędy na stronach generujących największy ruch i przychód.</p>
+                </div>
+              </div>
+              <div class="flex gap-6 items-start">
+                <div class="bg-accent text-white w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-xl rounded-lg">2</div>
+                <div>
+                  <h4 class="font-bold text-lg mb-2">RUM daje rozwiązania, nie tylko diagnozy.</h4>
+                  <p class="text-gray-600 leading-relaxed">Analiza wydajności ma sens tylko wtedy, gdy kończy się precyzyjną wytyczną dla programisty.</p>
+                </div>
+              </div>
+              <div class="flex gap-6 items-start">
+                <div class="bg-accent text-white w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-xl rounded-lg">3</div>
+                <div>
+                  <h4 class="font-bold text-lg mb-2">Wydajność to proces ciągły.</h4>
+                  <p class="text-gray-600 leading-relaxed">Zmiana materiałów promocyjnych przed Black Friday może nieświadomie obciążyć serwis. Stały monitoring RUM pozwala wykryć ten problem natychmiast, a nie pod koniec sezonu.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sekcja 7: CTA -->
+        <section class="bg-black p-8 lg:p-16 text-center rounded-lg">
+          <h2 class="font-display text-[1.75rem] lg:text-[2.5rem] font-bold text-white mb-6 leading-tight">Nie trać budżetu w kolejnym szczycie sezonu przez wolną stronę.</h2>
+          <p class="text-gray-400 max-w-2xl mx-auto mb-6 leading-relaxed">
+            Zgadywanie, co dokładnie spowalnia Twój e-commerce, zajmuje czas i kosztuje. Opieraj decyzje optymalizacyjne na twardych danych pochodzących bezpośrednio z urządzeń Twoich klientów.
+          </p>
+          <a
+            href="/kontakt"
+            class="inline-block bg-accent text-white px-10 py-5 font-bold text-lg hover:bg-accent-light transition-all active:scale-95 rounded-lg"
+          >
+            Zarezerwuj spotkanie techniczne
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    // Scroll spy for sidebar navigation
+    window.addEventListener('scroll', () => {
+      const sections = ['klient', 'punkt-wyjscia', 'architektura', 'dane', 'konsekwencje', 'rezultat'];
+      const navLinks = document.querySelectorAll('aside a');
+
+      let current = '';
+      sections.forEach(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const sectionTop = element.offsetTop;
+          if (pageYOffset >= sectionTop - 150) {
+            current = section;
+          }
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('text-accent', 'font-bold', 'border-accent');
+        link.classList.add('text-gray-600', 'border-gray-300');
+        if (current && link.getAttribute('href')?.includes(current)) {
+          link.classList.add('text-accent', 'font-bold', 'border-accent');
+          link.classList.remove('text-gray-600', 'border-gray-300');
+        }
+      });
+    });
+  </script>
+</BaseLayout>
