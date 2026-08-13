@@ -1,8 +1,8 @@
-import cookieConsent, { type CookieConsentConfig } from 'vanilla-cookieconsent';
+import * as cookieConsent from 'vanilla-cookieconsent';
 
 declare global {
   interface Window {
-    __cookieConsentConfig?: CookieConsentConfig;
+    __cookieConsentConfig?: Parameters<typeof cookieConsent.run>[0];
     __TALem_COOKIECONSENT_INIT_RAN__?: boolean;
   }
 }
