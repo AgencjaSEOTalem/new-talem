@@ -1,10 +1,11 @@
 ---
 import SectionHeader from '../ui/SectionHeader.astro';
 import BlogPostCard from '../ui/BlogPostCard.astro';
-import { getLatestPosts } from '../../lib/wordpress';
+import { getAllPosts } from '../../lib/wordpress';
 
 // Pobierz 3 ostatnie wpisy z WordPressa
-const posts = await getLatestPosts(3);
+const allPosts = await getAllPosts();
+const posts = allPosts.slice(0, 3);
 ---
 
 <section class="bg-gray-100 px-4 sm:px-6 lg:px-8 py-12 lg:py-32">

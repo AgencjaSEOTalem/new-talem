@@ -3,10 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
-import PostRating from '../../components/PostRating.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
-import { getAllPosts, getPostBySlug, type BlogPost } from '../../lib/wordpress';
+import { getAllPosts, getPostBySlug } from '../../lib/wordpress';
 
 export const getStaticPaths = (async () => {
   const posts = await getAllPosts();
@@ -146,50 +144,11 @@ const breadcrumbSchema = {
   })),
 };
 
-// Wspólna funkcja do generowania slug (używana zarówno server-side jak i client-side)
-function generateSlugFromText(text: string): string {
-  // Najpierw dekoduj wszystkie HTML entities używając prostej mapy
-  const entities: { [key: string]: string } = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#039;': "'",
-    '&#8211;': '-',
-    '&#8212;': '-',
-    '&#8216;': "'",
-    '&#8217;': "'",
-    '&#8220;': '"',
-    '&#8221;': '"',
-    '&nbsp;': ' ',
-    '&ndash;': '-',
-    '&mdash;': '-',
-    '&lsquo;': "'",
-    '&rsquo;': "'",
-    '&ldquo;': '"',
-    '&rdquo;': '"',
-  };
-
-  let decoded = text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
-
-  // Generuj slug
-  return decoded
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/ł/g, 'l')
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-    .substring(0, 100);
-}
-
 // Generuj spis treści z nagłówków H2 (tylko tekst, ID generowane client-side)
 function generateTableOfContents(content: string) {
   const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
   const headings: Array<{ text: string }> = [];
-  let match;
+  let match: RegExpExecArray | null;
 
   while ((match = h2Regex.exec(content)) !== null) {
     const rawText = match[1]
@@ -211,10 +170,10 @@ const tableOfContents = generateTableOfContents(post.content || '');
   ogImage={post.featuredImage?.url}
 >
   <!-- JSON-LD Schema for Article -->
-  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <!-- JSON-LD Schema for Breadcrumbs -->
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <style is:global>
     /* Smooth Scroll */
@@ -885,7 +844,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
   <script>
     // Funkcja inicjalizująca TOC - może być wywołana wielokrotnie (View Transitions)
     function initTableOfContents() {
-      const tocLinks = document.querySelectorAll('.toc-link');
+      const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
       const articleContent = document.getElementById('content');
 
       if (!articleContent || !tocLinks.length) return;
@@ -894,7 +853,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       if (!h2Elements.length) return;
 
       // Szybkie generowanie slug
-      const generateSlug = (text) => {
+      const generateSlug = (text: string) => {
         return text
           .toLowerCase()
           .normalize('NFD')
@@ -918,7 +877,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
       // Zaktualizuj linki TOC
       tocLinks.forEach((link) => {
-        const index = parseInt(link.dataset.tocIndex);
+        const index = parseInt(link.dataset.tocIndex ?? '');
         const slug = slugMap.get(index);
         if (slug) {
           link.href = `#${slug}`;
@@ -930,7 +889,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       const tocContainer = document.getElementById('table-of-contents');
       if (tocContainer) {
         tocContainer.addEventListener('click', (e) => {
-          const link = e.target.closest('.toc-link');
+          const link = (e.target as HTMLElement).closest('.toc-link') as HTMLElement | null;
           if (!link) return;
 
           e.preventDefault();
@@ -946,7 +905,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
       }
 
       // Zoptymalizowany IntersectionObserver
-      let activeLink = null;
+      let activeLink: HTMLElement | null = null;
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {

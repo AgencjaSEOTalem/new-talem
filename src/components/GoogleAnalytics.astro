@@ -8,8 +8,8 @@ const GA_MEASUREMENT_ID = 'G-CBKDTZQFTF';
 <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
 
 <!-- Google tag (gtag.js) -->
-<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-<script define:vars={{ GA_MEASUREMENT_ID }}>
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+<script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     window.dataLayer.push(arguments);

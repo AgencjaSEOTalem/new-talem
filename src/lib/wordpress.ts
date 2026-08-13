@@ -730,8 +730,8 @@ export async function submitPostRating(postId: number, rating: number): Promise<
  * @deprecated Użyj getAllPosts() zamiast tego
  */
 export async function getPosts(
-  perPage: number = 100,
-  page: number = 1,
+  _perPage: number = 100,
+  _page: number = 1,
   categoryId?: number,
   authorId?: number
 ): Promise<BlogPost[]> {

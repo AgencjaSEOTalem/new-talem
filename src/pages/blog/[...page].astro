@@ -6,7 +6,6 @@ import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
 import NewsletterBox from '../../components/NewsletterBox.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
 import { getAllPosts, getAllCategories, type BlogPost } from '../../lib/wordpress';
 
 export const getStaticPaths = (async ({ paginate }) => {

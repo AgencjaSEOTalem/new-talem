@@ -43,7 +43,7 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
     <GoogleAnalytics />
 
     <!-- Yabrix Analytics -->
-    <script src="https://collect.yabrix.com/js/yabrix.min.js" data-yx="a311fefb7557a104" defer></script>
+    <script is:inline src="https://collect.yabrix.com/js/yabrix.min.js" data-yx="a311fefb7557a104" defer></script>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -87,9 +87,7 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
       import '../scripts/scroll-reveal';
     </script>
 
-    <script is:inline define:vars={{ cookieConsentConfig }}>
-      window.__cookieConsentConfig = cookieConsentConfig;
-    </script>
+    <script is:inline set:html={`window.__cookieConsentConfig = ${JSON.stringify(cookieConsentConfig)};`} />
 
     <script>
       import '../scripts/cookieconsent-init';
