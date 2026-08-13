@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import SectionHeader from "../ui/SectionHeader.astro";
 import heroImage from "../../assets/case-studies/hero-wloskie-delikatesy.jpg";
+import rumImage from "../../assets/case-studies/case-study-rum.png";
 ---
 
 <section
@@ -145,13 +146,15 @@ import heroImage from "../../assets/case-studies/hero-wloskie-delikatesy.jpg";
           </div>
         </div>
       </div>
-      <div class="order-1 lg:order-2 relative min-h-[300px] lg:min-h-[420px] overflow-hidden bg-gradient-to-br from-[#0a0c0d] via-[#191c1e] to-[#2a0a12]">
-        <div class="absolute inset-0 opacity-[0.07]" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 60px 60px;"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <svg class="w-24 h-24 text-accent/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l3-9 4 18 3-9h4" />
-          </svg>
-        </div>
+      <div class="order-1 lg:order-2 relative min-h-[300px] lg:min-h-[420px] overflow-hidden">
+        <Picture
+          src={rumImage}
+          alt="Real User Monitoring - wydajność e-commerce"
+          widths={[400, 800, 1200]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
         <div
           class="absolute bottom-6 left-6 font-mono text-[0.75rem] font-bold tracking-[0.1em] text-white bg-black/50 backdrop-blur-md px-4 py-2 rounded-md uppercase z-10"
         >

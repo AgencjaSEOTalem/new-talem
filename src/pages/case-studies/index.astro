@@ -7,6 +7,7 @@ import Footer from '../../components/Footer.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { breadcrumb } from '../../lib/schema';
 import heroImage from '../../assets/case-studies/hero-wloskie-delikatesy.jpg';
+import rumImage from '../../assets/case-studies/case-study-rum.png';
 
 const breadcrumbs = [
   { label: 'Strona główna', href: '/' },
@@ -28,6 +29,7 @@ interface CaseStudy {
 const caseStudies: CaseStudy[] = [
   {
     slug: '/case-studies/real-user-monitoring-rum-wydajnosc-ecommerce',
+    image: rumImage,
     tag: 'WYDAJNOŚĆ',
     title: 'Real User Monitoring: Jak przestaliśmy zgadywać i wskazaliśmy IT, co dokładnie psuje sprzedaż w e-commerce',
     excerpt: 'Projekt i wdrożenie systemu analityki wydajności opartego na danych od realnych użytkowników (RUM). Zgromadziliśmy ponad 329 000 zwalidowanych zdarzeń z 566 kluczowych adresów URL i wskazaliśmy IT konkretne błędy psujące sprzedaż.',

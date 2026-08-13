@@ -4,6 +4,8 @@ import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { breadcrumb } from '../../lib/schema';
+import { Picture } from 'astro:assets';
+import rumImage from '../../assets/case-studies/case-study-rum.png';
 
 const breadcrumbs = [
   { label: 'Strona główna', href: '/' },
@@ -39,12 +41,16 @@ const schema = [
 
     <!-- Hero Section -->
     <section class="relative overflow-hidden mb-16 lg:mb-24">
-      <!-- Gradient background -->
-      <div class="absolute inset-0 z-0 bg-gradient-to-br from-[#0a0c0d] via-[#191c1e] to-[#2a0a12]"></div>
+      <!-- Background image -->
+      <Picture
+        src={rumImage}
+        alt="Real User Monitoring - wydajność e-commerce"
+        widths={[400, 800, 1200, 1672]}
+        sizes="100vw"
+        class="absolute inset-0 w-full h-full object-cover z-0"
+        loading="eager"
+      />
       <div class="absolute inset-0 z-0 bg-gradient-to-r from-black/90 via-black/70 to-black/30"></div>
-
-      <!-- Decorative grid pattern -->
-      <div class="absolute inset-0 z-0 opacity-[0.07]" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 60px 60px;"></div>
 
       <!-- Decorative accent bar (left edge) -->
       <div class="absolute top-0 left-0 w-1.5 h-full bg-accent z-10 hidden sm:block"></div>

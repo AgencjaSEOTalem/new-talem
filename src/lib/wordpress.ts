@@ -25,6 +25,12 @@ interface GraphQLACFImage {
     mediaDetails?: {
       width?: number;
       height?: number;
+      sizes?: Array<{
+        sourceUrl?: string;
+        width?: number;
+        height?: number;
+        name?: string;
+      }>;
     };
   };
 }
@@ -202,15 +208,27 @@ function calculateReadingTime(content: string): string {
 
 function transformACFPhoto(
   acfImage: GraphQLACFImage | null | undefined,
-  fallbackAlt: string
+  fallbackAlt: string,
+  targetSize?: number
 ): { url: string; alt: string; width?: number; height?: number } | undefined {
   if (!acfImage?.node?.sourceUrl) return undefined;
 
+  // ponytail: gdy podano targetSize, wybierz najmniejszą miniaturę WordPressa,
+  // której obie wymiary >= targetSize (np. 150x150 dla awatarów 48px/128px).
+  // Ceiling: polegamy na domyślnych rozmiarach miniatur WP; jeśli brak — fallback do pełnego obrazu.
+  const sizes = acfImage.node.mediaDetails?.sizes;
+  const picked =
+    targetSize && sizes
+      ? sizes
+          .filter((s) => s.sourceUrl && s.width && s.height && s.width >= targetSize && s.height >= targetSize)
+          .sort((a, b) => (a.width! - b.width!))[0]
+      : undefined;
+
   return {
-    url: acfImage.node.sourceUrl,
+    url: picked?.sourceUrl || acfImage.node.sourceUrl,
     alt: acfImage.node.altText || fallbackAlt,
-    width: acfImage.node.mediaDetails?.width,
-    height: acfImage.node.mediaDetails?.height,
+    width: picked?.width || acfImage.node.mediaDetails?.width,
+    height: picked?.height || acfImage.node.mediaDetails?.height,
   };
 }
 
@@ -273,7 +291,7 @@ function transformPost(node: GraphQLPostNode): BlogPost {
     author: node.author.node.name,
     authorSlug: node.author.node.slug,
     authorExpertise: node.author.node.profilAutora?.ekspertyza || undefined,
-    authorPhoto: transformACFPhoto(node.author.node.profilAutora?.zdjecie, node.author.node.name),
+    authorPhoto: transformACFPhoto(node.author.node.profilAutora?.zdjecie, node.author.node.name, 150),
     readingTime,
     categories: node.categories.nodes.map(cat => ({
       id: cat.databaseId,
@@ -333,6 +351,12 @@ const POST_FRAGMENT = `
               mediaDetails {
                 width
                 height
+                sizes {
+                  sourceUrl
+                  width
+                  height
+                  name
+                }
               }
             }
           }

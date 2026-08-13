@@ -2,6 +2,7 @@
 dist/
 .output/
 .vercel/
+.claude/
 
 # dependencies
 node_modules/
