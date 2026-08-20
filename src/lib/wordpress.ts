@@ -3,6 +3,7 @@
 // ============================================
 
 const GRAPHQL_ENDPOINT = 'https://api.talem.eu/graphql';
+const REST_ENDPOINT = 'https://api.talem.eu/wp-json';
 
 // ============================================
 // GRAPHQL RESPONSE INTERFACES
@@ -144,6 +145,7 @@ export interface BlogPost {
     count: number;
   };
   keyInformation?: string;
+  metaDescription?: string;
 }
 
 export interface Category {
@@ -193,8 +195,36 @@ function formatPolishDate(dateString: string): string {
   return `${day} ${month} ${year}`;
 }
 
+function decodeHtmlEntities(text: string): string {
+  const named: Record<string, string> = {
+    amp: '&',
+    lt: '<',
+    gt: '>',
+    quot: '"',
+    apos: "'",
+    nbsp: ' ',
+    hellip: '…',
+    lsquo: '\u2018',
+    rsquo: '\u2019',
+    ldquo: '\u201C',
+    rdquo: '\u201D',
+    mdash: '\u2014',
+    ndash: '\u2013',
+  };
+  return text
+    .replace(/&#(\d+);/g, (_, code) => {
+      const num = Number(code);
+      return num > 0 ? String.fromCharCode(num) : '';
+    })
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => {
+      const num = parseInt(code, 16);
+      return num > 0 ? String.fromCharCode(num) : '';
+    })
+    .replace(/&([a-zA-Z]+);/g, (full, name) => named[name] ?? full);
+}
+
 function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '').trim();
+  return decodeHtmlEntities(html.replace(/<[^>]*>/g, '').trim());
 }
 
 function calculateReadingTime(content: string): string {
@@ -273,12 +303,63 @@ async function fetchGraphQL<T>(query: string, variables: Record<string, any> = {
 }
 
 // ============================================
+// REST HELPERS (meta description z wtyczki AI)
+// ============================================
+
+interface RestPostMeta {
+  id: number;
+  meta?: { wpai_meta_description?: string };
+}
+
+/**
+ * Pobiera mapę databaseId -> metaDescription dla wszystkich wpisów przez REST API
+ * (GraphQL nie wystawia pól SEO). Paginacja po 100 wpisów.
+ */
+async function fetchMetaDescriptionsMap(): Promise<Map<number, string>> {
+  const map = new Map<number, string>();
+  try {
+    let page = 1;
+    while (page <= 20) {
+      const url = `${REST_ENDPOINT}/wp/v2/posts?per_page=100&page=${page}&_fields=id,meta.wpai_meta_description`;
+      const res = await fetch(url);
+      if (!res.ok) break;
+      const posts = (await res.json()) as RestPostMeta[];
+      if (!Array.isArray(posts) || posts.length === 0) break;
+      for (const p of posts) {
+        const desc = p.meta?.wpai_meta_description;
+        if (desc) map.set(p.id, desc);
+      }
+      if (posts.length < 100) break;
+      page++;
+    }
+  } catch (error) {
+    console.error('Error fetching meta descriptions map:', error);
+  }
+  return map;
+}
+
+/**
+ * Pobiera metaDescription dla pojedynczego wpisu po databaseId.
+ */
+async function fetchMetaDescriptionByPostId(postId: number): Promise<string | undefined> {
+  try {
+    const url = `${REST_ENDPOINT}/wp/v2/posts/${postId}?_fields=meta.wpai_meta_description`;
+    const res = await fetch(url);
+    if (!res.ok) return undefined;
+    const post = (await res.json()) as RestPostMeta;
+    return post.meta?.wpai_meta_description || undefined;
+  } catch (error) {
+    console.error('Error fetching meta description by post id:', error);
+    return undefined;
+  }
+}
+
+// ============================================
 // TRANSFORM FUNCTIONS
 // ============================================
 
 function transformPost(node: GraphQLPostNode): BlogPost {
   const readingTime = calculateReadingTime(node.content || node.excerpt);
-
   return {
     id: node.databaseId,
     databaseId: node.databaseId,
@@ -416,6 +497,13 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     );
   }
 
+  // Dołącz meta description z wtyczki AI (REST API — GraphQL nie wystawia pól SEO)
+  const metaMap = await fetchMetaDescriptionsMap();
+  for (const post of posts) {
+    const desc = metaMap.get(post.databaseId);
+    if (desc) post.metaDescription = desc;
+  }
+
   return posts;
 }
 
@@ -439,7 +527,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       return null;
     }
 
-    return transformPost(data.post);
+    const post = transformPost(data.post);
+    const metaDesc = await fetchMetaDescriptionByPostId(post.databaseId);
+    if (metaDesc) post.metaDescription = metaDesc;
+    return post;
   } catch (error) {
     console.error('Error fetching post by slug:', error);
     return null;

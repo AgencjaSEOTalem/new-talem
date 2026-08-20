@@ -58,7 +58,7 @@ const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: post.title,
-  description: post.excerpt,
+  description: post.metaDescription || post.excerpt,
   image: post.featuredImage
     ? {
         '@type': 'ImageObject',
@@ -166,7 +166,7 @@ const tableOfContents = generateTableOfContents(post.content || '');
 
 <BaseLayout
   title={`${post.title} | Blog Talem`}
-  description={post.excerpt.substring(0, 152) + '...'}
+  description={post.metaDescription || (post.excerpt.substring(0, 152) + '...')}
   ogImage={post.featuredImage?.url}
 >
   <!-- JSON-LD Schema for Article -->
