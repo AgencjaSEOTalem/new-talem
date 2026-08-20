@@ -34,6 +34,23 @@ RewriteRule ^(.+)/$ /$1 [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
 RewriteRule ^ %1 [R=301,L,NE]
 
+# --- Przekierowania podstron autorów (stare slugi -> slugi z imienia i nazwiska) ---
+# Redakcja: adm_talem -> redakcja
+RewriteRule ^blog/autor/adm_talem/?$ /blog/autor/redakcja [R=301,L,NE]
+RewriteRule ^blog/autor/adm_talem/([0-9]+)/?$ /blog/autor/redakcja/$1 [R=301,L,NE]
+
+# Arkadiusz Cyganek: arek -> arkadiusz-cyganek
+RewriteRule ^blog/autor/arek/?$ /blog/autor/arkadiusz-cyganek [R=301,L,NE]
+RewriteRule ^blog/autor/arek/([0-9]+)/?$ /blog/autor/arkadiusz-cyganek/$1 [R=301,L,NE]
+
+# Jakub Witkowski: jakub -> jakub-witkowski
+RewriteRule ^blog/autor/jakub/?$ /blog/autor/jakub-witkowski [R=301,L,NE]
+RewriteRule ^blog/autor/jakub/([0-9]+)/?$ /blog/autor/jakub-witkowski/$1 [R=301,L,NE]
+
+# Wojciech Smolarek: wojtek -> wojciech-smolarek
+RewriteRule ^blog/autor/wojtek/?$ /blog/autor/wojciech-smolarek [R=301,L,NE]
+RewriteRule ^blog/autor/wojtek/([0-9]+)/?$ /blog/autor/wojciech-smolarek/$1 [R=301,L,NE]
+
 # Strona główna
 RewriteRule ^$ index.html [L]
 

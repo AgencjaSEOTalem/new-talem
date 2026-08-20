@@ -2,6 +2,7 @@
   "name": "new-talem",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,7 +10,8 @@
     "astro": "astro",
     "check": "astro check",
     "lint": "eslint src --ext .astro,.ts,.tsx,.js",
-    "format": "prettier --write src/**/*.{astro,ts,tsx,js,css}"
+    "format": "prettier --write src/**/*.{astro,ts,tsx,js,css}",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -19,7 +21,7 @@
     "@fontsource-variable/newsreader": "^5.3.0",
     "@fontsource-variable/playfair-display": "^5.3.0",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^6.4.8",
+    "astro": "^7.2.4",
     "devalue": "^5.9.0",
     "tailwindcss": "^3.4.19",
     "vanilla-cookieconsent": "^3.1.0"
@@ -31,6 +33,7 @@
     "eslint": "^10.8.0",
     "eslint-plugin-astro": "^1.7.0",
     "lightningcss": "^1.33.0",
+    "only-allow": "^1.2.2",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.9.3"
