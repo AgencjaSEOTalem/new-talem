@@ -52,6 +52,69 @@ const breadcrumbs = [
   { label: author.name },
 ];
 
+// JSON-LD: Schema.org dla strony autora
+const siteUrl = (Astro.site?.toString() || 'https://www.talem.eu').replace(/\/$/, '');
+const authorUrl = `${siteUrl}/blog/autor/${author.slug}`;
+const authorPageUrl =
+  page.currentPage === 1 ? authorUrl : `${authorUrl}/${page.currentPage}`;
+
+const authorImage = author.photo
+  ? {
+      '@type': 'ImageObject',
+      url: author.photo.url,
+      width: author.photo.width || 300,
+      height: author.photo.height || 400,
+    }
+  : {
+      '@type': 'ImageObject',
+      url: author.avatar.large,
+      width: 192,
+      height: 192,
+    };
+
+const personSchema = {
+  '@type': 'Person',
+  '@id': `${authorUrl}#person`,
+  name: author.name,
+  url: authorUrl,
+  description: author.description || `Artykuły autora ${author.name}. Blog SEO, e-commerce i marketing internetowy.`,
+  image: authorImage,
+  ...(author.role && { jobTitle: author.role }),
+  ...(author.expertise && { knowsAbout: author.expertise }),
+};
+
+const profilePageSchema = {
+  '@type': 'ProfilePage',
+  '@id': `${authorUrl}#webpage`,
+  url: authorPageUrl,
+  name:
+    page.currentPage === 1
+      ? `${author.name} - Autor | Blog Talem`
+      : `${author.name} - Strona ${page.currentPage} | Blog Talem`,
+  description:
+    author.description ||
+    `Artykuły autora ${author.name}. Blog SEO, e-commerce i marketing internetowy.`,
+  inLanguage: 'pl-PL',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${authorUrl}#person` },
+  publisher: { '@id': `${siteUrl}/#organization` },
+};
+
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  '@id': `${authorUrl}#breadcrumb`,
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    ...(crumb.href && {
+      item: `${siteUrl}${crumb.href.startsWith('/') ? crumb.href : `/${crumb.href}`}`,
+    }),
+  })),
+};
+
+const schema = [personSchema, profilePageSchema, breadcrumbSchema];
+
 // Przygotuj numery stron do wyświetlenia w paginacji
 const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => {
   const showPage =
@@ -85,6 +148,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
     ? `${author.name} - Autor | Blog Talem`
     : `${author.name} - Strona ${page.currentPage} | Blog Talem`}
   description={author.description || `Artykuły autora ${author.name}. Blog SEO, e-commerce i marketing internetowy.`}
+  schema={schema}
 >
   <Navigation />
 

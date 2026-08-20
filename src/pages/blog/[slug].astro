@@ -53,10 +53,14 @@ const wordCount = post.content
       .filter((w) => w.length > 0).length
   : 0;
 
-// JSON-LD Schema dla Article
+// JSON-LD Schema dla Article (ujednolicony format @graph)
+const siteUrl = (Astro.site?.toString() || 'https://www.talem.eu').replace(/\/$/, '');
+const postUrl = `${siteUrl}/blog/${post.slug}`;
+const authorUrl = `${siteUrl}/blog/autor/${post.authorSlug}`;
+
 const articleSchema = {
-  '@context': 'https://schema.org',
   '@type': 'BlogPosting',
+  '@id': `${postUrl}#article`,
   headline: post.title,
   description: post.metaDescription || post.excerpt,
   image: post.featuredImage
@@ -71,8 +75,9 @@ const articleSchema = {
   dateModified: publishedDate,
   author: {
     '@type': 'Person',
+    '@id': `${authorUrl}#person`,
     name: post.author,
-    url: `${Astro.site}blog/autor/${post.authorSlug}`,
+    url: authorUrl,
     ...(post.authorExpertise && { description: post.authorExpertise }),
     ...(post.authorPhoto && {
       image: {
@@ -83,20 +88,10 @@ const articleSchema = {
       },
     }),
   },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Talem',
-    url: Astro.site?.toString() || 'https://talem.eu',
-    logo: {
-      '@type': 'ImageObject',
-      url: `${Astro.site}images/logo-talem.svg`,
-      width: 250,
-      height: 60,
-    },
-  },
+  publisher: { '@id': `${siteUrl}/#organization` },
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': `${Astro.site}blog/${post.slug}`,
+    '@id': `${postUrl}#webpage`,
   },
   articleBody: post.excerpt,
   ...(wordCount > 0 && { wordCount }),
@@ -105,16 +100,22 @@ const articleSchema = {
     keywords: post.categories.map((cat) => cat.name).join(', '),
   }),
   inLanguage: 'pl-PL',
-  ...(post.rating &&
-    post.rating.count > 0 && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: post.rating.average,
-        reviewCount: post.rating.count,
-        bestRating: 5,
-        worstRating: 1,
-      },
-    }),
+};
+
+const webPageSchema = {
+  '@type': 'WebPage',
+  '@id': `${postUrl}#webpage`,
+  url: postUrl,
+  name: post.title,
+  description: post.metaDescription || post.excerpt,
+  inLanguage: 'pl-PL',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  about: { '@id': `${postUrl}#article` },
+  author: { '@id': `${authorUrl}#person` },
+  publisher: { '@id': `${siteUrl}/#organization` },
+  ...(primaryCategory && {
+    breadcrumb: { '@id': `${postUrl}#breadcrumb` },
+  }),
 };
 
 // Breadcrumbs
@@ -134,15 +135,17 @@ breadcrumbs.push({ label: post.title });
 
 // JSON-LD Schema dla BreadcrumbList
 const breadcrumbSchema = {
-  '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
+  '@id': `${postUrl}#breadcrumb`,
   itemListElement: breadcrumbs.map((crumb, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     name: crumb.label,
-    ...(crumb.href && { item: `${Astro.site}${crumb.href.replace(/^\//, '')}` }),
+    ...(crumb.href && { item: `${siteUrl}${crumb.href.replace(/^\//, '')}` }),
   })),
 };
+
+const schema = [articleSchema, webPageSchema, breadcrumbSchema];
 
 // Generuj spis treści z nagłówków H2 (tylko tekst, ID generowane client-side)
 function generateTableOfContents(content: string) {
@@ -168,13 +171,8 @@ const tableOfContents = generateTableOfContents(post.content || '');
   title={`${post.title} | Blog Talem`}
   description={post.metaDescription || (post.excerpt.substring(0, 152) + '...')}
   ogImage={post.featuredImage?.url}
+  schema={schema}
 >
-  <!-- JSON-LD Schema for Article -->
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
-
-  <!-- JSON-LD Schema for Breadcrumbs -->
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-
   <style is:global>
     /* Smooth Scroll */
     html {

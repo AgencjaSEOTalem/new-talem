@@ -50,6 +50,53 @@ const breadcrumbs = [
 // Wszystkie wpisy do siatki (bez wyróżnionego)
 const gridPosts = page.data;
 
+// JSON-LD: Schema.org dla strony kategorii
+const siteUrl = (Astro.site?.toString() || 'https://www.talem.eu').replace(/\/$/, '');
+const categoryUrl = `${siteUrl}/blog/kategoria/${category.slug}`;
+const categoryPageUrl =
+  page.currentPage === 1 ? categoryUrl : `${categoryUrl}/${page.currentPage}`;
+
+const collectionPageSchema = {
+  '@type': 'CollectionPage',
+  '@id': `${categoryUrl}#webpage`,
+  url: categoryPageUrl,
+  name:
+    page.currentPage === 1
+      ? `${category.name} - Blog SEO | Talem`
+      : `${category.name} - Strona ${page.currentPage} | Talem`,
+  description: `Artykuły z kategorii ${category.name}. Ekspercka wiedza o SEO, e-commerce i marketingu internetowym.`,
+  inLanguage: 'pl-PL',
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  publisher: { '@id': `${siteUrl}/#organization` },
+  ...(gridPosts.length > 0 && {
+    mainEntity: {
+      '@type': 'ItemList',
+      '@id': `${categoryUrl}#itemlist`,
+      itemListElement: gridPosts.map((post, index) => ({
+        '@type': 'ListItem',
+        position: (page.currentPage - 1) * 11 + index + 1,
+        url: `${siteUrl}/blog/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  }),
+};
+
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  '@id': `${categoryUrl}#breadcrumb`,
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    ...(crumb.href && {
+      item: `${siteUrl}${crumb.href.startsWith('/') ? crumb.href : `/${crumb.href}`}`,
+    }),
+  })),
+};
+
+const schema = [collectionPageSchema, breadcrumbSchema];
+
 // Aktualny pathname dla aktywnych stanów kategorii
 const currentPath = Astro.url.pathname;
 
@@ -84,6 +131,7 @@ const paginationPages = Array.from({ length: page.lastPage }, (_, i) => i + 1).m
     ? `${category.name} - Blog SEO | Talem`
     : `${category.name} - Strona ${page.currentPage} | Talem`}
   description={`Artykuły z kategorii ${category.name}. Ekspercka wiedza o SEO, e-commerce i marketingu internetowym.`}
+  schema={schema}
 >
   <Navigation />
 
