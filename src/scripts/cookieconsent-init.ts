@@ -1,8 +1,8 @@
-import * as cookieConsent from 'vanilla-cookieconsent';
+import { run } from 'vanilla-cookieconsent';
 
 declare global {
   interface Window {
-    __cookieConsentConfig?: Parameters<typeof cookieConsent.run>[0];
+    __cookieConsentConfig?: Parameters<typeof run>[0];
     __TALem_COOKIECONSENT_INIT_RAN__?: boolean;
   }
 }
@@ -14,6 +14,6 @@ if (typeof window !== 'undefined' && window.__cookieConsentConfig) {
   // eslint-disable-next-line no-console
   console.debug('[cookieconsent] init running');
 
-  cookieConsent.run(window.__cookieConsentConfig);
+  run(window.__cookieConsentConfig);
 }
 

@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 import cookieconsent from './src/integrations/cookieconsent.js';
@@ -14,6 +14,7 @@ export default defineConfig({
     inlineStylesheets: 'always', // Inline critical CSS dla lepszego FCP/LCP
   },
   vite: {
+    plugins: [tailwindcss()],
     build: {
       cssCodeSplit: true, // Split CSS per page/component
       cssMinify: 'lightningcss',
@@ -23,7 +24,6 @@ export default defineConfig({
     domains: ['api.talem.eu'],
   },
   integrations: [
-    tailwind(),
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,

@@ -1,11 +1,8 @@
 /* Fonty załadowane w osobnym pliku dla lepszej kontroli */
 @import "./fonts.css";
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
+@theme {
   --font-display: "Playfair Display Variable", serif;
   --font-mono: "JetBrains Mono Variable", monospace;
   --font-body: "Manrope Variable", sans-serif;
@@ -26,7 +23,9 @@
   --color-accent-dim: #6d001f;
   --color-accent-light: #b8003a;
   --color-accent-pale: #ffeef3;
+}
 
+:root {
   --transition-default: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
